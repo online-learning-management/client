@@ -51,7 +51,15 @@ export default function Navbar({ open, drawerWidth, handleDrawerToggle }: Navbar
           aria-label="open drawer"
           onClick={handleDrawerToggle}
           edge="start"
-          sx={{ marginRight: 2, marginLeft: '-40px', backgroundColor: '#4a49cb', color: 'white' }}
+          sx={{
+            marginRight: 2,
+            marginLeft: '-40px',
+            backgroundColor: '#4a49cb',
+            color: 'white',
+            '&:hover': {
+              backgroundColor: '#4a49cb',
+            },
+          }}
         >
           {open ? <KeyboardArrowLeftOutlinedIcon /> : <ChevronRightOutlinedIcon />}
         </IconButton>
