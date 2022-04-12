@@ -17,7 +17,7 @@ const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
 })<AppBarProps>(({ theme, open, drawerWidth }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  width: `calc(100% - 65px)`,
+  width: `calc(100% - ${theme.spacing(10)} - 1px)`,
   backgroundColor: theme.palette.background.default,
   boxShadow: 'none',
 
@@ -47,21 +47,22 @@ export default function Navbar({ open, drawerWidth, handleDrawerToggle }: Navbar
       <Toolbar>
         <IconButton
           // color="inherit"
-          size="small"
           aria-label="open drawer"
           onClick={handleDrawerToggle}
           edge="start"
           sx={{
             marginRight: 2,
-            marginLeft: '-40px',
-            backgroundColor: '#4a49cb',
+            marginLeft: '-36px',
+            backgroundColor: 'primary.main',
             color: 'white',
             '&:hover': {
-              backgroundColor: '#4a49cb',
+              backgroundColor: 'primary.main',
             },
+            width: '22px',
+            height: '22px',
           }}
         >
-          {open ? <KeyboardArrowLeftOutlinedIcon /> : <ChevronRightOutlinedIcon />}
+          {open ? <KeyboardArrowLeftOutlinedIcon fontSize="small" /> : <ChevronRightOutlinedIcon fontSize="small" />}
         </IconButton>
 
         <Typography sx={{ color: 'black' }} variant="h6" noWrap component="h1">

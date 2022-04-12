@@ -28,7 +28,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
   overflowX: 'hidden',
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
+    width: `calc(${theme.spacing(10)} + 1px)`,
   },
 })
 
@@ -83,8 +83,10 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
 
   return (
     <Drawer variant="permanent" open={open} drawerWidth={drawerWidth}>
-      <List sx={{ px: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-        {/* TOP SIDEBAR */}
+      <List
+        sx={{ px: 1, pt: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}
+      >
+        {/* TOP SIDEBAR ITEMS */}
         <Box>
           {/* HEADER SIDEBAR */}
           <ListItemButton
@@ -103,19 +105,23 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
           >
             <ListItemIcon
               sx={{
-                minWidth: 0,
-                mr: open ? 3 : 'auto',
+                ...(open && { ml: -2 }),
                 justifyContent: 'center',
                 color: '#4a49cb',
               }}
             >
-              <LogoDevOutlinedIcon />
+              <LogoDevOutlinedIcon
+                sx={{
+                  width: '44px',
+                  height: '44px',
+                }}
+              />
             </ListItemIcon>
 
             <ListItemText primary={'BeeLearning'} secondary="Studying together" sx={{ opacity: open ? 1 : 0 }} />
           </ListItemButton>
 
-          {SIDEBAR_TOP.map(({ text, icon, path }, index) => (
+          {SIDEBAR_TOP.map(({ text, icon, path }) => (
             <ListItemButton
               onClick={() => navigate(path)}
               key={text}
@@ -141,7 +147,7 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
           ))}
         </Box>
 
-        {/* BOTTOM SIDEBAR */}
+        {/* BOTTOM SIDEBAR ITEMS */}
         <Box>
           {SIDEBAR_BOTTOM.map(({ text, icon }, index) => (
             <ListItemButton
