@@ -1,3 +1,4 @@
+// MUI COMPONENTS
 import { Box } from '@mui/material'
 import MuiDrawer, { DrawerProps as MuiDrawerProps } from '@mui/material/Drawer'
 import List from '@mui/material/List'
@@ -6,9 +7,14 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import { CSSObject, styled, Theme } from '@mui/material/styles'
 import LogoutIcon from '@mui/icons-material/Logout'
+
+// MUI ICONS
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined'
 import LogoDevOutlinedIcon from '@mui/icons-material/LogoDevOutlined'
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined'
+
+// REACT-ROUTER-DOM
 import { useNavigate } from 'react-router-dom'
 
 const openedMixin = (theme: Theme, drawerWidth: number): CSSObject => ({
@@ -68,6 +74,11 @@ const SIDEBAR_TOP = [
     text: 'Lớp học',
     icon: <SchoolOutlinedIcon />,
     path: '/classes',
+  },
+  {
+    text: 'Tài khoản',
+    icon: <AdminPanelSettingsOutlinedIcon />,
+    path: '/user-management',
   },
 ]
 
