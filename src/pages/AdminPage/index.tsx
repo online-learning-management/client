@@ -4,7 +4,7 @@ import FormCreate from './components/FormCreate'
 import TableShow from './components/TableShow'
 
 export default function CreateUser() {
-  const [showForm, setShowForm] = useState(true)
+  const [showForm, setShowForm] = useState(false)
 
   return (
     <div className="">
