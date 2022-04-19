@@ -40,7 +40,7 @@ type FormInputs = {
   confirm_password: string
   address: string
   date_of_birth: string
-  speciality?: string
+  specialty?: string
   gender?: string
 }
 
@@ -53,12 +53,12 @@ const schema: SchemaOf<FormInputs> = object().shape({
     .oneOf([ref('password'), null], 'Mật khẩu không trùng khớp!'),
   address: string().required('Yêu cầu nhập địa chỉ!'),
   date_of_birth: string().required('Yêu cầu nhập ngày sinh!'),
-  speciality: string(),
+  specialty: string(),
   gender: string().required('Yêu cầu chọn giới tính!'),
 })
 
 export default function FormCreate({ open, onClose }: FormCreateProps) {
-  const [speciality, setSpeciality] = useState('english')
+  const [specialty, setSpecialty] = useState('english')
 
   // show/hidden password
   const [showPassword, setShowPassword] = useState(false)
@@ -206,9 +206,9 @@ export default function FormCreate({ open, onClose }: FormCreateProps) {
               size="small"
               fullWidth
               select
-              value={speciality}
+              value={specialty}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setSpeciality(event.target.value)
+                setSpecialty(event.target.value)
               }}
             >
               {currencies.map((option) => (
