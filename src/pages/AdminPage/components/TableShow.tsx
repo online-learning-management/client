@@ -1,3 +1,6 @@
+import { useState } from 'react'
+
+// MUI
 import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -10,19 +13,21 @@ import TableSortLabel from '@mui/material/TableSortLabel'
 import Typography from '@mui/material/Typography'
 import Paper from '@mui/material/Paper'
 import IconButton from '@mui/material/IconButton'
+import { Avatar, Button, Stack } from '@mui/material'
 
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { visuallyHidden } from '@mui/utils'
-import { useState } from 'react'
-import { Avatar, Stack } from '@mui/material'
 
 // TYPES
-import { Data } from '../types'
+import { Data, ModalCreateType } from '../types'
 
 // CONST
 import { rows, headCells } from '../const'
+
+// MODALS
+import FormCreate from './FormCreate'
 
 export interface EnhancedTableProps {
   onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void
@@ -107,6 +112,9 @@ export default function TableShow() {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
 
+  const [modalCreate, setModalCreate] = useState<ModalCreateType>({ open: false, type: 'CREATE' })
+
+  // ============ HANDLE FUNCTIONS ============
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
@@ -122,14 +130,28 @@ export default function TableShow() {
     setPage(0)
   }
 
+  const handleUpdate = (username: string) => {
+    const updateData = rows.find((row) => row.username === username)
+    setModalCreate({ open: true, type: 'UPDATE', data: updateData })
+  }
+
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
 
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <TableContainer>
-          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size="small">
+        {/* BUTTONS HEADER */}
+        <Stack sx={{ m: 2 }}>
+          <Box>
+            <Button onClick={() => setModalCreate({ open: true, type: 'CREATE' })} variant="outlined">
+              Tạo tài khoản giáo viên
+            </Button>
+          </Box>
+        </Stack>
+
+        <TableContainer sx={{ maxHeight: 'calc(100vh - 360px)' }}>
+          <Table stickyHeader sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size="small">
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}
@@ -158,19 +180,23 @@ export default function TableShow() {
 
                       <TableCell align="left">{row.username}</TableCell>
 
-                      <TableCell align="left">
+                      <TableCell align="left">{row.specialty}</TableCell>
+
+                      <TableCell align="left">{row.address}</TableCell>
+
+                      <TableCell align="left" sx={{ width: '140px' }}>
                         <Stack direction="row">
                           <IconButton color="error">
                             <HighlightOffOutlinedIcon />
                           </IconButton>
 
-                          <IconButton color="success">
+                          <IconButton color="success" onClick={() => handleUpdate(row.username)}>
                             <EditOutlinedIcon />
                           </IconButton>
 
-                          <IconButton color="info">
+                          {/* <IconButton color="info">
                             <InfoOutlinedIcon />
-                          </IconButton>
+                          </IconButton> */}
                         </Stack>
                       </TableCell>
                     </TableRow>
@@ -195,6 +221,9 @@ export default function TableShow() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+
+      {/* MODALS */}
+      <FormCreate modal={modalCreate} onClose={() => setModalCreate((prevState) => ({ ...prevState, open: false }))} />
     </Box>
   )
 }

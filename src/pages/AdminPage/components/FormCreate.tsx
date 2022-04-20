@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // MUI ICONS
 import { Visibility, VisibilityOff } from '@mui/icons-material'
@@ -27,15 +27,17 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { SchemaOf, object, string, ref } from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { ModalCreateType } from '../types'
 
 type FormCreateProps = {
-  open: boolean
+  modal: ModalCreateType
   onClose: () => void
 }
 
 type FormInputs = {
   full_name: string
   email?: string
+  username: string
   password: string
   confirm_password: string
   address: string
@@ -47,6 +49,7 @@ type FormInputs = {
 const schema: SchemaOf<FormInputs> = object().shape({
   full_name: string().required('Yêu cầu nhập họ và tên!'),
   email: string().email('Đính dạng email không đúng!'),
+  username: string().required('Yêu cầu nhập tên tài khoản!'),
   password: string().min(6, 'Nhập lớn hơn 6 ký tự!').max(16).required('Yêu cầu nhập mật khẩu!'),
   confirm_password: string()
     .required('Yêu cầu nhập lại mật khẩu!')
@@ -57,9 +60,7 @@ const schema: SchemaOf<FormInputs> = object().shape({
   gender: string().required('Yêu cầu chọn giới tính!'),
 })
 
-export default function FormCreate({ open, onClose }: FormCreateProps) {
-  const [specialty, setSpecialty] = useState('english')
-
+export default function FormCreate({ modal: { open, data, type }, onClose }: FormCreateProps) {
   // show/hidden password
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -70,30 +71,35 @@ export default function FormCreate({ open, onClose }: FormCreateProps) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormInputs>({
-    resolver: yupResolver(schema),
-  })
+    reset,
+  } = useForm<FormInputs>({ resolver: yupResolver(schema) })
+
+  // =================== EFFECT ===================
+  useEffect(() => {
+    reset(data || {})
+  }, [data])
 
   // =================== FUNCTION HANDLE ===================
   const handleSubmitForm: SubmitHandler<FormInputs> = (data: FormInputs) => {
     console.log(data)
   }
 
-  // const [value, setValue] = useState<Date | null>(new Date('2014-08-18T21:11:54'))
-
   return (
-    <Modal open={open} onClose={onClose} sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
-      <Box bgcolor="white" width="600px" mt="6%" p={2} borderRadius={2}>
-        <form onSubmit={handleSubmit(handleSubmitForm)}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
+    >
+      <Box sx={{ width: '600px', maxHeight: '86%', p: 2, bgcolor: 'white', borderRadius: 2, overflow: 'auto' }}>
+        <form onSubmit={handleSubmit(handleSubmitForm)} autoComplete="off">
           <Stack spacing={2}>
             <Typography variant="h5" component="h4" align="center" mt={1} mb={2} gutterBottom>
-              Thêm mới người dùng
+              {type === 'CREATE' ? 'Thêm mới người dùng' : 'Sửa thông tin người dùng'}
             </Typography>
 
             <TextField
               label="Họ và tên"
               type="text"
-              autoComplete="off"
               autoFocus
               fullWidth
               size="small"
@@ -112,6 +118,17 @@ export default function FormCreate({ open, onClose }: FormCreateProps) {
               error={!!errors.email}
               helperText={errors?.email?.message}
               {...register('email')}
+            />
+
+            <TextField
+              label="Tên đăng nhập"
+              size="small"
+              fullWidth
+              variant="outlined"
+              type="text"
+              error={!!errors.username}
+              helperText={errors?.username?.message}
+              {...register('username')}
             />
 
             <TextField
@@ -177,46 +194,45 @@ export default function FormCreate({ open, onClose }: FormCreateProps) {
               helperText={errors?.address?.message}
             />
 
-            <Controller
-              name="date_of_birth"
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <LocalizationProvider dateAdapter={AdapterMoment}>
-                  <DatePicker
-                    label="Ngày sinh"
-                    // inputFormat="dd/MM//yyyy"
-                    value={value}
-                    onChange={onChange}
-                    renderInput={(params) => (
-                      <TextField
-                        fullWidth
-                        size="small"
-                        {...params}
-                        error={!!errors.date_of_birth}
-                        helperText={errors?.date_of_birth?.message}
-                      />
-                    )}
-                  />
-                </LocalizationProvider>
-              )}
-            />
+            <Stack direction="row" spacing={2}>
+              <Controller
+                name="date_of_birth"
+                control={control}
+                render={({ field: { value, onChange } }) => (
+                  <LocalizationProvider dateAdapter={AdapterMoment}>
+                    <DatePicker
+                      label="Ngày sinh"
+                      // inputFormat="dd/MM//yyyy"
+                      value={value}
+                      onChange={onChange}
+                      renderInput={(params) => (
+                        <TextField
+                          fullWidth
+                          size="small"
+                          {...params}
+                          error={!!errors.date_of_birth}
+                          helperText={errors?.date_of_birth?.message}
+                        />
+                      )}
+                    />
+                  </LocalizationProvider>
+                )}
+              />
 
-            <TextField
-              label="Chuyên khoa"
-              size="small"
-              fullWidth
-              select
-              value={specialty}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setSpecialty(event.target.value)
-              }}
-            >
-              {currencies.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
+              <Controller
+                name="specialty"
+                control={control}
+                render={({ field }) => (
+                  <TextField label="Chuyên khoa" size="small" fullWidth select {...field}>
+                    {currencies.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                )}
+              />
+            </Stack>
 
             <Box>
               <FormLabel id="radio-group-label">Giới tính</FormLabel>

@@ -3,6 +3,8 @@ export interface Data {
   username: string
   email: string
   avatar: string
+  specialty: string
+  address: string
 }
 
 export interface HeadCell {
@@ -10,4 +12,10 @@ export interface HeadCell {
   id?: keyof Data
   label: string
   numeric: boolean
+}
+
+export type ModalCreateType = {
+  open: boolean
+  data?: Data
+  type: 'CREATE' | 'UPDATE'
 }
