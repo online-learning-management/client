@@ -15,7 +15,7 @@ import LogoDevOutlinedIcon from '@mui/icons-material/LogoDevOutlined'
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined'
 
 // REACT-ROUTER-DOM
-import { useNavigate } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 const openedMixin = (theme: Theme, drawerWidth: number): CSSObject => ({
   width: drawerWidth,
@@ -89,9 +89,25 @@ const SIDEBAR_BOTTOM = [
   },
 ]
 
-export default function SideBar({ drawerWidth, open }: SideBarProps) {
-  const navigate = useNavigate()
+const StyledNavLink = styled(NavLink)(({ theme }) => ({
+  textDecoration: 'none',
+  color: 'inherit',
 
+  '&.active > .MuiListItemButton-root': {
+    color: 'white',
+    backgroundColor: '#7070d8',
+  },
+
+  '&.active .MuiSvgIcon-root': {
+    color: 'white',
+  },
+
+  '& > .MuiListItemButton-root': {
+    margin: '8px 0',
+  },
+}))
+
+export default function SideBar({ drawerWidth, open }: SideBarProps) {
   return (
     <Drawer variant="permanent" open={open} drawerWidth={drawerWidth}>
       <List
@@ -133,28 +149,29 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
           </ListItemButton>
 
           {SIDEBAR_TOP.map(({ text, icon, path }) => (
-            <ListItemButton
-              onClick={() => navigate(path)}
-              key={text}
-              sx={{
-                minHeight: 44,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-                borderRadius: 2,
-              }}
-            >
-              <ListItemIcon
+            <StyledNavLink key={text} to={path}>
+              <ListItemButton
+                // onClick={() => navigate(path)}
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
+                  minHeight: 44,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                  borderRadius: 2,
                 }}
               >
-                {icon}
-              </ListItemIcon>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {icon}
+                </ListItemIcon>
 
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
+                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </StyledNavLink>
           ))}
         </Box>
 
