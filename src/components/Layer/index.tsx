@@ -10,7 +10,7 @@ type LayerProps = {
 }
 
 export default function Layer({ children }: LayerProps) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
 
   const handleDrawerToggle = () => {
     setOpen(!open)
