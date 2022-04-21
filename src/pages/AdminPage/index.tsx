@@ -1,5 +1,4 @@
-import { Box, Card, Stack, styled, Typography } from '@mui/material'
-import TableShow from './components/TableShow'
+import { Box, Card, styled, Typography } from '@mui/material'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -18,7 +17,6 @@ const StyledCard = styled(Card)(({ theme }) => ({
 
   '&:hover': {
     backgroundColor: theme.palette.primary.dark,
-    // transform effect
     transition: 'all 0.2s ease-in-out',
     transform: 'scale(1.05)',
   },
@@ -38,7 +36,6 @@ export default function CreateUser() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
 
-  // <TableShow />
   return (
     <>
       {pathname === '/user-management' && (
