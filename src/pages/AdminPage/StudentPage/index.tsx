@@ -17,14 +17,13 @@ import { Avatar, Button, Stack } from '@mui/material'
 
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { visuallyHidden } from '@mui/utils'
 
 // TYPES
-import { Data, ModalCreateType } from '../types'
+import { Data, ModalCreateType } from './types'
 
 // CONST
-import { rows, headCells } from '../const'
+import { rows, headCells } from './const'
 
 // MODALS
 import FormCreate from './FormCreate'
@@ -106,7 +105,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   )
 }
 
-export default function TableShow() {
+export default function StudentPage() {
   const [order, setOrder] = useState<Order>('asc')
   const [orderBy, setOrderBy] = useState<keyof Data>('full_name')
   const [page, setPage] = useState(0)
@@ -145,7 +144,7 @@ export default function TableShow() {
         <Stack sx={{ m: 2 }}>
           <Box>
             <Button onClick={() => setModalCreate({ open: true, type: 'CREATE' })} variant="outlined">
-              Tạo tài khoản giáo viên
+              Tạo tài khoản sinh viên
             </Button>
           </Box>
         </Stack>
@@ -180,7 +179,7 @@ export default function TableShow() {
 
                       <TableCell align="left">{row.username}</TableCell>
 
-                      <TableCell align="left">{row.specialty}</TableCell>
+                      <TableCell align="left">{row.GPA}</TableCell>
 
                       <TableCell align="left">{row.address}</TableCell>
 

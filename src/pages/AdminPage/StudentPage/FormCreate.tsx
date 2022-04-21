@@ -27,7 +27,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { SchemaOf, object, string, ref } from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { ModalCreateType } from '../types'
+import { ModalCreateType } from './types'
 
 type FormCreateProps = {
   modal: ModalCreateType
@@ -77,7 +77,7 @@ export default function FormCreate({ modal: { open, data, type }, onClose }: For
   // =================== EFFECT ===================
   useEffect(() => {
     reset(data || {})
-  }, [data])
+  }, [data, open])
 
   // =================== FUNCTION HANDLE ===================
   const handleSubmitForm: SubmitHandler<FormInputs> = (data: FormInputs) => {
@@ -94,7 +94,7 @@ export default function FormCreate({ modal: { open, data, type }, onClose }: For
         <form onSubmit={handleSubmit(handleSubmitForm)} autoComplete="off">
           <Stack spacing={2}>
             <Typography variant="h5" component="h4" align="center" mt={1} mb={2} gutterBottom>
-              {type === 'CREATE' ? 'Thêm mới người dùng' : 'Sửa thông tin người dùng'}
+              {type === 'CREATE' ? 'Thêm mới sinh viên' : 'Sửa thông tin sinh viên'}
             </Typography>
 
             <TextField
@@ -194,45 +194,29 @@ export default function FormCreate({ modal: { open, data, type }, onClose }: For
               helperText={errors?.address?.message}
             />
 
-            <Stack direction="row" spacing={2}>
-              <Controller
-                name="date_of_birth"
-                control={control}
-                render={({ field: { value, onChange } }) => (
-                  <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <DatePicker
-                      label="Ngày sinh"
-                      // inputFormat="dd/MM//yyyy"
-                      value={value}
-                      onChange={onChange}
-                      renderInput={(params) => (
-                        <TextField
-                          fullWidth
-                          size="small"
-                          {...params}
-                          error={!!errors.date_of_birth}
-                          helperText={errors?.date_of_birth?.message}
-                        />
-                      )}
-                    />
-                  </LocalizationProvider>
-                )}
-              />
-
-              <Controller
-                name="specialty"
-                control={control}
-                render={({ field }) => (
-                  <TextField label="Chuyên khoa" size="small" fullWidth select {...field}>
-                    {currencies.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                )}
-              />
-            </Stack>
+            <Controller
+              name="date_of_birth"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <LocalizationProvider dateAdapter={AdapterMoment}>
+                  <DatePicker
+                    label="Ngày sinh"
+                    // inputFormat="dd/MM//yyyy"
+                    value={value}
+                    onChange={onChange}
+                    renderInput={(params) => (
+                      <TextField
+                        fullWidth
+                        size="small"
+                        {...params}
+                        error={!!errors.date_of_birth}
+                        helperText={errors?.date_of_birth?.message}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+              )}
+            />
 
             <Box>
               <FormLabel id="radio-group-label">Giới tính</FormLabel>

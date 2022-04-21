@@ -3,7 +3,8 @@ import Layer from './components/Layer'
 import ClassPage from './pages/ClassPage'
 import AdminPage from './pages/AdminPage'
 import HomePage from './pages/HomePage'
-import TableShow from './pages/AdminPage/components/TableShow'
+import TeacherPage from './pages/AdminPage/TeacherPage'
+import StudentPage from './pages/AdminPage/StudentPage'
 
 function App() {
   return (
@@ -13,8 +14,8 @@ function App() {
         <Route path="classes" element={<ClassPage />} />
 
         <Route path="user-management" element={<AdminPage />}>
-          <Route path="teacher" element={<TableShow />} />
-          <Route path="student" element={<TableShow />} />
+          <Route path="teacher" element={<TeacherPage />} />
+          <Route path="student" element={<StudentPage />} />
         </Route>
       </Routes>
     </Layer>
