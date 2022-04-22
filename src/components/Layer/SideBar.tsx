@@ -1,5 +1,7 @@
+import { useState } from 'react'
+
 // MUI COMPONENTS
-import { Box } from '@mui/material'
+import { Box, Collapse } from '@mui/material'
 import MuiDrawer, { DrawerProps as MuiDrawerProps } from '@mui/material/Drawer'
 import List from '@mui/material/List'
 import ListItemButton from '@mui/material/ListItemButton'
@@ -16,6 +18,7 @@ import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettin
 
 // REACT-ROUTER-DOM
 import { NavLink } from 'react-router-dom'
+import { KeyboardArrowDownOutlined, KeyboardArrowUpOutlined } from '@mui/icons-material'
 
 const openedMixin = (theme: Theme, drawerWidth: number): CSSObject => ({
   width: drawerWidth,
@@ -75,11 +78,29 @@ const SIDEBAR_TOP = [
     icon: <SchoolOutlinedIcon />,
     path: '/classes',
   },
+  // {
+  //   text: 'Tài khoản',
+  //   icon: <AdminPanelSettingsOutlinedIcon />,
+  //   path: '/user-management',
+  // },
+]
+
+const SIDEBAR_TOP_ITEMS = [
   {
-    text: 'Tài khoản',
-    icon: <AdminPanelSettingsOutlinedIcon />,
-    path: '/user-management',
+    text: 'Giáo viên',
+    // icon: <HomeOutlinedIcon />,
+    path: 'user-management/teacher',
   },
+  {
+    text: 'Sinh viên',
+    // icon: <SchoolOutlinedIcon />,
+    path: 'user-management/student',
+  },
+  // {
+  //   text: 'Tài khoản',
+  //   icon: <AdminPanelSettingsOutlinedIcon />,
+  //   path: '/user-management',
+  // },
 ]
 
 const SIDEBAR_BOTTOM = [
@@ -108,6 +129,8 @@ const StyledNavLink = styled(NavLink)(({ theme }) => ({
 }))
 
 export default function SideBar({ drawerWidth, open }: SideBarProps) {
+  const [openCollapseItem, setOpenCollapseItem] = useState(true)
+
   return (
     <Drawer variant="permanent" open={open} drawerWidth={drawerWidth}>
       <List
@@ -173,6 +196,80 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
               </ListItemButton>
             </StyledNavLink>
           ))}
+
+          <Box>
+            {/* <StyledNavLink to="/user-management"> */}
+            <ListItemButton
+              onClick={() => setOpenCollapseItem(!openCollapseItem)}
+              sx={{
+                minHeight: 44,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+                pr: 1.5,
+                borderRadius: 2,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+                }}
+              >
+                <AdminPanelSettingsOutlinedIcon />
+              </ListItemIcon>
+
+              <ListItemText primary="Tài khoản" sx={{ opacity: open ? 1 : 0 }} />
+
+              {openCollapseItem ? <KeyboardArrowUpOutlined /> : <KeyboardArrowDownOutlined />}
+            </ListItemButton>
+            {/* </StyledNavLink> */}
+
+            <Collapse in={openCollapseItem} timeout="auto" unmountOnExit>
+              <List
+                component="div"
+                disablePadding
+                sx={{
+                  position: 'relative',
+                  '&:after': {
+                    content: "''",
+                    position: 'absolute',
+                    left: '32px',
+                    top: 0,
+                    height: '100%',
+                    width: '1px',
+                    opacity: 1,
+                  },
+                }}
+              >
+                {SIDEBAR_TOP_ITEMS.map(({ text, path }) => (
+                  <StyledNavLink key={text} to={path}>
+                    <ListItemButton
+                      // onClick={() => navigate(path)}
+                      sx={{
+                        minHeight: 44,
+                        justifyContent: open ? 'initial' : 'center',
+                        px: 2.5,
+                        borderRadius: 2,
+                      }}
+                    >
+                      {/* <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : 'auto',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        {icon}
+                      </ListItemIcon> */}
+
+                      <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                    </ListItemButton>
+                  </StyledNavLink>
+                ))}
+              </List>
+            </Collapse>
+          </Box>
         </Box>
 
         {/* BOTTOM SIDEBAR ITEMS */}
