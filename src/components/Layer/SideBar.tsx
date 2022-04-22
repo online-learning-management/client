@@ -110,7 +110,7 @@ const SIDEBAR_BOTTOM = [
   },
 ]
 
-const StyledNavLink = styled(NavLink)(({ theme }) => ({
+const StyledNavLink = styled(NavLink)(() => ({
   textDecoration: 'none',
   color: 'inherit',
 
@@ -125,6 +125,24 @@ const StyledNavLink = styled(NavLink)(({ theme }) => ({
 
   '& > .MuiListItemButton-root': {
     margin: '8px 0',
+  },
+}))
+
+const StyledCollapseNavLink = styled(NavLink)(() => ({
+  textDecoration: 'none',
+  color: 'inherit',
+
+  '&.active .MuiTypography-root': {
+    fontWeight: 700,
+  },
+
+  '& > .MuiListItemButton-root': {
+    padding: '6px 0',
+    paddingLeft: '56px',
+  },
+
+  '& > .MuiListItemButton-root:hover': {
+    backgroundColor: 'transparent',
   },
 }))
 
@@ -197,6 +215,7 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
             </StyledNavLink>
           ))}
 
+          {/* COLLAPSE BUTTON */}
           <Box>
             {/* <StyledNavLink to="/user-management"> */}
             <ListItemButton
@@ -230,29 +249,23 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
                 component="div"
                 disablePadding
                 sx={{
+                  mt: 1,
                   position: 'relative',
                   '&:after': {
                     content: "''",
                     position: 'absolute',
-                    left: '32px',
+                    left: '30px',
                     top: 0,
                     height: '100%',
                     width: '1px',
                     opacity: 1,
+                    bgcolor: 'primary.main',
                   },
                 }}
               >
                 {SIDEBAR_TOP_ITEMS.map(({ text, path }) => (
-                  <StyledNavLink key={text} to={path}>
-                    <ListItemButton
-                      // onClick={() => navigate(path)}
-                      sx={{
-                        minHeight: 44,
-                        justifyContent: open ? 'initial' : 'center',
-                        px: 2.5,
-                        borderRadius: 2,
-                      }}
-                    >
+                  <StyledCollapseNavLink key={text} to={path}>
+                    <ListItemButton disableRipple={true}>
                       {/* <ListItemIcon
                         sx={{
                           minWidth: 0,
@@ -265,7 +278,7 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
 
                       <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                     </ListItemButton>
-                  </StyledNavLink>
+                  </StyledCollapseNavLink>
                 ))}
               </List>
             </Collapse>
