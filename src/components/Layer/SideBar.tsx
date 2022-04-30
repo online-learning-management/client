@@ -238,7 +238,7 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
                 <AdminPanelSettingsOutlinedIcon />
               </ListItemIcon>
 
-              <ListItemText primary="Tài khoản" sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText primary="Dashboard" sx={{ opacity: open ? 1 : 0 }} />
 
               {openCollapseItem ? <KeyboardArrowUpOutlined /> : <KeyboardArrowDownOutlined />}
             </ListItemButton>
