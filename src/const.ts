@@ -1,0 +1,25 @@
+export const ACCESS_TOKEN = 'access_token'
+export const REFRESH_TOKEN = 'refresh_token'
+export const END_POINT = 'http://127.0.0.1:8000/api'
+
+// define unique name for react-query
+export const RQ = {
+  ROLES: 'roles',
+
+  TEACHERS: 'teachers',
+  TEACHER: 'teacher',
+
+  STUDENTS: 'students',
+  STUDENT: 'student',
+
+  MAJORS: 'majors',
+  MAJOR: 'major',
+
+  CREDITS: 'credits',
+
+  SUBJECTS: 'subjects',
+  SUBJECT: 'subject',
+
+  CLASSES: 'classes',
+  CLASS: 'class',
+}
