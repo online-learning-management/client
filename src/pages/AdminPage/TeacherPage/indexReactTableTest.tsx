@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 // MUI COMPONENTS
 import {
@@ -16,6 +16,7 @@ import {
   Typography,
   Paper,
   IconButton,
+  TableSortLabel,
 } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 
@@ -33,6 +34,12 @@ import FormCreate from './FormCreate'
 import useTeacherQuery from 'src/hooks/reactQueryHooks/useTeacherQuery'
 import useTeacherMutate from 'src/hooks/reactQueryHooks/useTeacherMutate'
 
+// REACT-TABLE
+import { useTable, useSortBy } from 'react-table'
+
+// CONSTANTS
+import { COLUMNS } from './const'
+
 export default function TeacherPage() {
   // ============ STATES ============
   // pagination
@@ -46,11 +53,17 @@ export default function TeacherPage() {
   const { mutate } = useTeacherMutate.delete()
   const {
     isFetching: isFetchingTeachers,
-    data: teachersResponse,
+    data: teachersData,
     refetch: refetchTeachers,
   } = useTeacherQuery.getAll({ page: page + 1, limit })
 
-  const teachers: UserType[] | [] = teachersResponse?.data || []
+  const teachers: UserType[] | [] = teachersData?.data || []
+
+  // react-table
+  const columns = useMemo(() => COLUMNS, [])
+  const data = useMemo(() => teachersData?.data || [], [teachersData])
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data }, useSortBy)
 
   // ============ HANDLE FUNCTIONS ============
   const handleUpdate = (username: string) => {
@@ -93,61 +106,50 @@ export default function TeacherPage() {
         </Stack>
 
         <TableContainer sx={{ maxHeight: 'calc(100vh - 360px)' }}>
-          <Table stickyHeader sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size="small">
+          <Table {...getTableProps()} stickyHeader sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size="small">
             <TableHead>
-              <TableRow>
-                <TableCell>Họ tên / email</TableCell>
-                <TableCell>Tên tài khoản</TableCell>
-                <TableCell>Chuyên khoa</TableCell>
-                <TableCell>Địa chỉ</TableCell>
-                <TableCell>Hành động</TableCell>
-              </TableRow>
-            </TableHead>
+              {headerGroups.map((headerGroup) => (
+                <TableRow {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <TableCell {...column.getHeaderProps(column.getSortByToggleProps())}>
+                      <TableSortLabel
+                        active={column.isSorted && column.isSortedDesc}
+                        direction={column.isSorted && column.isSortedDesc ? 'desc' : 'asc'}
+                      >
+                        {column.render('Header')}
+                      </TableSortLabel>
 
-            <TableBody>
-              {teachers.map((row) => (
-                <TableRow role="checkbox" tabIndex={-1} key={row.user_id}>
-                  <TableCell>
-                    <Stack direction="row" alignItems="center" spacing={2}>
-                      <Avatar alt="Remy Sharp" src={row.avatar} />
+                      {/* {column.render('Header')}
+                      <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span> */}
+                    </TableCell>
+                  ))}
 
-                      <Box flexGrow={1}>
-                        <Typography sx={{ fontWeight: 500 }}>{row.full_name}</Typography>
-                        <Typography sx={{ color: '#999', fontSize: '14px' }}>{row.email}</Typography>
-                      </Box>
-                    </Stack>
-                  </TableCell>
-
-                  <TableCell align="left">{row.username}</TableCell>
-
-                  <TableCell align="left">{row.specialty}</TableCell>
-
-                  <TableCell align="left">{row.address}</TableCell>
-
-                  <TableCell align="left" sx={{ width: '140px' }}>
-                    <Stack direction="row">
-                      <IconButton color="error" onClick={() => mutate(row.user_id)}>
-                        <HighlightOffOutlined />
-                      </IconButton>
-
-                      <IconButton color="success" onClick={() => handleUpdate(row.username)}>
-                        <EditOutlined />
-                      </IconButton>
-
-                      {/* <IconButton color="info">
-                          <InfoOutlinedIcon />
-                        </IconButton> */}
-                    </Stack>
-                  </TableCell>
+                  <TableCell>"asd"</TableCell>
                 </TableRow>
               ))}
+            </TableHead>
+
+            <TableBody {...getTableBodyProps()}>
+              {rows.map((row) => {
+                prepareRow(row)
+
+                return (
+                  <TableRow {...row.getRowProps()}>
+                    {row.cells.map((cell) => (
+                      <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>
+                    ))}
+
+                    <TableCell>"23"</TableCell>
+                  </TableRow>
+                )
+              })}
             </TableBody>
           </Table>
         </TableContainer>
 
         <TablePagination
           component="div"
-          count={teachersResponse?.meta?.total || teachers.length}
+          count={teachersData?.meta?.total || teachers.length}
           page={page}
           rowsPerPage={limit}
           onPageChange={handleChangePage}

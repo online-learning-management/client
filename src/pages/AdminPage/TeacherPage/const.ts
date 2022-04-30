@@ -1,68 +1,46 @@
-import { HeadCell, Data } from './types'
+export type UserType = {
+  user_id: number
+  full_name: string
+  email?: string
+  date_of_birth: string
+  gender: string
+  address: string
+  avatar?: string
+  username: string
+  password: string
 
-import { faker } from '@faker-js/faker'
+  // Teacher
+  specialty?: string
 
-export const headCells: readonly HeadCell[] = [
+  // Student
+  GPA?: number
+
+  role_id: string
+}
+
+export const COLUMNS = [
   {
-    id: 'full_name',
-    numeric: false,
-    disablePadding: false,
-    label: 'Họ tên và email',
+    Header: 'full_name',
+    accessor: 'full_name',
   },
   {
-    id: 'username',
-    numeric: false,
-    disablePadding: false,
-    label: 'Tên đăng nhập',
+    Header: 'email',
+    accessor: 'email',
   },
   {
-    id: 'specialty',
-    numeric: false,
-    disablePadding: false,
-    label: 'Chuyên môn',
+    Header: 'gender',
+    accessor: 'gender',
   },
   {
-    id: 'address',
-    numeric: false,
-    disablePadding: false,
-    label: 'Địa chỉ',
+    Header: 'address',
+    accessor: 'address',
   },
+  // {
+  //   Header: 'avatar',
+  //   accessor: 'avatar',
+  // },
   {
-    numeric: false,
-    disablePadding: false,
-    label: 'Hành đồng',
+    Header: 'date_of_birth',
+    accessor: 'date_of_birth',
   },
 ]
-
-export function createData(
-  full_name: string,
-  email: string,
-  username: string,
-  avatar: string,
-  specialty: string,
-  address: string
-): Data {
-  return {
-    full_name,
-    email,
-    username,
-    avatar,
-    specialty,
-    address,
-  }
-}
-
-export const rows: Data[] = []
-
-for (let i = 0; i < 20; i++) {
-  rows.push(
-    createData(
-      faker.name.findName(),
-      faker.internet.email(),
-      faker.internet.userName(),
-      faker.image.avatar(),
-      faker.internet.userName(),
-      faker.internet.userName()
-    )
-  )
-}

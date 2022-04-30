@@ -1,21 +1,7 @@
-export interface Data {
-  full_name: string
-  username: string
-  email: string
-  avatar: string
-  specialty: string
-  address: string
-}
-
-export interface HeadCell {
-  disablePadding: boolean
-  id?: keyof Data
-  label: string
-  numeric: boolean
-}
+import { UserType } from 'src/types'
 
 export type ModalCreateType = {
   open: boolean
-  data?: Data
+  data?: UserType
   type: 'CREATE' | 'UPDATE'
 }
