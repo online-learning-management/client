@@ -30,14 +30,14 @@ import { SchemaOf, object, string, ref } from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 
-import type { ModalCreateType } from './types'
+import type { ModalFormType } from './types'
 
 import { MajorType } from 'src/types'
 import useTeacherMutate from 'src/hooks/reactQueryHooks/useTeacherMutate'
 import useMajorQuery from 'src/hooks/reactQueryHooks/useMajorQuery'
 
 type FormCreateProps = {
-  modal: ModalCreateType
+  modal: ModalFormType
   onClose: () => void
 }
 

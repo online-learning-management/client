@@ -1,6 +1,6 @@
 import { UserType } from 'src/types'
 
-export type ModalCreateType = {
+export type ModalFormType = {
   open: boolean
   data?: UserType
   type: 'CREATE' | 'UPDATE'

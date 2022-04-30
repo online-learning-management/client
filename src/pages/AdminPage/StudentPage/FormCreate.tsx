@@ -27,10 +27,10 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { SchemaOf, object, string, ref } from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { ModalCreateType } from './types'
+import { ModalFormType } from './types'
 
 type FormCreateProps = {
-  modal: ModalCreateType
+  modal: ModalFormType
   onClose: () => void
 }
 

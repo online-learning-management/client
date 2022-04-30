@@ -20,7 +20,7 @@ import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined'
 import { visuallyHidden } from '@mui/utils'
 
 // TYPES
-import { Data, ModalCreateType } from './types'
+import { Data, ModalFormType } from './types'
 
 // CONST
 import { rows, headCells } from './const'
@@ -111,7 +111,7 @@ export default function StudentPage() {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
 
-  const [modalCreate, setModalCreate] = useState<ModalCreateType>({ open: false, type: 'CREATE' })
+  const [modalCreate, setModalCreate] = useState<ModalFormType>({ open: false, type: 'CREATE' })
 
   // ============ HANDLE FUNCTIONS ============
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {

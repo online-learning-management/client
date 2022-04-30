@@ -14,7 +14,7 @@ export interface HeadCell {
   numeric: boolean
 }
 
-export type ModalCreateType = {
+export type ModalFormType = {
   open: boolean
   data?: Data
   type: 'CREATE' | 'UPDATE'
