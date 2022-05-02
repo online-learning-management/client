@@ -23,7 +23,7 @@ import { LoadingButton } from '@mui/lab'
 import { Loop, EditOutlined, HighlightOffOutlined } from '@mui/icons-material'
 
 // TYPES
-import { ModalFormType } from './types'
+import { ModalCreateType } from './types'
 import { UserType } from 'src/types'
 
 // MODALS
@@ -40,7 +40,7 @@ export default function TeacherPage() {
   const [limit, setLimit] = useState(10)
 
   // modals
-  const [modalCreate, setModalCreate] = useState<ModalFormType>({ open: false, type: 'CREATE' })
+  const [modalCreate, setModalCreate] = useState<ModalCreateType>({ open: false, type: 'CREATE' })
 
   // ============ DATA ============
   const { mutate } = useTeacherMutate.delete()
