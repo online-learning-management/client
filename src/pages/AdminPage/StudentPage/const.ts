@@ -34,35 +34,15 @@ export const headCells: readonly HeadCell[] = [
   },
 ]
 
-export function createData(
-  full_name: string,
-  email: string,
-  username: string,
-  avatar: string,
-  GPA: number,
-  address: string
-): Data {
-  return {
-    full_name,
-    email,
-    username,
-    avatar,
-    GPA,
-    address,
-  }
-}
-
 export const rows: Data[] = []
 
 for (let i = 0; i < 20; i++) {
-  rows.push(
-    createData(
-      faker.name.findName(),
-      faker.internet.email(),
-      faker.internet.userName(),
-      faker.image.avatar(),
-      Math.floor(Math.random() * 5),
-      faker.internet.userName()
-    )
-  )
+  rows.push({
+    full_name: faker.name.findName(),
+    email: faker.internet.email(),
+    username: faker.internet.userName(),
+    avatar: faker.image.avatar(),
+    GPA: Math.floor(Math.random() * 5),
+    address: faker.internet.userName(),
+  })
 }

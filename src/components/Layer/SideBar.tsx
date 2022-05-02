@@ -96,11 +96,11 @@ const SIDEBAR_TOP_ITEMS = [
     // icon: <SchoolOutlinedIcon />,
     path: 'user-management/student',
   },
-  // {
-  //   text: 'Tài khoản',
-  //   icon: <AdminPanelSettingsOutlinedIcon />,
-  //   path: '/user-management',
-  // },
+  {
+    text: 'Lớp học',
+    // icon: <AdminPanelSettingsOutlinedIcon />,
+    path: 'user-management/classes',
+  },
 ]
 
 const SIDEBAR_BOTTOM = [
@@ -238,7 +238,7 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
                 <AdminPanelSettingsOutlinedIcon />
               </ListItemIcon>
 
-              <ListItemText primary="Dashboard" sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText primary="Quản lý" sx={{ opacity: open ? 1 : 0 }} />
 
               {openCollapseItem ? <KeyboardArrowUpOutlined /> : <KeyboardArrowDownOutlined />}
             </ListItemButton>
