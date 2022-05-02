@@ -12,8 +12,8 @@ export const RQ = {
   STUDENTS: 'students',
   STUDENT: 'student',
 
-  MAJORS: 'majors',
-  MAJOR: 'major',
+  SPECIALTIES: 'specialties',
+  SPECIALTY: 'specialty',
 
   CREDITS: 'credits',
 

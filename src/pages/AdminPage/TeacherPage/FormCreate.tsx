@@ -30,14 +30,14 @@ import { SchemaOf, object, string, ref } from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 
-import type { ModalFormType } from './types'
+import type { ModalCreateType } from './types'
 
-import { MajorType } from 'src/types'
+import { SpecialtyType } from 'src/types'
 import useTeacherMutate from 'src/hooks/reactQueryHooks/useTeacherMutate'
-import useMajorQuery from 'src/hooks/reactQueryHooks/useMajorQuery'
+import useSpecialtyQuery from 'src/hooks/reactQueryHooks/useSpecialtyQuery'
 
 type FormCreateProps = {
-  modal: ModalFormType
+  modal: ModalCreateType
   onClose: () => void
 }
 
@@ -87,7 +87,7 @@ export default function FormCreate({ modal: { open, data: initData, type }, onCl
   // const onError = () => { onClose() }
 
   // react-query
-  const { data } = useMajorQuery.getAll()
+  const { data } = useSpecialtyQuery.getAll()
   const {
     mutate: mutateCreate,
     data: createResponse,
@@ -101,7 +101,7 @@ export default function FormCreate({ modal: { open, data: initData, type }, onCl
     isSuccess: isSuccessUpdate,
   } = useTeacherMutate.update(onSuccess)
 
-  const majors: MajorType[] = data?.data || []
+  const specialties: SpecialtyType[] = data?.data || []
 
   // react hook form
   const {
@@ -285,9 +285,9 @@ export default function FormCreate({ modal: { open, data: initData, type }, onCl
                   control={control}
                   render={({ field }) => (
                     <TextField label="Chuyên khoa" size="small" fullWidth select {...field}>
-                      {majors.map((option) => (
-                        <MenuItem key={option.id} value={option.major_name}>
-                          {option.major_name}
+                      {specialties.map((option) => (
+                        <MenuItem key={option.id} value={option.specialty_name}>
+                          {option.specialty_name}
                         </MenuItem>
                       ))}
                     </TextField>

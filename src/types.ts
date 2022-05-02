@@ -23,9 +23,9 @@ export type UserType = {
   role_id: string
 }
 
-export type MajorType = {
+export type SpecialtyType = {
   id: number
-  major_name: string
+  specialty_name: string
 }
 
 export type CreditType = {
@@ -38,7 +38,7 @@ export type SubjectType = {
   id: number
   subject_name: string
 
-  major_id?: number
+  specialty_id?: number
   credit_id: number
 }
 
@@ -47,6 +47,7 @@ export type ClassType = {
   start_date: string
   max_number_students: number
   current_number_students: number
+  status: boolean
 
   user_id: number
   subject_id: number
