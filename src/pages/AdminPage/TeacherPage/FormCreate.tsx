@@ -89,13 +89,13 @@ export default function FormCreate({ modal: { open, data: initData, type }, onCl
   // react-query
   const { data } = useSpecialtyQuery.getAll()
   const {
-    mutate: mutateCreate,
+    mutate: createTeacher,
     data: createResponse,
     isLoading: isLoadingCreate,
     isSuccess: isSuccessCreate,
   } = useTeacherMutate.create(onSuccess)
   const {
-    mutate: mutateUpdate,
+    mutate: updateTeacher,
     data: updateResponse,
     isLoading: isLoadingUpdate,
     isSuccess: isSuccessUpdate,
@@ -119,8 +119,8 @@ export default function FormCreate({ modal: { open, data: initData, type }, onCl
 
   // =================== FUNCTION HANDLE ===================
   const handleSubmitForm: SubmitHandler<FormInputs> = (data: FormInputs) => {
-    if (type === 'CREATE') mutateCreate(data)
-    else if (type === 'UPDATE') mutateUpdate({ ...initData, ...data })
+    if (type === 'CREATE') createTeacher(data)
+    else if (type === 'UPDATE') updateTeacher({ ...initData, ...data })
   }
 
   return (
