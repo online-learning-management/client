@@ -104,13 +104,8 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalCreate
 
   // react-query
   const { data: specialtiesResponse } = useSpecialtyQuery.getAll()
-  const specialties: SpecialtyType[] = specialtiesResponse?.data || []
-
-  const { data: subjectsResponse } = useSubjectQuery.getAll({ specialty_id: specialtySelect })
-  const subjects: SubjectType[] = subjectsResponse?.data || []
-
-  const { data: teachersResponse } = useTeacherQuery.getAll({ specialty_id: specialtySelect })
-  const teachers: UserType[] = teachersResponse?.data || []
+  const { data: subjectsResponse } = useSubjectQuery.getAll()
+  const { data: teachersResponse } = useTeacherQuery.getAll()
 
   // =================== EFFECT ===================
   useEffect(() => {
@@ -175,7 +170,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalCreate
                 helperText={fieldState.error?.message}
                 {...field}
               >
-                {specialties.map((option) => (
+                {(specialtiesResponse?.data || []).map((option) => (
                   <MenuItem key={option.id} value={option.id}>
                     {option.specialty_name}
                   </MenuItem>
@@ -198,7 +193,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalCreate
                 helperText={fieldState.error?.message}
                 {...field}
               >
-                {subjects.map((option) => (
+                {(subjectsResponse?.data || []).map((option) => (
                   <MenuItem key={option.id} value={option.id}>
                     {option.subject_name}
                   </MenuItem>
@@ -221,7 +216,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalCreate
                 helperText={fieldState.error?.message}
                 {...field}
               >
-                {teachers.map((option) => (
+                {(teachersResponse?.data || []).map((option) => (
                   <MenuItem key={option.user_id} value={option.user_id}>
                     {option.full_name || option.user.full_name}
                   </MenuItem>

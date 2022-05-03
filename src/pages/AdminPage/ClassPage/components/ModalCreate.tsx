@@ -100,13 +100,8 @@ export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
 
   // react-query
   const { data: specialtiesResponse } = useSpecialtyQuery.getAll()
-  const specialties: SpecialtyType[] = specialtiesResponse?.data || []
-
   const { data: subjectsResponse } = useSubjectQuery.getAll()
-  const subjects: SubjectType[] = subjectsResponse?.data || []
-
   const { data: teachersResponse } = useTeacherQuery.getAll()
-  const teachers: UserType[] = teachersResponse?.data || []
 
   // =================== EFFECT ===================
   useEffect(() => {
@@ -158,7 +153,7 @@ export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
                 helperText={fieldState.error?.message}
                 {...field}
               >
-                {specialties.map((option) => (
+                {(specialtiesResponse?.data || []).map((option) => (
                   <MenuItem key={option.id} value={option.id}>
                     {option.specialty_name}
                   </MenuItem>
@@ -181,7 +176,7 @@ export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
                 helperText={fieldState.error?.message}
                 {...field}
               >
-                {subjects.map((option) => (
+                {(subjectsResponse?.data || []).map((option) => (
                   <MenuItem key={option.id} value={option.id}>
                     {option.subject_name}
                   </MenuItem>
@@ -204,7 +199,7 @@ export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
                 helperText={fieldState.error?.message}
                 {...field}
               >
-                {teachers.map((option) => (
+                {(teachersResponse?.data || []).map((option) => (
                   <MenuItem key={option.user_id} value={option.user_id}>
                     {option.full_name}
                   </MenuItem>

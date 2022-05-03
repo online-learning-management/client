@@ -50,11 +50,9 @@ export default function TeacherPage() {
     refetch: refetchTeachers,
   } = useTeacherQuery.getAll({ page: page + 1, limit })
 
-  const teachers: UserType[] | [] = teachersResponse?.data || []
-
   // ============ HANDLE FUNCTIONS ============
   const handleUpdate = (username: string) => {
-    const updateData = teachers.find((row) => row.username === username)
+    const updateData = (teachersResponse?.data || []).find((row) => row.username === username)
     setModalCreate({ open: true, type: 'UPDATE', data: updateData })
   }
 
@@ -105,7 +103,7 @@ export default function TeacherPage() {
             </TableHead>
 
             <TableBody>
-              {teachers.map((row) => (
+              {(teachersResponse?.data || []).map((row) => (
                 <TableRow role="checkbox" tabIndex={-1} key={row.user_id}>
                   <TableCell>
                     <Stack direction="row" alignItems="center" spacing={2}>
@@ -147,7 +145,7 @@ export default function TeacherPage() {
 
         <TablePagination
           component="div"
-          count={teachersResponse?.meta?.total || teachers.length}
+          count={teachersResponse?.meta?.total || (teachersResponse?.data || []).length}
           page={page}
           rowsPerPage={limit}
           onPageChange={handleChangePage}

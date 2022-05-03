@@ -59,13 +59,12 @@ export default function Class() {
     limit,
     page: page + 1,
   })
-  const classes: ClassType[] | [] = classesResponse?.data || []
 
   const { data: classResponse, refetch: refetchClass } = useClassQuery.getOne(classId)
 
   // react-table
   const columns = useMemo(() => COLUMNS, [COLUMNS])
-  const data = useMemo(() => classes || [], [classes])
+  const data: ClassType[] | [] = useMemo(() => classesResponse?.data || [], [classesResponse?.data])
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data }, useSortBy)
 
@@ -144,8 +143,8 @@ export default function Class() {
                       </IconButton>
 
                       {/* <IconButton color="info">
-                          <InfoOutlinedIcon />
-                        </IconButton> */}
+                      <InfoOutlinedIcon />
+                    </IconButton> */}
                     </Stack>
                   </TableCell>
                 </TableRow>
@@ -156,17 +155,17 @@ export default function Class() {
       </TableContainer>
 
       {/* <TablePagination
-        component="div"
-        // count={classesResponse?.meta?.total || classes.length}
-        // page={page}
-        // rowsPerPage={limit}
-        // onPageChange={(_e: unknown, page: number) => {
-        //   // setPage(page)
-        // }}
-        // onRowsPerPageChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-        //   // setLimit(parseInt(event.target.value, 10))
-        //   // setPage(0)}
-      /> */}
+    component="div"
+    // count={classesResponse?.meta?.total || classes.length}
+    // page={page}
+    // rowsPerPage={limit}
+    // onPageChange={(_e: unknown, page: number) => {
+    //   // setPage(page)
+    // }}
+    // onRowsPerPageChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+    //   // setLimit(parseInt(event.target.value, 10))
+    //   // setPage(0)}
+  /> */}
 
       {/* MODALS */}
       <ModalCreate open={openModalCreate} handleClose={() => setOpenModalCreate(false)} />
