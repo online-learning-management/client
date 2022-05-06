@@ -2,8 +2,8 @@ import { useQuery } from 'react-query'
 import subjectApi from 'src/apis/subjectApi'
 import { RQ } from 'src/const'
 
-const getOne = (id = '') =>
-  useQuery([RQ.CLASS, id], subjectApi.getOne, {
+const getById = (id = '') =>
+  useQuery([RQ.CLASS, id], subjectApi.getById, {
     enabled: !!id,
   })
 
@@ -13,7 +13,7 @@ const getAll = (query = {}) =>
   })
 
 const useSubjectQuery = {
-  getOne,
+  getById,
   getAll,
 }
 

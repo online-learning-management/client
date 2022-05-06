@@ -60,7 +60,7 @@ export default function ClassPage() {
     page: page + 1,
   })
 
-  const { data: classResponse, refetch: refetchClass } = useClassQuery.getOne(classId)
+  const { data: classResponse, refetch: refetchClass } = useClassQuery.getById(classId)
 
   // react-table
   const columns = useMemo(() => COLUMNS, [COLUMNS])

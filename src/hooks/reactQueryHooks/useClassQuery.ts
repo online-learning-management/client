@@ -2,8 +2,8 @@ import { useQuery } from 'react-query'
 import classApi from 'src/apis/classApi'
 import { RQ } from 'src/const'
 
-const getOne = (id = '') =>
-  useQuery([RQ.CLASS, id], classApi.getOne, {
+const getById = (id = '') =>
+  useQuery([RQ.CLASS, id], classApi.getById, {
     enabled: !!id,
   })
 
@@ -13,7 +13,7 @@ const getAll = (query = {}) =>
   })
 
 const useClassQuery = {
-  getOne,
+  getById,
   getAll,
 }
 
