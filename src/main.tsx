@@ -8,7 +8,14 @@ import App from './App'
 import './index.css'
 import theme from './theme'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+})
 
 ReactDOM.render(
   <React.StrictMode>
