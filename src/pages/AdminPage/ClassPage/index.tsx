@@ -37,7 +37,7 @@ import ModalUpdate from './components/ModalUpdate'
 // REACT-QUERY
 import useClassQuery from 'src/hooks/reactQueryHooks/useClassQuery'
 
-export default function Class() {
+export default function ClassPage() {
   // ==================STATES==================
   // pagination
   const [page, setPage] = useState(0)
