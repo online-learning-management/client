@@ -87,8 +87,10 @@ type ModalCreateProps = {
 
 export default function ModalUpdate({ open, initData, handleClose }: ModalCreateProps) {
   // =================== STATES ===================
-  const [specialtySelect, setSpecialtySelect] = useState<number | null>(null)
   const [schedules, setSchedules] = useState<number[][]>(TWO_D_ARRAY)
+
+  const [specialtySelect, setSpecialtySelect] = useState<number | null>(null)
+  const [teacherSelect, setTeacherSelect] = useState<number | null>(null)
 
   // =================== DATA ===================
   // react-hook-form
@@ -104,15 +106,16 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalCreate
 
   // react-query
   const { data: specialtiesResponse } = useSpecialtyQuery.getAll()
-  const { data: subjectsResponse } = useSubjectQuery.getAll()
-  const { data: teachersResponse } = useTeacherQuery.getAll()
+  const { data: subjectsResponse } = useSubjectQuery.getAll({ specialty_id: specialtySelect })
+  const { data: teachersResponse } = useTeacherQuery.getAll({ specialty_id: specialtySelect })
+  const { data: teacherResponse } = useTeacherQuery.getById(teacherSelect)
 
   // =================== EFFECT ===================
   useEffect(() => {
     setValue('class_id', 'init')
     setValue('start_date', '')
     setValue('max_number_students', 69)
-    setValue('user_id', 1)
+    setValue('user_id', null)
     setValue('subject_id', 1)
     setValue('specialty_id', 0)
 
@@ -122,9 +125,63 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalCreate
     }
   }, [initData])
 
+  // handle when select change
   useEffect(() => {
     setSpecialtySelect(watch('specialty_id'))
   }, [watch('specialty_id')])
+
+  useEffect(() => {
+    setTeacherSelect(watch('user_id'))
+  }, [watch('user_id')])
+
+  // change data to show old schedule
+  // useEffect(() => {
+  //   if (initData) {
+  //     initData?.schedules?.forEach((item) => {
+  //       const schedule = JSON.parse(item.schedule)
+
+  //       schedule?.lessons?.forEach((lesson) =>
+  //         setSchedules((prevState) => {
+  //           const newState = [...prevState]
+  //           newState[+lesson][+schedule.day] = 1
+  //           return newState
+  //         })
+  //       )
+  //     })
+  //   }
+
+  //   return () => setSchedules(new Array(16).fill(0).map(() => new Array(7).fill(0)))
+  // }, [initData])
+
+  useEffect(() => {
+    const teacher = teacherResponse?.data
+
+    if (teacher && teacher?.classes.length > 0) {
+      teacher.classes.forEach((classItem) => {
+        const schedules = classItem?.schedules.length > 0 ? classItem?.schedules : []
+
+        schedules.forEach((item) => {
+          const schedule = JSON.parse(item.schedule)
+
+          schedule?.lessons?.forEach((lesson) =>
+            setSchedules((prevState) => {
+              const newState = [...prevState]
+
+              if (classItem.class_id === initData?.class_id) {
+                newState[+lesson][+schedule.day] = 1
+              } else {
+                newState[+lesson][+schedule.day] = 2
+              }
+
+              return newState
+            })
+          )
+        })
+      })
+    }
+
+    return () => setSchedules(new Array(16).fill(0).map(() => new Array(7).fill(0)))
+  }, [teacherResponse?.data, initData?.class_id])
 
   // =================== FUNCTIONS HANDLE ===================
   const handleSubmit: SubmitHandler<FormInputs> = (data: FormInputs) => {
@@ -132,9 +189,12 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalCreate
   }
 
   const handleCheckSchedule = (isChecked: boolean, lesson: number, day: number) => {
-    const newSchedules = [...schedules]
-    newSchedules[lesson][day] = isChecked ? 1 : 0
-    setSchedules(newSchedules)
+    setSchedules((prevState) => {
+      const newSchedules = [...prevState]
+      newSchedules[lesson][day] = isChecked ? 1 : 0
+
+      return newSchedules
+    })
   }
 
   return (

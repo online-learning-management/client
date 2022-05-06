@@ -67,7 +67,7 @@ export default function RegisterSchedule({ schedules, handleCheckSchedule }: Reg
                 <TableCell align="center">
                   <Checkbox
                     disabled={schedules[lessonIndex][dayIndex] === 2}
-                    checked={schedules[lessonIndex][dayIndex] === 1}
+                    checked={schedules[lessonIndex][dayIndex] === 1 || schedules[lessonIndex][dayIndex] === 2}
                     onChange={(event) => handleCheckSchedule(event.target.checked, lessonIndex, dayIndex)}
                   />
                 </TableCell>
