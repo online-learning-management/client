@@ -1,13 +1,14 @@
+import { SubjectType } from 'src/types'
 import axiosClient from './axiosClient'
 
 const URL = 'subjects'
 
 const subjectApi = {
-  getById: ({ queryKey }) => axiosClient.get(`${URL}/${queryKey[1]}`),
-  getAll: ({ queryKey }) => axiosClient.get(`/${URL}`, { params: { ...queryKey[1] } }),
-  create: (body) => axiosClient.post(`/${URL}`, body),
-  update: (body) => axiosClient.put(`/${URL}/${body.id}`, body),
-  delete: (id: number) => axiosClient.delete(`/${URL}/${id}`),
+  getById: (id: number) => axiosClient.get(`${URL}/${id}`),
+  getAll: (params: {}) => axiosClient.get(`/${URL}`, { params }),
+  create: (body: SubjectType) => axiosClient.post(`/${URL}`, body),
+  update: (body: SubjectType) => axiosClient.put(`/${URL}/${body.id}`, body),
+  delete: (id: number | undefined) => axiosClient.delete(`/${URL}/${id}`),
 }
 
 export default subjectApi

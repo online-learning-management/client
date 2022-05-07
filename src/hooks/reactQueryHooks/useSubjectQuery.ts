@@ -1,15 +1,26 @@
 import { useQuery } from 'react-query'
 import subjectApi from 'src/apis/subjectApi'
 import { RQ } from 'src/const'
+import { ResponseType, SubjectType } from 'src/types'
 
-const getById = (id = '') =>
-  useQuery([RQ.CLASS, id], subjectApi.getById, {
+export type QueriesType = ResponseType & {
+  data: SubjectType[]
+}
+
+export type QueryType = ResponseType & {
+  data: SubjectType
+}
+
+const getById = (id = 0) =>
+  useQuery(RQ.SUBJECT, () => subjectApi.getById(id), {
     enabled: !!id,
+    select: (data): QueryType => data.data,
   })
 
-const getAll = (query = {}) =>
-  useQuery([RQ.CLASSES, query], subjectApi.getAll, {
+const getAll = (params = {}) =>
+  useQuery([RQ.SUBJECTS, params], () => subjectApi.getAll(params), {
     keepPreviousData: true,
+    select: (data): QueriesType => data.data,
   })
 
 const useSubjectQuery = {

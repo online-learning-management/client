@@ -35,10 +35,10 @@ export type CreditType = {
 }
 
 export type SubjectType = {
-  id: number
+  id?: number
   subject_name: string
 
-  specialty_id?: number
+  specialty_id: number
   credit_id: number
 }
 
@@ -53,7 +53,17 @@ export type ClassType = {
   subject_id: number
 }
 
+export type MetaType = {
+  current_page: number
+  from: number
+  last_page: number
+  path: string
+  per_page: number
+  to: number
+  total: number
+}
+
 export type ResponseType = {
-  data?: any
   message?: string
+  meta?: MetaType
 }

@@ -101,6 +101,11 @@ const SIDEBAR_TOP_ITEMS = [
     // icon: <AdminPanelSettingsOutlinedIcon />,
     path: 'user-management/classes',
   },
+  {
+    text: 'Môn học',
+    // icon: <AdminPanelSettingsOutlinedIcon />,
+    path: 'user-management/subjects',
+  },
 ]
 
 const SIDEBAR_BOTTOM = [
