@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
 // MUI COMPONENTS
 import {
@@ -16,7 +16,6 @@ import {
   Typography,
   Paper,
   IconButton,
-  TableSortLabel,
 } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 
@@ -32,13 +31,7 @@ import FormCreate from './FormCreate'
 
 // REACT-QUERY
 import useTeacherQuery from 'src/hooks/reactQueryHooks/useTeacherQuery'
-import useTeacherMutate from 'src/hooks/reactQueryHooks/useTeacherMutate'
-
-// REACT-TABLE
-import { useTable, useSortBy } from 'react-table'
-
-// CONSTANTS
-import { COLUMNS } from './const'
+import useTeacherMutation from 'src/hooks/reactQueryHooks/useTeacherMutation'
 
 export default function TeacherPage() {
   // ============ STATES ============
@@ -50,24 +43,16 @@ export default function TeacherPage() {
   const [modalCreate, setModalCreate] = useState<ModalCreateType>({ open: false, type: 'CREATE' })
 
   // ============ DATA ============
-  const { mutate } = useTeacherMutate.delete()
+  const { mutate } = useTeacherMutation.delete()
   const {
     isFetching: isFetchingTeachers,
-    data: teachersData,
+    data: teachersResponse,
     refetch: refetchTeachers,
   } = useTeacherQuery.getAll({ page: page + 1, limit })
 
-  const teachers: UserType[] | [] = teachersData?.data || []
-
-  // react-table
-  const columns = useMemo(() => COLUMNS, [])
-  const data = useMemo(() => teachersData?.data || [], [teachersData])
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data }, useSortBy)
-
   // ============ HANDLE FUNCTIONS ============
   const handleUpdate = (username: string) => {
-    const updateData = teachers.find((row) => row.username === username)
+    const updateData = (teachersResponse?.data || []).find((row) => row.username === username)
     setModalCreate({ open: true, type: 'UPDATE', data: updateData })
   }
 
@@ -106,50 +91,61 @@ export default function TeacherPage() {
         </Stack>
 
         <TableContainer sx={{ maxHeight: 'calc(100vh - 360px)' }}>
-          <Table {...getTableProps()} stickyHeader sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size="small">
+          <Table stickyHeader sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size="small">
             <TableHead>
-              {headerGroups.map((headerGroup) => (
-                <TableRow {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <TableCell {...column.getHeaderProps(column.getSortByToggleProps())}>
-                      <TableSortLabel
-                        active={column.isSorted && column.isSortedDesc}
-                        direction={column.isSorted && column.isSortedDesc ? 'desc' : 'asc'}
-                      >
-                        {column.render('Header')}
-                      </TableSortLabel>
-
-                      {/* {column.render('Header')}
-                      <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span> */}
-                    </TableCell>
-                  ))}
-
-                  <TableCell>"asd"</TableCell>
-                </TableRow>
-              ))}
+              <TableRow>
+                <TableCell>Họ tên / email</TableCell>
+                <TableCell>Tên tài khoản</TableCell>
+                <TableCell>Chuyên khoa</TableCell>
+                <TableCell>Địa chỉ</TableCell>
+                <TableCell>Hành động</TableCell>
+              </TableRow>
             </TableHead>
 
-            <TableBody {...getTableBodyProps()}>
-              {rows.map((row) => {
-                prepareRow(row)
+            <TableBody>
+              {(teachersResponse?.data || []).map((row) => (
+                <TableRow role="checkbox" tabIndex={-1} key={row.user_id}>
+                  <TableCell>
+                    <Stack direction="row" alignItems="center" spacing={2}>
+                      <Avatar alt="Remy Sharp" src={row.avatar} />
 
-                return (
-                  <TableRow {...row.getRowProps()}>
-                    {row.cells.map((cell) => (
-                      <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>
-                    ))}
+                      <Box flexGrow={1}>
+                        <Typography sx={{ fontWeight: 500 }}>{row.full_name}</Typography>
+                        <Typography sx={{ color: '#999', fontSize: '14px' }}>{row.email}</Typography>
+                      </Box>
+                    </Stack>
+                  </TableCell>
 
-                    <TableCell>"23"</TableCell>
-                  </TableRow>
-                )
-              })}
+                  <TableCell align="left">{row.username}</TableCell>
+
+                  <TableCell align="left">{row.specialty}</TableCell>
+
+                  <TableCell align="left">{row.address}</TableCell>
+
+                  <TableCell align="left" sx={{ width: '140px' }}>
+                    <Stack direction="row">
+                      <IconButton color="error" onClick={() => mutate(row.user_id)}>
+                        <HighlightOffOutlined />
+                      </IconButton>
+
+                      <IconButton color="success" onClick={() => handleUpdate(row.username)}>
+                        <EditOutlined />
+                      </IconButton>
+
+                      {/* <IconButton color="info">
+                          <InfoOutlinedIcon />
+                        </IconButton> */}
+                    </Stack>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
 
         <TablePagination
           component="div"
-          count={teachersData?.meta?.total || teachers.length}
+          count={teachersResponse?.meta?.total || (teachersResponse?.data || []).length}
           page={page}
           rowsPerPage={limit}
           onPageChange={handleChangePage}

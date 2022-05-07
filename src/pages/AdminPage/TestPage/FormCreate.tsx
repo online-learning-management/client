@@ -33,7 +33,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import type { ModalCreateType } from './types'
 
 import { SpecialtyType } from 'src/types'
-import useTeacherMutate from 'src/hooks/reactQueryHooks/useTeacherMutate'
+import useTeacherMutation from 'src/hooks/reactQueryHooks/useTeacherMutation'
 import useSpecialtyQuery from 'src/hooks/reactQueryHooks/useSpecialtyQuery'
 
 type FormCreateProps = {
@@ -93,13 +93,13 @@ export default function FormCreate({ modal: { open, data: initData, type }, onCl
     data: createResponse,
     isLoading: isLoadingCreate,
     isSuccess: isSuccessCreate,
-  } = useTeacherMutate.create(onSuccess)
+  } = useTeacherMutation.create(onSuccess)
   const {
     mutate: updateTeacher,
     data: updateResponse,
     isLoading: isLoadingUpdate,
     isSuccess: isSuccessUpdate,
-  } = useTeacherMutate.update(onSuccess)
+  } = useTeacherMutation.update(onSuccess)
 
   const specialties: SpecialtyType[] = data?.data || []
 
