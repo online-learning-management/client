@@ -106,6 +106,11 @@ const SIDEBAR_TOP_ITEMS = [
     // icon: <AdminPanelSettingsOutlinedIcon />,
     path: 'user-management/subjects',
   },
+  {
+    text: 'Chuyên khoa',
+    // icon: <AdminPanelSettingsOutlinedIcon />,
+    path: 'user-management/specialties',
+  },
 ]
 
 const SIDEBAR_BOTTOM = [

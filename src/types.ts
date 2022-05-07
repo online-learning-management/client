@@ -24,7 +24,7 @@ export type UserType = {
 }
 
 export type SpecialtyType = {
-  id: number
+  id?: number
   specialty_name: string
 }
 
