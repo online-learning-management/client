@@ -4,7 +4,7 @@ export type RoleType = {
 }
 
 export type UserType = {
-  user_id: number
+  user_id?: number
   full_name: string
   email?: string
   date_of_birth: string
@@ -12,7 +12,7 @@ export type UserType = {
   address: string
   avatar?: string
   username: string
-  password: string
+  password?: string
 
   // Teacher
   specialty?: string
@@ -20,7 +20,7 @@ export type UserType = {
   // Student
   GPA?: number
 
-  role_id: string
+  role_id?: string
 }
 
 export type SpecialtyType = {
@@ -40,6 +40,11 @@ export type SubjectType = {
 
   specialty_id: number
   credit_id: number
+
+  teacher?: {
+    specialty_id: number
+    user_id: number
+  }
 }
 
 export type ClassType = {

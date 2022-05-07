@@ -1,8 +1,7 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 // MUI COMPONENTS
 import {
-  Avatar,
   Button,
   Stack,
   Box,
@@ -13,148 +12,164 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Typography,
   Paper,
   IconButton,
+  TableSortLabel,
 } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 
 // MUI ICONS
 import { Loop, EditOutlined, HighlightOffOutlined } from '@mui/icons-material'
 
+// REACT-TABLE
+import { useTable, useSortBy } from 'react-table'
+
+// FAKE DATA
+import { CLASS_DATA } from 'src/fakeData/class'
+
 // TYPES
-import { ModalCreateType } from './types'
 import { UserType } from 'src/types'
 
-// MODALS
-import FormCreate from './FormCreate'
+// CONSTANTS
+import { COLUMNS, FORM_CREATE_LABEL } from './const'
 
-// REACT-QUERY
+// MODALS
+import ModalCreate from './components/ModalCreate'
+import ModalUpdate from './components/ModalUpdate'
+
+// REACT-QUERY-HOOKS
 import useTeacherQuery from 'src/hooks/reactQueryHooks/useTeacherQuery'
-import useTeacherMutate from 'src/hooks/reactQueryHooks/useTeacherMutate'
+
+import useTeacherMutation from 'src/hooks/reactQueryHooks/useTeacherMutation'
 
 export default function TeacherPage() {
-  // ============ STATES ============
+  // ==================STATES==================
   // pagination
   const [page, setPage] = useState(0)
-  const [limit, setLimit] = useState(10)
+  const [limit, setLimit] = useState(25)
 
   // modals
-  const [modalCreate, setModalCreate] = useState<ModalCreateType>({ open: false, type: 'CREATE' })
+  const [openModalCreate, setOpenModalCreate] = useState(false)
+  const [openModalUpdate, setOpenModalUpdate] = useState(false)
+
+  const [detailId, setDetailId] = useState<number | undefined>(0)
 
   // ============ DATA ============
-  const { mutate } = useTeacherMutate.delete()
-  const {
-    isFetching: isFetchingTeachers,
-    data: teachersResponse,
-    refetch: refetchTeachers,
-  } = useTeacherQuery.getAll({ page: page + 1, limit })
+  // react-query
+  const { data: queryData } = useTeacherQuery.getById(detailId)
+  const { data: queriesData, isFetching, refetch } = useTeacherQuery.getAll({ limit, page: page + 1 })
+
+  const { mutate: deleteById } = useTeacherMutation.delete()
+
+  // react-table
+  const columns: any = useMemo(() => COLUMNS, [COLUMNS])
+  const data: UserType[] = useMemo(() => queriesData?.data || [], [queriesData?.data])
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data }, useSortBy)
 
   // ============ HANDLE FUNCTIONS ============
-  const handleUpdate = (username: string) => {
-    const updateData = (teachersResponse?.data || []).find((row) => row.username === username)
-    setModalCreate({ open: true, type: 'UPDATE', data: updateData })
-  }
-
-  // handle pagination
-  const handleChangePage = (_e: unknown, page: number) => {
-    setPage(page)
-  }
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLimit(parseInt(event.target.value, 10))
-    setPage(0)
-  }
 
   return (
-    <>
-      <Paper sx={{ width: '100%', mb: 2 }}>
-        {/* BUTTONS HEADER */}
-        <Stack sx={{ m: 2 }} direction="row" spacing={2}>
-          <Box>
-            <Button onClick={() => setModalCreate({ open: true, type: 'CREATE' })} variant="outlined">
-              Tạo tài khoản giáo viên
-            </Button>
-          </Box>
+    <Paper>
+      {/* BUTTONS HEADER */}
+      <Stack sx={{ m: 2 }} direction="row" spacing={2}>
+        <Box>
+          <Button onClick={() => setOpenModalCreate(true)} variant="outlined">
+            {FORM_CREATE_LABEL}
+          </Button>
+        </Box>
 
-          <Box>
-            <LoadingButton
-              onClick={() => refetchTeachers()}
-              loading={isFetchingTeachers}
-              loadingPosition="start"
-              startIcon={<Loop />}
-              variant="outlined"
-            >
-              Tải lại
-            </LoadingButton>
-          </Box>
-        </Stack>
+        <Box>
+          <LoadingButton
+            onClick={() => refetch()}
+            loading={isFetching}
+            loadingPosition="start"
+            startIcon={<Loop />}
+            variant="outlined"
+          >
+            Tải lại
+          </LoadingButton>
+        </Box>
+      </Stack>
 
-        <TableContainer sx={{ maxHeight: 'calc(100vh - 360px)' }}>
-          <Table stickyHeader sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>Họ tên / email</TableCell>
-                <TableCell>Tên tài khoản</TableCell>
-                <TableCell>Chuyên khoa</TableCell>
-                <TableCell>Địa chỉ</TableCell>
+      <TableContainer sx={{ maxHeight: 'calc(100vh - 360px)' }}>
+        <Table {...getTableProps()} stickyHeader sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size="small">
+          <TableHead>
+            {headerGroups.map((headerGroup) => (
+              <TableRow {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column: any) => {
+                  return (
+                    <TableCell {...column.getHeaderProps(column.getSortByToggleProps())}>
+                      <TableSortLabel active={column.isSorted} direction={column.isSortedDesc ? 'desc' : 'asc'}>
+                        {column.render('Header')}
+                      </TableSortLabel>
+                    </TableCell>
+                  )
+                })}
+
                 <TableCell>Hành động</TableCell>
               </TableRow>
-            </TableHead>
+            ))}
+          </TableHead>
 
-            <TableBody>
-              {(teachersResponse?.data || []).map((row) => (
-                <TableRow role="checkbox" tabIndex={-1} key={row.user_id}>
-                  <TableCell>
-                    <Stack direction="row" alignItems="center" spacing={2}>
-                      <Avatar alt="Remy Sharp" src={row.avatar} />
+          <TableBody {...getTableBodyProps()}>
+            {rows.map((row) => {
+              prepareRow(row)
 
-                      <Box flexGrow={1}>
-                        <Typography sx={{ fontWeight: 500 }}>{row.full_name}</Typography>
-                        <Typography sx={{ color: '#999', fontSize: '14px' }}>{row.email}</Typography>
-                      </Box>
-                    </Stack>
-                  </TableCell>
-
-                  <TableCell align="left">{row.username}</TableCell>
-
-                  <TableCell align="left">{row.specialty}</TableCell>
-
-                  <TableCell align="left">{row.address}</TableCell>
+              return (
+                <TableRow {...row.getRowProps()}>
+                  {row.cells.map((cell) => (
+                    <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>
+                  ))}
 
                   <TableCell align="left" sx={{ width: '140px' }}>
                     <Stack direction="row">
-                      <IconButton color="error" onClick={() => mutate(row.user_id)}>
+                      <IconButton color="error" onClick={() => deleteById(row.original.user_id)}>
                         <HighlightOffOutlined />
                       </IconButton>
 
-                      <IconButton color="success" onClick={() => handleUpdate(row.username)}>
+                      <IconButton
+                        color="success"
+                        onClick={() => {
+                          setOpenModalUpdate(true)
+                          setDetailId(row.original.user_id)
+                        }}
+                      >
                         <EditOutlined />
                       </IconButton>
 
                       {/* <IconButton color="info">
-                          <InfoOutlinedIcon />
-                        </IconButton> */}
+                      <InfoOutlinedIcon />
+                    </IconButton> */}
                     </Stack>
                   </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              )
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-        <TablePagination
-          component="div"
-          count={teachersResponse?.meta?.total || (teachersResponse?.data || []).length}
-          page={page}
-          rowsPerPage={limit}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
+      <TablePagination
+        component="div"
+        count={queriesData?.meta?.total || 0}
+        page={page}
+        rowsPerPage={limit}
+        onPageChange={(_e: unknown, page: number) => setPage(page)}
+        onRowsPerPageChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          setLimit(+event.target.value || 10)
+          setPage(0)
+        }}
+      />
 
       {/* MODALS */}
-      <FormCreate modal={modalCreate} onClose={() => setModalCreate((prevState) => ({ ...prevState, open: false }))} />
-    </>
+      <ModalCreate open={openModalCreate} handleClose={() => setOpenModalCreate(false)} />
+
+      <ModalUpdate
+        open={openModalUpdate}
+        initData={queryData?.data || null}
+        handleClose={() => setOpenModalUpdate(false)}
+      />
+    </Paper>
   )
 }

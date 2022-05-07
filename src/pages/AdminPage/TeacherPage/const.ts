@@ -1,46 +1,29 @@
-export type UserType = {
-  user_id: number
-  full_name: string
-  email?: string
-  date_of_birth: string
-  gender: string
-  address: string
-  avatar?: string
-  username: string
-  password: string
+import { UserType } from 'src/types'
 
-  // Teacher
-  specialty?: string
-
-  // Student
-  GPA?: number
-
-  role_id: string
+type ColumnType = {
+  Header: string
+  accessor?: keyof UserType
+  Cell?: () => String
 }
 
-export const COLUMNS = [
+export const COLUMNS: readonly ColumnType[] = [
   {
-    Header: 'full_name',
-    accessor: 'full_name',
+    Header: 'Tên đăng nhập',
+    accessor: 'username',
   },
   {
-    Header: 'email',
-    accessor: 'email',
+    Header: 'Ngày sinh',
+    accessor: 'date_of_birth',
   },
   {
-    Header: 'gender',
+    Header: 'Giới tính',
     accessor: 'gender',
   },
   {
-    Header: 'address',
+    Header: 'Địa chỉ',
     accessor: 'address',
   },
-  // {
-  //   Header: 'avatar',
-  //   accessor: 'avatar',
-  // },
-  {
-    Header: 'date_of_birth',
-    accessor: 'date_of_birth',
-  },
 ]
+
+export const FORM_CREATE_LABEL = 'Thêm giáo viên'
+export const FORM_UPDATE_LABEL = 'Sửa thông tin giáo viên'
