@@ -32,10 +32,10 @@ const deleteById = () => {
   })
 }
 
-const useSubjectMutate = {
+const useSubjectMutation = {
   create,
   update,
   delete: deleteById,
 }
 
-export default useSubjectMutate
+export default useSubjectMutation

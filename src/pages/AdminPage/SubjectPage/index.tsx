@@ -40,7 +40,7 @@ import ModalUpdate from './components/ModalUpdate'
 // REACT-QUERY-HOOKS
 import useSubjectQuery from 'src/hooks/reactQueryHooks/useSubjectQuery'
 
-import useSubjectMutate from 'src/hooks/reactQueryHooks/useSubjectMutation'
+import useSubjectMutation from 'src/hooks/reactQueryHooks/useSubjectMutation'
 
 export default function SubjectPage() {
   // ==================STATES==================
@@ -59,7 +59,7 @@ export default function SubjectPage() {
   const { data: queryData } = useSubjectQuery.getById(detailId)
   const { data: queriesData, isFetching, refetch } = useSubjectQuery.getAll({ limit, page: page + 1 })
 
-  const { mutate: deleteById } = useSubjectMutate.delete()
+  const { mutate: deleteById } = useSubjectMutation.delete()
 
   // react-table
   const columns: any = useMemo(() => COLUMNS, [COLUMNS])

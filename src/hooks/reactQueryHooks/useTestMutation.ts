@@ -109,10 +109,10 @@ const deleteById = () => {
   })
 }
 
-const useSpecialtyMutate = {
+const useSpecialtyMutation = {
   create,
   update,
   delete: deleteById,
 }
 
-export default useSpecialtyMutate
+export default useSpecialtyMutation

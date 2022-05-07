@@ -23,7 +23,7 @@ import { SubjectType } from 'src/types'
 import useCreditQuery from 'src/hooks/reactQueryHooks/useCreditQuery'
 import useSpecialtyQuery from 'src/hooks/reactQueryHooks/useSpecialtyQuery'
 
-import useSubjectMutate from 'src/hooks/reactQueryHooks/useSubjectMutation'
+import useSubjectMutation from 'src/hooks/reactQueryHooks/useSubjectMutation'
 
 // CONSTANTS
 import { FORM_UPDATE_LABEL } from '../const'
@@ -68,7 +68,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
   const { data: specialties } = useSpecialtyQuery.getAll()
   const { data: credits } = useCreditQuery.getAll()
 
-  const { mutate: update } = useSubjectMutate.update()
+  const { mutate: update } = useSubjectMutation.update()
 
   // =================== EFFECT ===================
   useEffect(() => {
