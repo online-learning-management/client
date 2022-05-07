@@ -3,10 +3,12 @@ import { Box, Modal } from '@mui/material'
 export type ModalCustomProps = {
   children: React.ReactNode
   open: boolean
+  width: number
+
   onClose?: () => void
 }
 
-export default function ModalCustom({ children, open, onClose }: ModalCustomProps) {
+export default function ModalCustom({ children, open, width, onClose }: ModalCustomProps) {
   return (
     <Modal
       open={open}
@@ -20,7 +22,7 @@ export default function ModalCustom({ children, open, onClose }: ModalCustomProp
     >
       <Box
         sx={{
-          width: '1888px',
+          width: width ? `${width}px` : '1888px',
           maxHeight: '86%',
           p: 2,
           mx: 2,
