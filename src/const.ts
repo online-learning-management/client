@@ -15,6 +15,7 @@ export const RQ = {
   SPECIALTIES: 'specialties',
   SPECIALTY: 'specialty',
 
+  CREDIT: 'credit',
   CREDITS: 'credits',
 
   SUBJECTS: 'subjects',
