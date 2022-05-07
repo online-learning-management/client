@@ -12,7 +12,7 @@ export type QueryType = ResponseType & {
 }
 
 const getById = (id = 0) =>
-  useQuery(RQ.SUBJECT, () => subjectApi.getById(id), {
+  useQuery([RQ.SUBJECT, id], () => subjectApi.getById(id), {
     enabled: !!id,
     select: (data): QueryType => data.data,
   })
