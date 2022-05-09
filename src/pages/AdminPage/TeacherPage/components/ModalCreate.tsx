@@ -108,7 +108,19 @@ export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
   }, [open])
 
   // =================== FUNCTIONS HANDLE ===================
-  const handleSubmit: SubmitHandler<FormInputs> = (data: FormInputs) => create(data)
+  const handleSubmit: SubmitHandler<FormInputs> = (data: FormInputs) => {
+    // remove key null or undefined or empty of data
+    const dataFilter = Object.fromEntries(
+      Object.entries(data).filter(([_key, value]) => {
+        if (value === null || value === undefined || value === '' || value === ' ') {
+          return false
+        }
+        return true
+      })
+    )
+
+    create(dataFilter)
+  }
 
   return (
     <ModalCustom width={800} open={open} onClose={handleClose}>
@@ -266,7 +278,7 @@ export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
               control={control}
               render={({ field: { onChange, value } }) => (
                 <RadioGroup row aria-labelledby="radio-group-label" value={value} onChange={onChange}>
-                  <FormControlLabel value="female" control={<Radio />} label="Nữ" />
+                  <FormControlLabel value="fe-male" control={<Radio />} label="Nữ" />
                   <FormControlLabel value="male" control={<Radio />} label="Nam" />
                 </RadioGroup>
               )}
