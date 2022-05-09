@@ -25,5 +25,5 @@ export const COLUMNS: readonly ColumnType[] = [
   },
 ]
 
-export const FORM_CREATE_LABEL = 'Thêm giáo viên'
-export const FORM_UPDATE_LABEL = 'Sửa thông tin giáo viên'
+export const FORM_CREATE_LABEL = 'Thêm giảng viên'
+export const FORM_UPDATE_LABEL = 'Sửa thông tin giảng viên'
