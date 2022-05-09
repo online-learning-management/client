@@ -61,7 +61,7 @@ const schema: SchemaOf<FormInputs> = object().shape({
   username: string().required('Yêu cầu nhập tên tài khoản!').default(' '),
   address: string().required('Yêu cầu nhập địa chỉ!').default(' '),
   date_of_birth: string().required('Yêu cầu nhập ngày sinh!').default(' '),
-  specialty_id: number().nullable().default(' '),
+  specialty_id: string().nullable().default(''),
   gender: string().required('Yêu cầu chọn giới tính!').default(' '),
   avatar: string().nullable().default(' '),
 })
@@ -101,12 +101,29 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
   useEffect(() => {
     if (initData) {
       reset(initData)
-      setValue('specialty_id', initData.teacher?.specialty_id)
     }
   }, [initData])
 
+  useEffect(() => {
+    if (initData) {
+      setValue('specialty_id', initData?.teacher?.specialty_id || '')
+    }
+  }, [initData?.teacher?.specialty_id])
+
   // =================== FUNCTIONS HANDLE ===================
-  const handleSubmit: SubmitHandler<FormInputs> = (data: FormInputs) => update(data)
+  const handleSubmit: SubmitHandler<FormInputs> = (data: FormInputs) => {
+    // remove key null or undefined or empty of data
+    const dataFilter = Object.fromEntries(
+      Object.entries(data).filter(([_key, value]) => {
+        if (value === null || value === undefined || value === '' || value === ' ') {
+          return false
+        }
+        return true
+      })
+    )
+
+    update(dataFilter)
+  }
 
   return (
     <ModalCustom width={800} open={open} onClose={handleClose}>
