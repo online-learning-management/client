@@ -92,8 +92,6 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
     defaultValues: schema.getDefault(),
   })
 
-  console.log({ errors })
-
   // react-query
   const { data: specialties } = useSpecialtyQuery.getAll()
 

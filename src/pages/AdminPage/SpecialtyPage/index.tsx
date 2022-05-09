@@ -54,8 +54,6 @@ export default function SpecialtyPage() {
 
   const [detailId, setDetailId] = useState<number | undefined>(0)
 
-  console.log(detailId)
-
   // ============ DATA ============
   // react-query
   const { data: queryData } = useSpecialtyQuery.getById(detailId)
