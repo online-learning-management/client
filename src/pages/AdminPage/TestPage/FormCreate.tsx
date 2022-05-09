@@ -306,7 +306,7 @@ export default function FormCreate({ modal: { open, data: initData, type }, onCl
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <RadioGroup row aria-labelledby="radio-group-label" value={value} onChange={onChange}>
-                      <FormControlLabel value="female" control={<Radio />} label="Nữ" />
+                      <FormControlLabel value="fe-male" control={<Radio />} label="Nữ" />
                       <FormControlLabel value="male" control={<Radio />} label="Nam" />
                     </RadioGroup>
                   )}

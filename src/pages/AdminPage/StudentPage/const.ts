@@ -1,48 +1,29 @@
-import { HeadCell, Data } from './types'
+import { UserType } from 'src/types'
 
-import { faker } from '@faker-js/faker'
+type ColumnType = {
+  Header: string
+  accessor?: keyof UserType
+  Cell?: () => String
+}
 
-export const headCells: readonly HeadCell[] = [
+export const COLUMNS: readonly ColumnType[] = [
   {
-    id: 'full_name',
-    numeric: false,
-    disablePadding: false,
-    label: 'Họ tên và email',
+    Header: 'Tên đăng nhập',
+    accessor: 'username',
   },
   {
-    id: 'username',
-    numeric: false,
-    disablePadding: false,
-    label: 'Tên đăng nhập',
+    Header: 'Ngày sinh',
+    accessor: 'date_of_birth',
   },
   {
-    id: 'GPA',
-    numeric: false,
-    disablePadding: false,
-    label: 'GPA',
+    Header: 'Giới tính',
+    accessor: 'gender',
   },
   {
-    id: 'address',
-    numeric: false,
-    disablePadding: false,
-    label: 'Địa chỉ',
-  },
-  {
-    numeric: false,
-    disablePadding: false,
-    label: 'Hành đồng',
+    Header: 'Địa chỉ',
+    accessor: 'address',
   },
 ]
 
-export const rows: Data[] = []
-
-for (let i = 0; i < 20; i++) {
-  rows.push({
-    full_name: faker.name.findName(),
-    email: faker.internet.email(),
-    username: faker.internet.userName(),
-    avatar: faker.image.avatar(),
-    GPA: Math.floor(Math.random() * 5),
-    address: faker.internet.userName(),
-  })
-}
+export const FORM_CREATE_LABEL = 'Thêm sinh viên'
+export const FORM_UPDATE_LABEL = 'Sửa thông tin sinh viên'
