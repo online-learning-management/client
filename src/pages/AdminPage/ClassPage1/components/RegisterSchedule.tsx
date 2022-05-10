@@ -10,6 +10,8 @@ import {
   Typography,
 } from '@mui/material'
 
+// value = 0 is disabled | 1 is checked | 2 is disabled and checked
+const TWO_D_ARRAY = new Array(16).fill(0).map(() => new Array(7).fill(0))
 const HEADERS = ['Buổi', 'Tiết', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ nhật']
 
 const TableStyled = styled(Table)(() => ({

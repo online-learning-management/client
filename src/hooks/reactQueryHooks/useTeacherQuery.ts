@@ -17,8 +17,9 @@ const getById = (id = 0) =>
     select: (data): QueryType => data.data,
   })
 
-const getAll = (params = {}) =>
+const getAll = (params = {}, enabled = true) =>
   useQuery([RQ.TEACHERS, params], () => teacherApi.getAll(params), {
+    enabled,
     keepPreviousData: true,
     select: (data): QueriesType => data.data,
   })

@@ -24,46 +24,47 @@ import { Loop, EditOutlined, HighlightOffOutlined } from '@mui/icons-material'
 // REACT-TABLE
 import { useTable, useSortBy } from 'react-table'
 
-// FAKE DATA
+import { COLUMNS } from './const'
 import { CLASS_DATA } from 'src/fakeData/class'
 
 // TYPES
 import { ClassType } from 'src/types'
 
-// CONSTANTS
-import { COLUMNS, FORM_CREATE_LABEL } from './const'
-
 // MODALS
 import ModalCreate from './components/ModalCreate'
 import ModalUpdate from './components/ModalUpdate'
 
-// REACT-QUERY-HOOKS
+// REACT-QUERY
 import useClassQuery from 'src/hooks/reactQueryHooks/useClassQuery'
-
-import useClassMutation from 'src/hooks/reactQueryHooks/useClassMutation'
 
 export default function ClassPage() {
   // ==================STATES==================
   // pagination
   const [page, setPage] = useState(0)
-  const [limit, setLimit] = useState(25)
+  const [limit, setLimit] = useState(10)
 
   // modals
   const [openModalCreate, setOpenModalCreate] = useState(false)
   const [openModalUpdate, setOpenModalUpdate] = useState(false)
 
-  const [detailId, setDetailId] = useState('')
+  const [classId, setClassId] = useState('')
 
   // ============ DATA ============
   // react-query
-  const { data: queryData } = useClassQuery.getById(detailId)
-  const { data: queriesData, isFetching, refetch } = useClassQuery.getAll({ limit, page: page + 1 })
+  const {
+    data: classesResponse,
+    refetch: refetchClasses,
+    isFetching: isFetchingClasses,
+  } = useClassQuery.getAll({
+    limit,
+    page: page + 1,
+  })
 
-  const { mutate: deleteById } = useClassMutation.delete()
+  const { data: classResponse, refetch: refetchClass } = useClassQuery.getById(classId)
 
   // react-table
-  const columns: any = useMemo(() => COLUMNS, [COLUMNS])
-  const data: ClassType[] = useMemo(() => queriesData?.data || [], [queriesData?.data])
+  const columns = useMemo(() => COLUMNS, [COLUMNS])
+  const data: ClassType[] | [] = useMemo(() => classesResponse?.data || [], [classesResponse?.data])
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data }, useSortBy)
 
@@ -75,14 +76,14 @@ export default function ClassPage() {
       <Stack sx={{ m: 2 }} direction="row" spacing={2}>
         <Box>
           <Button onClick={() => setOpenModalCreate(true)} variant="outlined">
-            {FORM_CREATE_LABEL}
+            Tạo lớp học
           </Button>
         </Box>
 
         <Box>
           <LoadingButton
-            onClick={() => refetch()}
-            loading={isFetching}
+            onClick={() => refetchClasses()}
+            loading={isFetchingClasses}
             loadingPosition="start"
             startIcon={<Loop />}
             variant="outlined"
@@ -97,7 +98,7 @@ export default function ClassPage() {
           <TableHead>
             {headerGroups.map((headerGroup) => (
               <TableRow {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column: any) => {
+                {headerGroup.headers.map((column) => {
                   return (
                     <TableCell {...column.getHeaderProps(column.getSortByToggleProps())}>
                       <TableSortLabel active={column.isSorted} direction={column.isSortedDesc ? 'desc' : 'asc'}>
@@ -124,7 +125,10 @@ export default function ClassPage() {
 
                   <TableCell align="left" sx={{ width: '140px' }}>
                     <Stack direction="row">
-                      <IconButton color="error" onClick={() => deleteById(row.original.class_id)}>
+                      <IconButton
+                        color="error"
+                        // onClick={() => mutate(row.user_id)}
+                      >
                         <HighlightOffOutlined />
                       </IconButton>
 
@@ -132,7 +136,7 @@ export default function ClassPage() {
                         color="success"
                         onClick={() => {
                           setOpenModalUpdate(true)
-                          setDetailId(row.original.class_id)
+                          setClassId(row.original.class_id)
                         }}
                       >
                         <EditOutlined />
@@ -150,24 +154,25 @@ export default function ClassPage() {
         </Table>
       </TableContainer>
 
-      <TablePagination
-        component="div"
-        count={queriesData?.meta?.total || 0}
-        page={page}
-        rowsPerPage={limit}
-        onPageChange={(_e: unknown, page: number) => setPage(page)}
-        onRowsPerPageChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setLimit(+event.target.value || 10)
-          setPage(0)
-        }}
-      />
+      {/* <TablePagination
+    component="div"
+    // count={classesResponse?.meta?.total || classes.length}
+    // page={page}
+    // rowsPerPage={limit}
+    // onPageChange={(_e: unknown, page: number) => {
+    //   // setPage(page)
+    // }}
+    // onRowsPerPageChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+    //   // setLimit(parseInt(event.target.value, 10))
+    //   // setPage(0)}
+  /> */}
 
       {/* MODALS */}
       <ModalCreate open={openModalCreate} handleClose={() => setOpenModalCreate(false)} />
 
       <ModalUpdate
         open={openModalUpdate}
-        initData={queryData?.data || null}
+        initData={classResponse?.data || null}
         handleClose={() => setOpenModalUpdate(false)}
       />
     </Paper>

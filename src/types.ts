@@ -52,7 +52,6 @@ export type ClassType = {
   start_date: string
   max_number_students: number
   current_number_students: number
-  status: boolean
 
   user_id: number
   subject_id: number

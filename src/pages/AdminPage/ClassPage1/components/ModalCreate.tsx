@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // MUI ICONS
-import {} from '@mui/icons-material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 
 // MUI COMPONENTS
 import { Box, Stack, Button, MenuItem, TextField, Typography } from '@mui/material'
@@ -10,47 +10,40 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 
 // REACT-HOOK-FORM, YUP
+import { SchemaOf, object, string, ref, number } from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { SchemaOf, object, string, number } from 'yup'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 
-// APP COMPONENTS
+// react-query-hooks
+import useSpecialtyQuery from 'src/hooks/reactQueryHooks/useSpecialtyQuery'
+import useSubjectQuery from 'src/hooks/reactQueryHooks/useSubjectQuery'
+import useTeacherQuery from 'src/hooks/reactQueryHooks/useTeacherQuery'
+import useClassMutate from 'src/hooks/reactQueryHooks/useClassMutate'
+
+// TYPES
+import { ClassType, SpecialtyType, SubjectType, UserType } from 'src/types'
+
 import ModalCustom from 'src/components/ModalCustom'
 import RegisterSchedule from './RegisterSchedule'
 
-// FAKE DATA
 import { SPECIALTY_DATA } from 'src/fakeData/specialty'
-
-// TYPES
-import { SubjectType } from 'src/types'
-
-// REACT-QUERY-HOOKS
-import useTeacherQuery from 'src/hooks/reactQueryHooks/useTeacherQuery'
-import useSubjectQuery from 'src/hooks/reactQueryHooks/useSubjectQuery'
-import useSpecialtyQuery from 'src/hooks/reactQueryHooks/useSpecialtyQuery'
-
-import useClassMutation from 'src/hooks/reactQueryHooks/useClassMutation'
-
-// CONSTANTS
-import { convert2DArrayToArrayObject, FORM_CREATE_LABEL, TWO_D_ARRAY } from '../const'
+import { SUBJECT_DATA } from 'src/fakeData/subject'
 
 // ======================================================
 type FormInputs = {
   class_id: string
   start_date: string
   max_number_students: number
-
   user_id: number
   subject_id: number
   specialty_id: number
 }
 
 const schema: SchemaOf<FormInputs> = object().shape({
-  class_id: string().required('Nhập mã lớp!'),
+  class_id: string().required('Nhập mã lớp học!'),
   start_date: string().required('Nhập ngày mở lớp!'),
-  max_number_students: number().required('Nhập sĩ số tối đa!'),
-
-  user_id: number().required('Chọn giảng viên!'),
+  max_number_students: number().required('Nhập sĩ số!'),
+  user_id: number().required('Chọn tên giảng viên!'),
   subject_id: number().required('Chọn môn học!'),
   specialty_id: number().required('Chọn chuyên khoa!'),
 })
@@ -60,64 +53,93 @@ type ModalCreateProps = {
   handleClose: () => void
 }
 
-export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
-  // =================== STATES ===================
-  const clone2DArray = useMemo(() => TWO_D_ARRAY.map((row) => row.slice()), [])
-  const [schedules, setSchedules] = useState<number[][]>(clone2DArray)
+// value = 0 is disabled | 1 is checked | 2 is disabled and checked
+const TWO_D_ARRAY = new Array(16).fill(0).map(() => new Array(7).fill(0))
 
-  const [specialtySelected, setSpecialtySelected] = useState<number>()
-  const [teacherSelected, setTeacherSelected] = useState<number>()
+const convert2DArrayToArrayObject = (array: number[][]) => {
+  const result = {}
+  array.forEach((item, index) => {
+    item.forEach((item2, index2) => {
+      if (item2 === 1) {
+        if (result[index2] === undefined) {
+          result[index2] = [index]
+        } else {
+          result[index2] = [...result[index2], index]
+        }
+      }
+    })
+  })
+
+  //
+  const arrayResult = []
+  Object.keys(result).forEach((key) => {
+    arrayResult.push({
+      day: Number(key),
+      lessons: result[key],
+    })
+  })
+
+  return arrayResult
+}
+
+export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
+  // =================== STATES ===================
+  const [schedules, setSchedules] = useState<number[][]>(TWO_D_ARRAY)
+
+  const [specialtySelect, setSpecialtySelect] = useState<number | null>(null)
+  const [teacherSelect, setTeacherSelect] = useState<number | null>(null)
 
   // =================== DATA ===================
-  // react-hook-form
+  // react hook form
   const {
     control,
-    register,
-    reset,
     watch,
+    register,
+    setValue,
+    reset,
     formState: { errors },
     handleSubmit: reactHookFormHandleSubmit,
   } = useForm<FormInputs>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      start_date: '',
-      max_number_students: 70,
-    },
   })
 
   // react-query
-  const { data: teacher } = useTeacherQuery.getById(teacherSelected)
-  const { data: teachers } = useTeacherQuery.getAll({ specialty_id: specialtySelected }, !!specialtySelected)
-  const { data: subjects } = useSubjectQuery.getAll({ specialty_id: specialtySelected }, !!specialtySelected)
-  const { data: specialties } = useSpecialtyQuery.getAll()
+  const { data: specialtiesResponse } = useSpecialtyQuery.getAll()
+  const { data: subjectsResponse } = useSubjectQuery.getAll({ specialty_id: specialtySelect })
+  const { data: teachersResponse } = useTeacherQuery.getAll({ specialty_id: specialtySelect })
+  const { data: teacherResponse } = useTeacherQuery.getById(teacherSelect)
 
-  const { mutate: create } = useClassMutation.create()
+  const { mutate: createClass } = useClassMutate.create()
 
   // =================== EFFECT ===================
   useEffect(() => {
     reset()
+    setValue('start_date', '')
+    setValue('max_number_students', 70)
   }, [open])
 
   useEffect(() => {
-    setSpecialtySelected(watch('specialty_id'))
+    setSpecialtySelect(watch('specialty_id'))
   }, [watch('specialty_id')])
 
   useEffect(() => {
-    setTeacherSelected(watch('user_id'))
+    setTeacherSelect(watch('user_id'))
   }, [watch('user_id')])
 
-  // show schedules of teacher to RegisterSchedule
   useEffect(() => {
-    const classes = teacher?.data?.teacher?.classes
+    const teacher = teacherResponse?.data
 
-    if (classes && classes?.length > 0) {
-      classes.forEach((classItem) => {
-        const schedules = (classItem?.schedules && JSON.parse(classItem?.schedules)) || []
+    if (teacher && teacher?.classes.length > 0) {
+      teacher.classes.forEach((classItem) => {
+        const schedules = classItem?.schedules.length > 0 ? classItem?.schedules : []
 
-        schedules.forEach((schedule) => {
+        schedules.forEach((item) => {
+          const schedule = JSON.parse(item.schedule)
+
           schedule?.lessons?.forEach((lesson) =>
             setSchedules((prevState) => {
               const newState = [...prevState]
+
               newState[+lesson][+schedule.day] = 2
 
               return newState
@@ -127,14 +149,15 @@ export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
       })
     }
 
-    // clone 2D array and refesh state
-    return () => setSchedules(TWO_D_ARRAY.map((row) => row.slice()))
-  }, [teacher?.data])
+    return () => setSchedules(new Array(16).fill(0).map(() => new Array(7).fill(0)))
+  }, [teacherResponse?.data])
 
   // =================== FUNCTIONS HANDLE ===================
   const handleSubmit: SubmitHandler<FormInputs> = (data: FormInputs) => {
-    const convertToJson = JSON.stringify(convert2DArrayToArrayObject(schedules))
-    create({ ...data, schedules: convertToJson })
+    const schedulesConvert = convert2DArrayToArrayObject(schedules)
+    const schedulesJson = schedulesConvert?.map((item) => JSON.stringify(item))
+
+    createClass({ ...data, schedules: schedulesJson })
   }
 
   const handleCheckSchedule = (isChecked: boolean, lesson: number, day: number) => {
@@ -147,11 +170,11 @@ export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
   }
 
   return (
-    <ModalCustom width={1200} open={open} onClose={handleClose}>
+    <ModalCustom open={open} onClose={handleClose}>
       <form onSubmit={reactHookFormHandleSubmit(handleSubmit)} autoComplete="off">
-        <Stack spacing={3}>
+        <Stack spacing={2}>
           <Typography variant="h5" component="h4" align="center" mt={1} mb={2} gutterBottom>
-            {FORM_CREATE_LABEL}
+            Tạo lớp học
           </Typography>
 
           <TextField
@@ -179,7 +202,7 @@ export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
                 helperText={fieldState.error?.message}
                 {...field}
               >
-                {(specialties?.data || []).map((option) => (
+                {(specialtiesResponse?.data || []).map((option) => (
                   <MenuItem key={option.id} value={option.id}>
                     {option.specialty_name}
                   </MenuItem>
@@ -202,7 +225,7 @@ export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
                 helperText={fieldState.error?.message}
                 {...field}
               >
-                {(subjects?.data || []).map((option) => (
+                {(subjectsResponse?.data || []).map((option) => (
                   <MenuItem key={option.id} value={option.id}>
                     {option.subject_name}
                   </MenuItem>
@@ -225,7 +248,7 @@ export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
                 helperText={fieldState.error?.message}
                 {...field}
               >
-                {(teachers?.data || []).map((option) => (
+                {(teachersResponse?.data || []).map((option) => (
                   <MenuItem key={option.user_id} value={option.user_id}>
                     {option.full_name || option.user.full_name}
                   </MenuItem>
@@ -275,7 +298,7 @@ export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
 
           <Box py={2}>
             <Button fullWidth variant="contained" type="submit">
-              Tạo mới
+              Submit
             </Button>
           </Box>
         </Stack>
