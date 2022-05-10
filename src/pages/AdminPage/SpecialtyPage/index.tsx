@@ -150,7 +150,7 @@ export default function SpecialtyPage() {
         </Table>
       </TableContainer>
 
-      <TablePagination
+      {/* <TablePagination
         component="div"
         count={queriesData?.meta?.total || 0}
         page={page}
@@ -160,7 +160,7 @@ export default function SpecialtyPage() {
           setLimit(+event.target.value || 10)
           setPage(0)
         }}
-      />
+      /> */}
 
       {/* MODALS */}
       <ModalCreate open={openModalCreate} handleClose={() => setOpenModalCreate(false)} />
