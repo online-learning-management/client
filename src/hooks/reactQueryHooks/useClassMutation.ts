@@ -2,32 +2,47 @@ import { useMutation, useQueryClient } from 'react-query'
 import classApi from 'src/apis/classApi'
 import { RQ } from 'src/const'
 
-const create = () => {
+const create = (handleSuccess = () => {}, handleError = () => {}) => {
   const queryClient = useQueryClient()
 
   return useMutation(classApi.create, {
     onSuccess: () => {
       queryClient.invalidateQueries(RQ.CLASSES)
+      handleSuccess()
+    },
+
+    onError: () => {
+      handleError()
     },
   })
 }
 
-const update = () => {
+const update = (handleSuccess = () => {}, handleError = () => {}) => {
   const queryClient = useQueryClient()
 
   return useMutation(classApi.update, {
     onSuccess: () => {
       queryClient.invalidateQueries(RQ.CLASSES)
+      handleSuccess()
+    },
+
+    onError: () => {
+      handleError()
     },
   })
 }
 
-const deleteById = () => {
+const deleteById = (handleSuccess = () => {}, handleError = () => {}) => {
   const queryClient = useQueryClient()
 
   return useMutation(classApi.delete, {
     onSuccess: () => {
       queryClient.invalidateQueries(RQ.CLASSES)
+      handleSuccess()
+    },
+
+    onError: () => {
+      handleError()
     },
   })
 }

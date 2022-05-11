@@ -54,8 +54,11 @@ export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
     resolver: yupResolver(schema),
   })
 
+  // handle onSuccess / onError
+  const onSuccess = () => handleClose()
+
   // react-query
-  const { mutate: create } = useSpecialtyMutation.create()
+  const { mutate: create } = useSpecialtyMutation.create(onSuccess)
 
   // =================== EFFECT ===================
   useEffect(() => {
@@ -63,7 +66,9 @@ export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
   }, [open])
 
   // =================== FUNCTIONS HANDLE ===================
-  const handleSubmit: SubmitHandler<FormInputs> = (data: FormInputs) => create(data)
+  const handleSubmit: SubmitHandler<FormInputs> = (data: FormInputs) => {
+    create(data)
+  }
 
   return (
     <ModalCustom width={800} open={open} onClose={handleClose}>

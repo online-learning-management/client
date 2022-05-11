@@ -7,6 +7,8 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import './index.css'
 import theme from './theme'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/ReactToastify.min.css'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,6 +25,7 @@ ReactDOM.render(
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
           <App />
+          <ToastContainer position="top-right" />
           <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
         </QueryClientProvider>
       </BrowserRouter>

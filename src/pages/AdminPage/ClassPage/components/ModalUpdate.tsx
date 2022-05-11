@@ -84,13 +84,16 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
     defaultValues: schema.getDefault(),
   })
 
+  // handle onSuccess / onError
+  const onSuccess = () => handleClose()
+
   // react-query
   const { data: teacher } = useTeacherQuery.getById(teacherSelected)
   const { data: teachers } = useTeacherQuery.getAll({ specialty_id: specialtySelected }, !!specialtySelected)
   const { data: subjects } = useSubjectQuery.getAll({ specialty_id: specialtySelected }, !!specialtySelected)
   const { data: specialties } = useSpecialtyQuery.getAll()
 
-  const { mutate: update } = useClassMutation.update()
+  const { mutate: update } = useClassMutation.update(onSuccess)
 
   // =================== EFFECT ===================
   useEffect(() => {

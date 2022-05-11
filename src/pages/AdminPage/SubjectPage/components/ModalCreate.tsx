@@ -61,11 +61,14 @@ export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
     resolver: yupResolver(schema),
   })
 
+  // handle onSuccess / onError
+  const onSuccess = () => handleClose()
+
   // react-query
   const { data: specialties } = useSpecialtyQuery.getAll()
   const { data: credits } = useCreditQuery.getAll()
 
-  const { mutate: create } = useSubjectMutation.create()
+  const { mutate: create } = useSubjectMutation.create(onSuccess)
 
   // =================== EFFECT ===================
   useEffect(() => {

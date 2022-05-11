@@ -57,8 +57,11 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
     defaultValues: schema.getDefault(),
   })
 
+  // handle onSuccess / onError
+  const onSuccess = () => handleClose()
+
   // react-query
-  const { mutate: update } = useSpecialtyMutation.update()
+  const { mutate: update } = useSpecialtyMutation.update(onSuccess)
 
   // =================== EFFECT ===================
   useEffect(() => {
