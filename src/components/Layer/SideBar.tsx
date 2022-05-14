@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 
 // MUI COMPONENTS
 import { Box, Collapse } from '@mui/material'
@@ -18,7 +18,10 @@ import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettin
 
 // REACT-ROUTER-DOM
 import { NavLink } from 'react-router-dom'
+
 import { KeyboardArrowDownOutlined, KeyboardArrowUpOutlined } from '@mui/icons-material'
+import { logout } from 'src/contexts/authContext/apiCall'
+import { AuthContext } from 'src/contexts/authContext/AuthContext'
 
 const openedMixin = (theme: Theme, drawerWidth: number): CSSObject => ({
   width: drawerWidth,
@@ -113,14 +116,6 @@ const SIDEBAR_TOP_ITEMS = [
   },
 ]
 
-const SIDEBAR_BOTTOM = [
-  {
-    text: 'Logout',
-    icon: <LogoutIcon />,
-    path: 'login',
-  },
-]
-
 const StyledNavLink = styled(NavLink)(() => ({
   textDecoration: 'none',
   color: 'inherit',
@@ -158,6 +153,8 @@ const StyledCollapseNavLink = styled(NavLink)(() => ({
 }))
 
 export default function SideBar({ drawerWidth, open }: SideBarProps) {
+  const { dispatch } = useContext(AuthContext)
+
   const [openCollapseItem, setOpenCollapseItem] = useState(true)
 
   return (
@@ -298,31 +295,27 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
 
         {/* BOTTOM SIDEBAR ITEMS */}
         <Box>
-          {/* <StyledNavLink to="/login"></StyledNavLink> */}
-
-          {SIDEBAR_BOTTOM.map(({ text, icon, path }, index) => (
-            <ListItemButton
-              key={text}
+          <ListItemButton
+            onClick={() => logout(dispatch)}
+            sx={{
+              minHeight: 44,
+              justifyContent: open ? 'initial' : 'center',
+              px: 2.5,
+              borderRadius: 2,
+            }}
+          >
+            <ListItemIcon
               sx={{
-                minHeight: 44,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-                borderRadius: 2,
+                minWidth: 0,
+                mr: open ? 3 : 'auto',
+                justifyContent: 'center',
               }}
             >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                }}
-              >
-                {icon}
-              </ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
 
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          ))}
+            <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
+          </ListItemButton>
         </Box>
       </List>
     </Drawer>

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import { ACCESS_TOKEN, END_POINT } from 'src/const'
+import { END_POINT, USER } from 'src/const'
 
 const axiosClient = axios.create({ baseURL: END_POINT })
 
@@ -9,11 +9,11 @@ axiosClient.interceptors.request.use(
   function (config) {
     // Do something before request is sent
     // attach access_token to every request header
-    // const access_token = localStorage.getItem(ACCESS_TOKEN)
+    const access_token = JSON.parse(localStorage.getItem(USER) || '').access_token
 
-    // if (access_token && config.headers) {
-    //   config.headers['Authorization'] = `Bear ${access_token}`
-    // }
+    if (access_token && config.headers) {
+      config.headers['Authorization'] = `Bearer ${access_token}`
+    }
 
     return config
   },

@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 
 import Layer from './components/Layer'
 import LoginPage from './pages/LoginPage'
@@ -18,33 +18,46 @@ function App() {
 
   return (
     <Routes>
-      {/* public route */}
-      <Route path="/login" element={<LoginPage />} />
+      {/* public routes */}
+      <Route path="/login" element={!user ? <LoginPage /> : <Navigate to="/" replace />} />
 
+      {/* private routes */}
       <Route
         path="/"
         element={
-          <Layer>
-            <HomePage />
-          </Layer>
+          user ? (
+            <Layer>
+              <HomePage />
+            </Layer>
+          ) : (
+            <Navigate to="/login" replace />
+          )
         }
       />
 
       <Route
         path="classes"
         element={
-          <Layer>
-            <ClassPage />
-          </Layer>
+          user ? (
+            <Layer>
+              <ClassPage />
+            </Layer>
+          ) : (
+            <Navigate to="/login" replace />
+          )
         }
       />
 
       <Route
         path="user-management"
         element={
-          <Layer>
-            <AdminPage />
-          </Layer>
+          user ? (
+            <Layer>
+              <AdminPage />
+            </Layer>
+          ) : (
+            <Navigate to="/login" replace />
+          )
         }
       >
         <Route path="teacher" element={<TeacherPage />} />
