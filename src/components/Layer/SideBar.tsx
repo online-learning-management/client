@@ -89,27 +89,27 @@ const SIDEBAR_TOP_ITEMS = [
   {
     text: 'Giáo viên',
     // icon: <HomeOutlinedIcon />,
-    path: 'user-management/teacher',
+    path: '/user-management/teacher',
   },
   {
     text: 'Sinh viên',
     // icon: <SchoolOutlinedIcon />,
-    path: 'user-management/student',
+    path: '/user-management/student',
   },
   {
     text: 'Lớp học',
     // icon: <AdminPanelSettingsOutlinedIcon />,
-    path: 'user-management/classes',
+    path: '/user-management/classes',
   },
   {
     text: 'Môn học',
     // icon: <AdminPanelSettingsOutlinedIcon />,
-    path: 'user-management/subjects',
+    path: '/user-management/subjects',
   },
   {
     text: 'Chuyên khoa',
     // icon: <AdminPanelSettingsOutlinedIcon />,
-    path: 'user-management/specialties',
+    path: '/user-management/specialties',
   },
 ]
 

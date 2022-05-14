@@ -9,6 +9,7 @@ import './index.css'
 import theme from './theme'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/ReactToastify.min.css'
+import AuthContextProvider from './contexts/authContext/AuthContext'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,9 +25,11 @@ ReactDOM.render(
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
-          <App />
-          <ToastContainer position="top-right" />
-          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+          <AuthContextProvider>
+            <App />
+            <ToastContainer position="top-right" />
+            <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+          </AuthContextProvider>
         </QueryClientProvider>
       </BrowserRouter>
     </ThemeProvider>
