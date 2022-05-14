@@ -22,8 +22,6 @@ export default function CourseItem() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        background: '#ee9ca7',
-        background: '-webkit-linear-gradient(to right, #ffdde1, #ee9ca7)',
         background: 'linear-gradient(to right, #ffdde1, #ee9ca7)',
         borderRadius: '10px',
         fontFamily: 'Roboto Slab',
