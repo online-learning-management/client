@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
-import { END_POINT } from 'src/const'
+import { END_POINT, USER } from 'src/const'
 import { loginFailure, loginStart, loginSuccess } from './AuthActions'
 
 export const login = async (body, dispatch) => {
@@ -10,7 +10,7 @@ export const login = async (body, dispatch) => {
     const { data } = await axios.post(`${END_POINT}/login`, body)
 
     localStorage.setItem(
-      'user',
+      USER,
       JSON.stringify({
         access_token: data.access_token || null,
         refresh_token: data.refresh_token || null,

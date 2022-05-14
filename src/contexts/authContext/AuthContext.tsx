@@ -1,10 +1,11 @@
-import { createContext, useEffect, useReducer } from 'react'
+import { createContext, useReducer } from 'react'
+import { USER } from 'src/const'
 import AuthReducer from './AuthReducer'
 
 const INIT_STATE = {
   error: false,
   isLoading: false,
-  user: JSON.parse(localStorage.getItem('user')) || null,
+  user: JSON.parse(localStorage.getItem(USER)) || null,
 }
 
 export const AuthContext = createContext(INIT_STATE)
