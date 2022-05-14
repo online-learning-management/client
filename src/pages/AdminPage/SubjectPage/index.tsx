@@ -28,7 +28,7 @@ import { useTable, useSortBy } from 'react-table'
 import { CLASS_DATA } from 'src/fakeData/class'
 
 // TYPES
-import { UserType } from 'src/types'
+import { SubjectType } from 'src/types'
 
 // CONSTANTS
 import { COLUMNS, FORM_CREATE_LABEL } from './const'
@@ -38,11 +38,11 @@ import ModalCreate from './components/ModalCreate'
 import ModalUpdate from './components/ModalUpdate'
 
 // REACT-QUERY-HOOKS
-import useStudentQuery from 'src/hooks/reactQueryHooks/useStudentQuery'
+import useSubjectQuery from 'src/hooks/reactQueryHooks/useSubjectQuery'
 
-import useStudentMutation from 'src/hooks/reactQueryHooks/useStudentMutation'
+import useSubjectMutation from 'src/hooks/reactQueryHooks/useSubjectMutation'
 
-export default function StudentPage() {
+export default function SubjectPage() {
   // ==================STATES==================
   // pagination
   const [page, setPage] = useState(0)
@@ -56,14 +56,14 @@ export default function StudentPage() {
 
   // ============ DATA ============
   // react-query
-  const { data: queryData } = useStudentQuery.getById(detailId)
-  const { data: queriesData, isFetching, refetch } = useStudentQuery.getAll({ limit, page: page + 1 })
+  const { data: queryData } = useSubjectQuery.getById(detailId)
+  const { data: queriesData, isFetching, refetch } = useSubjectQuery.getAll({ limit, page: page + 1 })
 
-  const { mutate: deleteById } = useStudentMutation.delete()
+  const { mutate: deleteById } = useSubjectMutation.delete()
 
   // react-table
   const columns: any = useMemo(() => COLUMNS, [COLUMNS])
-  const data: UserType[] = useMemo(() => queriesData?.data || [], [queriesData?.data])
+  const data: SubjectType[] = useMemo(() => queriesData?.data || [], [queriesData?.data])
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data }, useSortBy)
 
@@ -124,7 +124,7 @@ export default function StudentPage() {
 
                   <TableCell align="left" sx={{ width: '140px' }}>
                     <Stack direction="row">
-                      <IconButton color="error" onClick={() => deleteById(row.original.user_id)}>
+                      <IconButton color="error" onClick={() => deleteById(row.original.id)}>
                         <HighlightOffOutlined />
                       </IconButton>
 
@@ -132,7 +132,7 @@ export default function StudentPage() {
                         color="success"
                         onClick={() => {
                           setOpenModalUpdate(true)
-                          setDetailId(row.original.user_id)
+                          setDetailId(row.original.id)
                         }}
                       >
                         <EditOutlined />

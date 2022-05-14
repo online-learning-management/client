@@ -89,18 +89,28 @@ const SIDEBAR_TOP_ITEMS = [
   {
     text: 'Giáo viên',
     // icon: <HomeOutlinedIcon />,
-    path: 'user-management/teacher',
+    path: '/user-management/teacher',
   },
   {
     text: 'Sinh viên',
     // icon: <SchoolOutlinedIcon />,
-    path: 'user-management/student',
+    path: '/user-management/student',
   },
-  // {
-  //   text: 'Tài khoản',
-  //   icon: <AdminPanelSettingsOutlinedIcon />,
-  //   path: '/user-management',
-  // },
+  {
+    text: 'Lớp học',
+    // icon: <AdminPanelSettingsOutlinedIcon />,
+    path: '/user-management/classes',
+  },
+  {
+    text: 'Môn học',
+    // icon: <AdminPanelSettingsOutlinedIcon />,
+    path: '/user-management/subjects',
+  },
+  {
+    text: 'Chuyên khoa',
+    // icon: <AdminPanelSettingsOutlinedIcon />,
+    path: '/user-management/specialties',
+  },
 ]
 
 const SIDEBAR_BOTTOM = [
@@ -239,7 +249,7 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
                 <AdminPanelSettingsOutlinedIcon />
               </ListItemIcon>
 
-              <ListItemText primary="Tài khoản" sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText primary="Quản lý" sx={{ opacity: open ? 1 : 0 }} />
 
               {openCollapseItem ? <KeyboardArrowUpOutlined /> : <KeyboardArrowDownOutlined />}
             </ListItemButton>

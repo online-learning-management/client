@@ -6,34 +6,42 @@ import { Visibility, VisibilityOff } from '@mui/icons-material'
 // MUI COMPONENTS
 import {
   Box,
-  Radio,
-  Modal,
+  Stack,
   Button,
   MenuItem,
-  FormLabel,
   TextField,
-  RadioGroup,
-  IconButton,
   Typography,
   InputAdornment,
+  IconButton,
+  RadioGroup,
   FormControlLabel,
-  Stack,
+  Radio,
+  FormLabel,
 } from '@mui/material'
 
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 
 // REACT-HOOK-FORM, YUP
-import { SchemaOf, object, string, ref } from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { SchemaOf, object, string, ref } from 'yup'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { ModalCreateType } from './types'
 
-type FormCreateProps = {
-  modal: ModalCreateType
-  onClose: () => void
-}
+import ModalCustom from 'src/components/ModalCustom'
 
+// FAKE DATA
+import { SPECIALTY_DATA } from 'src/fakeData/specialty'
+
+// TYPES
+import { SubjectType } from 'src/types'
+
+// REACT-QUERY-HOOKS
+import useStudentMutation from 'src/hooks/reactQueryHooks/useStudentMutation'
+
+// CONSTANTS
+import { FORM_CREATE_LABEL } from '../const'
+
+// ======================================================
 type FormInputs = {
   full_name: string
   email?: string
@@ -42,8 +50,8 @@ type FormInputs = {
   confirm_password: string
   address: string
   date_of_birth: string
-  specialty?: string
-  gender?: string
+  gender: string
+  avatar?: string
 }
 
 const schema: SchemaOf<FormInputs> = object().shape({
@@ -56,81 +64,103 @@ const schema: SchemaOf<FormInputs> = object().shape({
     .oneOf([ref('password'), null], 'Mật khẩu không trùng khớp!'),
   address: string().required('Yêu cầu nhập địa chỉ!'),
   date_of_birth: string().required('Yêu cầu nhập ngày sinh!'),
-  specialty: string(),
   gender: string().required('Yêu cầu chọn giới tính!'),
+  avatar: string(),
 })
 
-export default function FormCreate({ modal: { open, data, type }, onClose }: FormCreateProps) {
-  // show/hidden password
+type ModalCreateProps = {
+  open: boolean
+  handleClose: () => void
+}
+
+export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
+  // =================== STATES ===================
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
-  // react hook form
+  // =================== DATA ===================
+  // react-hook-form
   const {
     control,
     register,
-    handleSubmit,
-    formState: { errors },
     reset,
-  } = useForm<FormInputs>({ resolver: yupResolver(schema) })
+    formState: { errors },
+    handleSubmit: reactHookFormHandleSubmit,
+  } = useForm<FormInputs>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      date_of_birth: '',
+    },
+  })
+
+  // handle onSuccess / onError
+  const onSuccess = () => handleClose()
+
+  // react-query
+  const { mutate: create } = useStudentMutation.create(onSuccess)
 
   // =================== EFFECT ===================
   useEffect(() => {
-    reset(data || {})
-  }, [data, open])
+    reset()
+  }, [open])
 
-  // =================== FUNCTION HANDLE ===================
-  const handleSubmitForm: SubmitHandler<FormInputs> = (data: FormInputs) => {
-    console.log(data)
+  // =================== FUNCTIONS HANDLE ===================
+  const handleSubmit: SubmitHandler<FormInputs> = (data: FormInputs) => {
+    // remove key null or undefined or empty of data
+    const dataFilter = Object.fromEntries(
+      Object.entries(data).filter(([_key, value]) => {
+        if (value === null || value === undefined || value === '' || value === ' ') {
+          return false
+        }
+        return true
+      })
+    )
+
+    create(dataFilter)
   }
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
-    >
-      <Box sx={{ width: '600px', maxHeight: '86%', p: 2, bgcolor: 'white', borderRadius: 2, overflow: 'auto' }}>
-        <form onSubmit={handleSubmit(handleSubmitForm)} autoComplete="off">
-          <Stack spacing={2}>
-            <Typography variant="h5" component="h4" align="center" mt={1} mb={2} gutterBottom>
-              {type === 'CREATE' ? 'Thêm mới sinh viên' : 'Sửa thông tin sinh viên'}
-            </Typography>
+    <ModalCustom width={800} open={open} onClose={handleClose}>
+      <form onSubmit={reactHookFormHandleSubmit(handleSubmit)} autoComplete="off">
+        <Stack spacing={3}>
+          <Typography variant="h5" component="h4" align="center" mt={1} mb={2} gutterBottom>
+            {FORM_CREATE_LABEL}
+          </Typography>
 
-            <TextField
-              label="Họ và tên"
-              type="text"
-              autoFocus
-              fullWidth
-              size="small"
-              variant="outlined"
-              error={!!errors.full_name}
-              helperText={errors?.full_name?.message}
-              {...register('full_name', { required: true })}
-            />
+          <TextField
+            label="Họ và tên"
+            type="text"
+            autoFocus
+            fullWidth
+            size="small"
+            variant="outlined"
+            error={!!errors.full_name}
+            helperText={errors?.full_name?.message}
+            {...register('full_name', { required: true })}
+          />
 
-            <TextField
-              label="Email"
-              size="small"
-              fullWidth
-              variant="outlined"
-              type="text"
-              error={!!errors.email}
-              helperText={errors?.email?.message}
-              {...register('email')}
-            />
+          <TextField
+            label="Email"
+            size="small"
+            fullWidth
+            variant="outlined"
+            type="text"
+            error={!!errors.email}
+            helperText={errors?.email?.message}
+            {...register('email')}
+          />
 
-            <TextField
-              label="Tên đăng nhập"
-              size="small"
-              fullWidth
-              variant="outlined"
-              type="text"
-              error={!!errors.username}
-              helperText={errors?.username?.message}
-              {...register('username')}
-            />
-
+          <TextField
+            label="Tên đăng nhập"
+            size="small"
+            fullWidth
+            variant="outlined"
+            type="text"
+            error={!!errors.username}
+            helperText={errors?.username?.message}
+            {...register('username')}
+          />
+          <Stack direction="row" spacing={2}>
             <TextField
               label="Mật khẩu"
               size="small"
@@ -182,7 +212,9 @@ export default function FormCreate({ modal: { open, data, type }, onClose }: For
               helperText={errors?.confirm_password?.message}
               {...register('confirm_password', { required: true })}
             />
+          </Stack>
 
+          <Stack direction="row" spacing={2}>
             <TextField
               label="Địa chỉ"
               size="small"
@@ -217,50 +249,35 @@ export default function FormCreate({ modal: { open, data, type }, onClose }: For
                 </LocalizationProvider>
               )}
             />
-
-            <Box>
-              <FormLabel id="radio-group-label">Giới tính</FormLabel>
-              {errors.gender && (
-                <Typography sx={{ fontSize: '0.75rem', color: '#d32f2f' }}>{errors?.gender?.message}</Typography>
-              )}
-
-              <Controller
-                name="gender"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <RadioGroup row aria-labelledby="radio-group-label" value={value} onChange={onChange}>
-                    <FormControlLabel value="female" control={<Radio />} label="Nữ" />
-                    <FormControlLabel value="male" control={<Radio />} label="Nam" />
-                  </RadioGroup>
-                )}
-              />
-            </Box>
-
-            {/* <TextField size="small" fullWidth label="Avatar" variant="standard" type="file" /> */}
-
-            <Box py={2}>
-              <Button fullWidth variant="contained" type="submit">
-                Submit
-              </Button>
-            </Box>
           </Stack>
-        </form>
-      </Box>
-    </Modal>
+
+          <Box>
+            <FormLabel id="radio-group-label">Giới tính</FormLabel>
+            {errors.gender && (
+              <Typography sx={{ fontSize: '0.75rem', color: '#d32f2f' }}>{errors?.gender?.message}</Typography>
+            )}
+
+            <Controller
+              name="gender"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <RadioGroup row aria-labelledby="radio-group-label" value={value} onChange={onChange}>
+                  <FormControlLabel value="fe-male" control={<Radio />} label="Nữ" />
+                  <FormControlLabel value="male" control={<Radio />} label="Nam" />
+                </RadioGroup>
+              )}
+            />
+          </Box>
+
+          {/* <TextField size="small" fullWidth label="Avatar" variant="standard" type="file" /> */}
+
+          <Box py={2}>
+            <Button fullWidth variant="contained" type="submit">
+              Tạo mới
+            </Button>
+          </Box>
+        </Stack>
+      </form>
+    </ModalCustom>
   )
 }
-
-const currencies = [
-  {
-    value: 'english',
-    label: 'Tiếng anh CNTT',
-  },
-  {
-    value: 'php',
-    label: 'Lập trinh web bằng PHP',
-  },
-  {
-    value: 'mysql',
-    label: 'Cơ sở dữ liệu',
-  },
-]

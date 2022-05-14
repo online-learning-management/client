@@ -1,68 +1,29 @@
-import { HeadCell, Data } from './types'
+import { UserType } from 'src/types'
 
-import { faker } from '@faker-js/faker'
+type ColumnType = {
+  Header: string
+  accessor?: keyof UserType
+  Cell?: () => String
+}
 
-export const headCells: readonly HeadCell[] = [
+export const COLUMNS: readonly ColumnType[] = [
   {
-    id: 'full_name',
-    numeric: false,
-    disablePadding: false,
-    label: 'Họ tên và email',
+    Header: 'Tên đăng nhập',
+    accessor: 'username',
   },
   {
-    id: 'username',
-    numeric: false,
-    disablePadding: false,
-    label: 'Tên đăng nhập',
+    Header: 'Ngày sinh',
+    accessor: 'date_of_birth',
   },
   {
-    id: 'specialty',
-    numeric: false,
-    disablePadding: false,
-    label: 'Chuyên môn',
+    Header: 'Giới tính',
+    accessor: 'gender',
   },
   {
-    id: 'address',
-    numeric: false,
-    disablePadding: false,
-    label: 'Địa chỉ',
-  },
-  {
-    numeric: false,
-    disablePadding: false,
-    label: 'Hành đồng',
+    Header: 'Địa chỉ',
+    accessor: 'address',
   },
 ]
 
-export function createData(
-  full_name: string,
-  email: string,
-  username: string,
-  avatar: string,
-  specialty: string,
-  address: string
-): Data {
-  return {
-    full_name,
-    email,
-    username,
-    avatar,
-    specialty,
-    address,
-  }
-}
-
-export const rows: Data[] = []
-
-for (let i = 0; i < 20; i++) {
-  rows.push(
-    createData(
-      faker.name.findName(),
-      faker.internet.email(),
-      faker.internet.userName(),
-      faker.image.avatar(),
-      faker.internet.userName(),
-      faker.internet.userName()
-    )
-  )
-}
+export const FORM_CREATE_LABEL = 'Thêm giảng viên'
+export const FORM_UPDATE_LABEL = 'Sửa thông tin giảng viên'
