@@ -5,6 +5,7 @@ import AdminPage from './pages/AdminPage'
 import HomePage from './pages/HomePage'
 import TeacherPage from './pages/AdminPage/TeacherPage'
 import StudentPage from './pages/AdminPage/StudentPage'
+import Login from './pages/Login/Login'
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
           <Route path="teacher" element={<TeacherPage />} />
           <Route path="student" element={<StudentPage />} />
         </Route>
+
+        <Route path="login" element={<Login />} />
       </Routes>
     </Layer>
   )
