@@ -288,33 +288,30 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
 
         {/* BOTTOM SIDEBAR ITEMS */}
         <Box>
-          <StyledCollapseNavLink to="login"></StyledCollapseNavLink>
           {/* <StyledNavLink to="/login"></StyledNavLink> */}
 
           {SIDEBAR_BOTTOM.map(({ text, icon, path }, index) => (
-            <StyledCollapseNavLink key={text} to={path}>
-              <ListItemButton
-                key={text}
+            <ListItemButton
+              key={text}
+              sx={{
+                minHeight: 44,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+                borderRadius: 2,
+              }}
+            >
+              <ListItemIcon
                 sx={{
-                  minHeight: 44,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                  borderRadius: 2,
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {icon}
-                </ListItemIcon>
+                {icon}
+              </ListItemIcon>
 
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </StyledCollapseNavLink>
+              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
           ))}
         </Box>
       </List>
