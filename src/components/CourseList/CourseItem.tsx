@@ -9,28 +9,24 @@ import { Grid } from '@mui/material'
 import { flexbox, width } from '@mui/system'
 import Stack from '@mui/material/Stack'
 
-const bull = (
-  <Box component="span" sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}>
-    •
-  </Box>
-)
-type Props = {}
+const bull = <Box component="span" sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}></Box>
 
-export default function CourseItem({}: Props) {
+export default function CourseItem() {
   return (
     <Box
       sx={{
         flex: '1 0 0',
-        width: '50%',
+        width: '100%',
         px: '80px',
-        m: '20px',
+        m: '8px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        background: 'pink',
+        background: 'linear-gradient(to right, #ffdde1, #ee9ca7)',
         borderRadius: '10px',
         fontFamily: 'Roboto Slab',
         pb: '80px',
+        orientation: 'horizontal',
       }}
     >
       <h2 className="my-5">Lớp đang diễn ra</h2>

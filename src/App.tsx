@@ -1,4 +1,6 @@
+import { useContext } from 'react'
 import { Route, Routes } from 'react-router-dom'
+
 import Layer from './components/Layer'
 import LoginPage from './pages/LoginPage'
 import ClassPage from './pages/ClassPage'
@@ -9,10 +11,14 @@ import StudentPage from './pages/AdminPage/StudentPage'
 import ClassManagePage from './pages/AdminPage/ClassPage'
 import SubjectPage from './pages/AdminPage/SubjectPage'
 import SpecialtyPage from './pages/AdminPage/SpecialtyPage'
+import { AuthContext } from './contexts/authContext/AuthContext'
 
 function App() {
+  const { user } = useContext(AuthContext)
+
   return (
     <Routes>
+      {/* public route */}
       <Route path="/login" element={<LoginPage />} />
 
       <Route

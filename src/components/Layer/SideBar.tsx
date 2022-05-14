@@ -117,6 +117,7 @@ const SIDEBAR_BOTTOM = [
   {
     text: 'Logout',
     icon: <LogoutIcon />,
+    path: 'login',
   },
 ]
 
@@ -297,7 +298,9 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
 
         {/* BOTTOM SIDEBAR ITEMS */}
         <Box>
-          {SIDEBAR_BOTTOM.map(({ text, icon }, index) => (
+          {/* <StyledNavLink to="/login"></StyledNavLink> */}
+
+          {SIDEBAR_BOTTOM.map(({ text, icon, path }, index) => (
             <ListItemButton
               key={text}
               sx={{
