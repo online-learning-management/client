@@ -1,7 +1,9 @@
+import ClassList from '../components/ClassList'
+
 export default function ClassPage() {
   return (
     <>
-      <h1>ClassPage</h1>
+      <ClassList />
     </>
   )
 }

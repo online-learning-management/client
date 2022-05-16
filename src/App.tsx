@@ -13,6 +13,10 @@ import SubjectPage from './pages/AdminPage/SubjectPage'
 import SpecialtyPage from './pages/AdminPage/SpecialtyPage'
 import { AuthContext } from './contexts/authContext/AuthContext'
 
+import DetailClass from './components/DetailClass/DetailClass.jsx'
+import Schedule from './components/Schedule'
+import RegisterCourse from './components/RegisterCourse/RegisterCourse.jsx'
+
 function App() {
   const { user } = useContext(AuthContext)
 
@@ -35,6 +39,32 @@ function App() {
         element={
           <Layer>
             <ClassPage />
+          </Layer>
+        }
+      />
+
+      <Route
+        path="classes/detail-class-:id"
+        element={
+          <Layer>
+            <DetailClass />
+          </Layer>
+        }
+      />
+
+      <Route
+        path="schedule"
+        element={
+          <Layer>
+            <Schedule />
+          </Layer>
+        }
+      />
+      <Route
+        path="register-course"
+        element={
+          <Layer>
+            <RegisterCourse />
           </Layer>
         }
       />

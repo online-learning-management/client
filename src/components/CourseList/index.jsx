@@ -15,16 +15,5 @@ export default function CourseList() {
       <CourseItem />
       <CourseItem />
     </Carousel>
-    // <Grid container spacing={2} sx={{ width: '100%', display: 'flex', m: '0px' }}>
-    //   <CourseItem />
-    //   <CourseItem />
-    //   <CourseItem />
-    // </Grid>
   )
-
-  // <Grid container spacing={2} sx={{ width: '100%', display: 'flex', m: '0px' }}>
-  //   <CourseItem />
-  //   <CourseItem />
-  //   <CourseItem />
-  // </Grid>
 }

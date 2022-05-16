@@ -15,6 +15,7 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined'
 import LogoDevOutlinedIcon from '@mui/icons-material/LogoDevOutlined'
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined'
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 
 // REACT-ROUTER-DOM
 import { NavLink } from 'react-router-dom'
@@ -77,6 +78,16 @@ const SIDEBAR_TOP = [
     text: 'Lớp học',
     icon: <SchoolOutlinedIcon />,
     path: '/classes',
+  },
+  {
+    text: 'Thời khóa biểu',
+    icon: <CalendarTodayIcon fontSize="small" />,
+    path: '/schedule',
+  },
+  {
+    text: 'Đăng ký học phần',
+    icon: <SchoolOutlinedIcon />,
+    path: '/register-course',
   },
   // {
   //   text: 'Tài khoản',
