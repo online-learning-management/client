@@ -245,7 +245,7 @@ export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
                 <LocalizationProvider dateAdapter={AdapterMoment}>
                   <DatePicker
                     label="Ngày mở lớp"
-                    // inputFormat="dd/MM//yyyy"
+                    inputFormat="DD-MM-YYYY"
                     {...field}
                     renderInput={(params) => (
                       <TextField

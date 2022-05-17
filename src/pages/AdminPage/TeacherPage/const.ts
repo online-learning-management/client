@@ -18,6 +18,11 @@ export const COLUMNS: readonly ColumnType[] = [
   {
     Header: 'Giới tính',
     accessor: 'gender',
+    Cell: (props) => (props.value === 'male' ? 'nam' : `nữ`),
+  },
+  {
+    Header: 'Chuyên khoa',
+    accessor: 'teacher.specialty.specialty_name',
   },
   {
     Header: 'Địa chỉ',

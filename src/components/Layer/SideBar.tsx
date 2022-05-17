@@ -101,7 +101,7 @@ const SIDEBAR_TOP = [
 
 const SIDEBAR_TOP_ITEMS = [
   {
-    text: 'Giáo viên',
+    text: 'Giảng viên',
     // icon: <HomeOutlinedIcon />,
     path: '/user-management/teacher',
   },

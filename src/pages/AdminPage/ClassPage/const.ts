@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { ClassType } from 'src/types'
 
 type ColumnType = {
@@ -8,12 +9,13 @@ type ColumnType = {
 
 export const COLUMNS: readonly ColumnType[] = [
   {
-    Header: 'Mã môn',
+    Header: 'Mã lớp',
     accessor: 'class_id',
   },
   {
     Header: 'Ngày bắt đầu',
     accessor: 'start_date',
+    Cell: (props) => moment(props.value).format('DD-MM-YYYY'),
   },
   {
     Header: 'Sĩ số tối đa',
@@ -22,6 +24,14 @@ export const COLUMNS: readonly ColumnType[] = [
   {
     Header: 'Sĩ số',
     accessor: 'current_number_students',
+  },
+  {
+    Header: 'Giảng viên',
+    accessor: 'teacher.user.full_name',
+  },
+  {
+    Header: 'Môn học',
+    accessor: 'subject.subject_name',
   },
 ]
 
