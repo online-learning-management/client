@@ -13,11 +13,11 @@ export const COLUMNS: readonly ColumnType[] = [
   },
   {
     Header: 'Chuyên khoa',
-    accessor: 'specialty_id',
+    accessor: 'specialty.specialty_name',
   },
   {
     Header: 'Số tín chỉ',
-    accessor: 'credit_id',
+    accessor: 'credit.number_of_credits',
   },
 ]
 

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 // MUI COMPONENTS
 import {
@@ -15,6 +15,9 @@ import {
   Paper,
   IconButton,
   TableSortLabel,
+  Dialog,
+  DialogTitle,
+  DialogActions,
 } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 
@@ -52,6 +55,10 @@ export default function ClassPage() {
   const [openModalCreate, setOpenModalCreate] = useState(false)
   const [openModalUpdate, setOpenModalUpdate] = useState(false)
 
+  const [showDialog, setShowDialog] = useState(false)
+  const [isDelete, setIsDelete] = useState(false)
+  const [deleteId, setDeleteId] = useState()
+
   const [detailId, setDetailId] = useState('')
 
   // ============ DATA ============
@@ -66,6 +73,18 @@ export default function ClassPage() {
   const data: ClassType[] = useMemo(() => queriesData?.data || [], [queriesData?.data])
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data }, useSortBy)
+
+  // ============ EFFECT ============
+  useEffect(() => {
+    if (isDelete && deleteId) {
+      deleteById(deleteId)
+    }
+
+    return () => {
+      setIsDelete(false)
+      setDeleteId('')
+    }
+  }, [isDelete])
 
   // ============ HANDLE FUNCTIONS ============
 
@@ -124,7 +143,13 @@ export default function ClassPage() {
 
                   <TableCell align="left" sx={{ width: '140px' }}>
                     <Stack direction="row">
-                      <IconButton color="error" onClick={() => deleteById(row.original.class_id)}>
+                      <IconButton
+                        color="error"
+                        onClick={() => {
+                          setShowDialog(true)
+                          setDeleteId(row.original.class_id)
+                        }}
+                      >
                         <HighlightOffOutlined />
                       </IconButton>
 
@@ -170,6 +195,24 @@ export default function ClassPage() {
         initData={queryData?.data || null}
         handleClose={() => setOpenModalUpdate(false)}
       />
+
+      <Dialog open={showDialog} onClose={() => setShowDialog(false)}>
+        <DialogTitle>Bạn có chắc muốn xóa?</DialogTitle>
+        <DialogActions>
+          <Button onClick={() => setShowDialog(false)} autoFocus>
+            Hủy
+          </Button>
+          <Button
+            onClick={() => {
+              setIsDelete(true)
+              setShowDialog(false)
+            }}
+            color="error"
+          >
+            Xác nhận
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   )
 }
