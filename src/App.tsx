@@ -64,9 +64,13 @@ function App() {
       <Route
         path="schedule"
         element={
-          <Layer>
-            <Schedule />
-          </Layer>
+          user ? (
+            <Layer>
+              <Schedule />
+            </Layer>
+          ) : (
+            <Navigate to="/login" replace />
+          )
         }
       />
       <Route
