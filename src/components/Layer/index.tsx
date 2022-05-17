@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Navbar from './Navbar'
 import SideBar from './SideBar'
 
-const drawerWidth = 220
+const drawerWidth = 250
 
 type LayerProps = {
   children: React.ReactNode

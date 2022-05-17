@@ -17,8 +17,8 @@ import { Link } from 'react-router-dom'
 export default function ClassItem(props) {
   let { data } = props
   return (
-    <Link to={`detail-class-${data.id}`}>
-      <Card sx={{ maxWidth: 480 }}>
+    <Link to={`detail-class-${data.id}`} className="no-underline">
+      <Card sx={{ maxWidth: 480, borderRadius: '10px' }}>
         <CardActionArea>
           <CardMedia component="img" height="200" image={data?.image} alt="green iguana" />
           <CardContent>

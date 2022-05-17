@@ -8,6 +8,8 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 
+import NotificationModal from './NotificationModal'
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: 'orange',
@@ -33,31 +35,43 @@ function createData(className, classId, teacherName, time, numberStudent) {
 }
 
 const rows = [
-  createData('Tiếng anh công nghệ thông tin', 159, 6.0, 24, 4.0),
-  createData('Lập trình web bằng PHP', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+  createData('Tiếng anh công nghệ thông tin', 'TACNTT06', 'Cô Lan', 'T2,T5 (9,10)', 35),
+  createData('Lập trình web bằng PHP', 'PHP', 'Nguyễn Trung Phú', 'T3 (12,13,14,15)', 4.3),
+  createData('Tiếng anh công nghệ thông tin', 'TACNTT06', 'Cô Lan', 'T2,T5 (9,10)', 35),
+  createData('Lập trình web bằng PHP', 'PHP', 'Nguyễn Trung Phú', 'T3 (12,13,14,15)', 4.3),
+  createData('Tiếng anh công nghệ thông tin', 'TACNTT06', 'Cô Lan', 'T2,T5 (9,10)', 35),
+  createData('Lập trình web bằng PHP', 'PHP', 'Nguyễn Trung Phú', 'T3 (12,13,14,15)', 4.3),
+  createData('Tiếng anh công nghệ thông tin', 'TACNTT06', 'Cô Lan', 'T2,T5 (9,10)', 35),
+  createData('Lập trình web bằng PHP', 'PHP', 'Nguyễn Trung Phú', 'T3 (12,13,14,15)', 4.3),
+  createData('Tiếng anh công nghệ thông tin', 'TACNTT06', 'Cô Lan', 'T2,T5 (9,10)', 35),
+  createData('Lập trình web bằng PHP', 'PHP', 'Nguyễn Trung Phú', 'T3 (12,13,14,15)', 4.3),
 ]
 
 let Register = (props) => {
   return (
-    <div className="text-white text-base rounded mb-2 cursor-pointer" onClick={handleOnclickRegisterSubject}>
+    <div className="text-red-500 text-base rounded mb-2 cursor-pointer" onClick={props.handleOnclickRegisterSubject}>
       <b className="my-1 ">{props.name}</b>
     </div>
   )
 }
 
-let handleOnclickRegisterSubject = () => {
-  alert('hehe')
-}
-
 export default function ListSubjectToRegister() {
+  let [open, setOpen] = React.useState(false)
+
+  let handleOnclickRegisterSubject = () => {
+    handleOpenNotificationModal()
+  }
+
+  let handleOpenNotificationModal = () => {
+    setOpen(true)
+  }
+
+  let handleCloseNotificationModal = () => {
+    setOpen(false)
+  }
   return (
     <TableContainer component={Paper}>
+      <NotificationModal open={open} handleClose={handleCloseNotificationModal} />
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
@@ -80,7 +94,7 @@ export default function ListSubjectToRegister() {
               <StyledTableCell align="right">{row.time}</StyledTableCell>
               <StyledTableCell align="right">{row.numberStudent}</StyledTableCell>
               <StyledTableCell align="right">
-                <Register name={'Đăng ký'} />
+                <Register name={'Đăng ký'} handleOnclickRegisterSubject={handleOnclickRegisterSubject} />
               </StyledTableCell>
             </StyledTableRow>
           ))}

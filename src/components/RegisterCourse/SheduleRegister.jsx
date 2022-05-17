@@ -1,21 +1,21 @@
 import React from 'react'
 import RegisterModal from './RegisterModal'
 
-type Props = {}
+// type Props = {}
 
-export default function ScheduleRegister({}: Props) {
-  const Subject = ({ name, time }: { name: string; time: string }) => {
+export default function ScheduleRegister(Props) {
+  const Subject = (props) => {
     return (
       <div className="bg-purple text-white text-base rounded mb-2">
-        <p className="my-1">{name}</p>
-        <p className="my-1">{time}</p>
+        <p className="my-1">{props.name}</p>
+        <p className="my-1">{props.time}</p>
       </div>
     )
   }
-  let Select = ({ name }: { name: string }) => {
+  let Select = (props) => {
     return (
       <div className="text-red-500 text-base rounded mb-2 cursor-pointer" onClick={handleOnclickSelect}>
-        <b className="my-1">{name}</b>
+        <b className="my-1">{props.name}</b>
       </div>
     )
   }
