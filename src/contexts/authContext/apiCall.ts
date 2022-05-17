@@ -35,7 +35,7 @@ export const login = async (body, dispatch) => {
 
 export const logout = async (dispatch) => {
   try {
-    const { data } = await axiosClient.post(`${END_POINT}/logout`)
+    // const { data } = await axiosClient.post(`${END_POINT}/logout`)
 
     dispatch(logoutAction())
     localStorage.removeItem(USER)
