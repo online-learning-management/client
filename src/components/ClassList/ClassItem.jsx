@@ -18,12 +18,12 @@ export default function ClassItem(props) {
   let { data } = props
   return (
     <Link to={`detail-class-${data.id}`} className="no-underline">
-      <Card sx={{ maxWidth: 480, borderRadius: '10px' }}>
+      <Card sx={{ maxWidth: 480, borderRadius: '10px', background: `${data?.background_color}` }}>
         <CardActionArea>
-          <CardMedia component="img" height="200" image={data?.image} alt="green iguana" />
+          <CardMedia component="img" height="160" image={data?.image} alt="green iguana" />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-              {data?.className}
+              {data?.subject_name}
             </Typography>
             <Typography variant="body2" color="text.secondary">
               {data?.description}

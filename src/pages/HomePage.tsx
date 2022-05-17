@@ -1,13 +1,13 @@
-import CourseList from '../components/CourseList'
+import ListOutstandingClass from '../components/OutstandingClass'
 import Schedule from '../components/Schedule'
 
-import ImageSlider from '../components/SomethingInHomePage/HomePageSlider'
+import BannerSlider from '../components/SomethingInHomePage/BannerSlider'
 
 export default function HomePage() {
   return (
     <>
-      <ImageSlider />
-      <CourseList />
+      <BannerSlider />
+      <ListOutstandingClass />
       {/* <Schedule /> */}
     </>
   )

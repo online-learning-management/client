@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
-import ListSubjectToRegister from './ListSubjectToRegister'
+import ListClassToRegister from './ListClassToRegister'
 
 const style = {
   position: 'absolute',
@@ -19,7 +19,7 @@ const style = {
 }
 
 export default function RegisterModal(props) {
-  let { open, handleOpen, handleClose } = props
+  let { open, handleOpen, handleClose, day } = props
   return (
     <div>
       <Modal
@@ -33,7 +33,7 @@ export default function RegisterModal(props) {
             LỰA CHỌN LỚP HỌC PHẦN
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <ListSubjectToRegister />
+            <ListClassToRegister day={day} />
           </Typography>
           <br></br>
           <Button variant="contained" onClick={handleClose}>

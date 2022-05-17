@@ -3,61 +3,107 @@ import { Grid } from '@mui/material'
 import React, { Component, useState } from 'react'
 import Carousel from 'react-elastic-carousel'
 
-let fakeData = [
+let fakeDataClass = [
   {
     id: 1,
-    className: 'Lập trình web bằng PHP',
-    image: 'https://daotaonoibo.vn/wp-content/uploads/2021/11/xu-huong-e-learning-nam-2022.jpg',
-    description:
-      'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
+    specialty_name: 'Công nghệ thông tin',
+    subjects: [
+      {
+        id: 1,
+        subject_name: 'Tiếng anh công nghệ thông tin',
+        image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_web_ReactJS.png',
+        description:
+          'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
+        specialty_id: 1,
+        credit_id: 1,
+        background_color: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
+      },
+      {
+        id: 3,
+        subject_name: 'Tiếng anh công nghệ thông tin 2',
+        image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_03_youtube.png',
+        description:
+          'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
+        specialty_id: 1,
+        credit_id: 2,
+        background_color: 'linear-gradient(to right, #fc4a1a, #f7b733)',
+      },
+      {
+        id: 4,
+        subject_name: 'Tiếng anh công nghệ thông tin',
+        image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_web_ReactJS.png',
+        description:
+          'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
+        specialty_id: 1,
+        credit_id: 1,
+        background_color: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
+      },
+      {
+        id: 5,
+        subject_name: 'Tiếng anh công nghệ thông tin 2',
+        image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_03_youtube.png',
+        description:
+          'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
+        specialty_id: 1,
+        credit_id: 2,
+        background_color: 'linear-gradient(to right, #fc4a1a, #f7b733)',
+      },
+    ],
   },
   {
     id: 2,
-    className: 'Lập trình Java',
-    image: 'https://daotaonoibo.vn/wp-content/uploads/2021/11/xu-huong-e-learning-nam-2022.jpg',
-    description:
-      'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
-  },
-  {
-    id: 3,
-    className: 'Lập trình .NET',
-    image: 'https://daotaonoibo.vn/wp-content/uploads/2021/11/xu-huong-e-learning-nam-2022.jpg',
-    description:
-      'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
-  },
-  {
-    id: 4,
-    className: 'Tiếng anh công nghệ thông tin',
-    image: 'https://daotaonoibo.vn/wp-content/uploads/2021/11/xu-huong-e-learning-nam-2022.jpg',
-    description:
-      'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
+    specialty_name: 'Kỹ thuật phần mềm',
+    subjects: [
+      {
+        id: 2,
+        subject_name: 'Lập trình web bằng PHP',
+        image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_03_youtube.png',
+        description:
+          'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
+        specialty_id: 2,
+        credit_id: 1,
+        background_color: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
+      },
+      {
+        id: 2,
+        subject_name: 'Lập trình web bằng PHP',
+        image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_03_youtube.png',
+        description:
+          'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
+        specialty_id: 2,
+        credit_id: 1,
+        background_color: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
+      },
+      {
+        id: 2,
+        subject_name: 'Lập trình web bằng PHP',
+        image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_03_youtube.png',
+        description:
+          'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
+        specialty_id: 2,
+        credit_id: 1,
+        background_color: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
+      },
+    ],
   },
 ]
 
 export default function ClassList() {
   return (
     <>
-      <h2 className="pl-16 py-6">Khóa học lập trình</h2>
+      {fakeDataClass.map((item, index) => {
+        return (
+          <div>
+            <h2 className="pl-16 py-6">{item.specialty_name}</h2>
 
-      <Carousel itemsToShow={3} disableArrowsOnEnd={false} disableArrowsOnStart={false}>
-        {fakeData.map((item, index) => {
-          return <ClassItem data={item} key={index} />
-        })}
-      </Carousel>
-
-      <h2 className="pl-16 py-6">Khóa học ngoại ngữ</h2>
-      <Carousel itemsToShow={3} disableArrowsOnEnd={false} disableArrowsOnStart={false}>
-        {fakeData.map((item, index) => {
-          return <ClassItem data={item} key={index} />
-        })}
-      </Carousel>
-
-      <h2 className="pl-16 py-6">Khóa học </h2>
-      <Carousel itemsToShow={3} disableArrowsOnEnd={false} disableArrowsOnStart={false}>
-        {fakeData.map((item, index) => {
-          return <ClassItem data={item} key={index} />
-        })}
-      </Carousel>
+            <Carousel itemsToShow={3} disableArrowsOnEnd={false} disableArrowsOnStart={false}>
+              {item.subjects.map((item, index) => {
+                return <ClassItem data={item} id={item.id} />
+              })}
+            </Carousel>
+          </div>
+        )
+      })}
     </>
   )
 }

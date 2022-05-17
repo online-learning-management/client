@@ -47,6 +47,24 @@ const deleteById = (handleSuccess = () => {}, handleError = () => {}) => {
   })
 }
 
+
+//Do duc hieu code
+const getAllClass = (handleSuccess = () => {}, handleError = () => {}) => {
+  const queryClient = useQueryClient()
+
+  return useMutation(classApi.getAll, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(RQ.CLASSES)
+      handleSuccess()
+    },
+
+    onError: () => {
+      handleError()
+    },
+  })
+}
+
+
 const useClassMutation = {
   create,
   update,

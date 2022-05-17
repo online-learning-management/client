@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import RegisterModal from './RegisterModal'
 
 // type Props = {}
@@ -14,14 +14,20 @@ export default function ScheduleRegister(Props) {
   }
   let Select = (props) => {
     return (
-      <div className="text-red-500 text-base rounded mb-2 cursor-pointer" onClick={handleOnclickSelect}>
-        <b className="my-1">{props.name}</b>
+      <div
+        className="text-red-500 text-base rounded mb-2 cursor-pointer"
+        onClick={() => handleOnclickSelect(props?.day)}
+      >
+        <b className="my-1">{props?.name}</b>
       </div>
     )
   }
-  let handleOnclickSelect = () => {
+  let handleOnclickSelect = (day) => {
+    setDay(day)
     handleOpen()
   }
+
+  let [day, setDay] = useState('')
 
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => setOpen(true)
@@ -29,7 +35,7 @@ export default function ScheduleRegister(Props) {
 
   return (
     <div>
-      <RegisterModal open={open} handleOpen={handleOpen} handleClose={handleClose} />
+      <RegisterModal open={open} handleOpen={handleOpen} handleClose={handleClose} day={day} />
       <p className="my-2 text-center font-Inter text-2xl font-normal">
         06 <span className="font-black text-[28px]">Tháng 4</span> 2022
       </p>
@@ -53,77 +59,79 @@ export default function ScheduleRegister(Props) {
           <tr className="child:border child:border-solid h-36 child:font-medium">
             <td>Sáng</td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={0} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={1} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={2} />
               <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} />
               <Subject name={'Lập trình JAVA'} time={'7:00 - 8:00'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={3} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={4} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={5} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={6} />
             </td>
           </tr>
           <tr className="child:border child:border-solid h-36 child:font-medium">
             <td>Chiều</td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={0} />
               <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={1} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={2} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={3} />
               <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={4} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={5} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={6} />
             </td>
           </tr>
           <tr className="child:border child:border-solid h-36 child:font-medium ">
             <td className="rounded-bl-lg">Tối</td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={0} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={1} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={2} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={3} />
               <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={4} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={5} />
             </td>
-            <td className="rounded-br-lg"></td>
+            <td className="rounded-br-lg">
+              <Select name={'[Chọn]'} day={6} />
+            </td>
           </tr>
         </tbody>
       </table>
