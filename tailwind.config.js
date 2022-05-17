@@ -1,6 +1,11 @@
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
-  important: '#root',
+  // important: '#root',
+
+  options: {
+    important: true,
+  },
+
   theme: {
     extend: {
       fontFamily: {
@@ -11,17 +16,17 @@ module.exports = {
         Inter: ['Inter', 'sans-serif'],
       },
       boxShadow: {
-        fakeBorderTable: "0 0 0 1px #000"
+        fakeBorderTable: '0 0 0 1px #000',
       },
-      colors:{
-        purple: "#4A49CB"
-      }
+      colors: {
+        purple: '#4A49CB',
+      },
     },
   },
   plugins: [
     function ({ addVariant }) {
-      addVariant('child', '& > *');
-      addVariant('child-hover', '& > *:hover');
-  }
+      addVariant('child', '& > *')
+      addVariant('child-hover', '& > *:hover')
+    },
   ],
 }

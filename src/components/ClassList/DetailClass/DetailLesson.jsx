@@ -22,7 +22,12 @@ export default function DetailLesson(props) {
   }
   return (
     <List
-      sx={{ width: '100%', maxWidth: '100%', bgcolor: 'orange' }}
+      sx={{
+        width: '100%',
+        maxWidth: '100%',
+        background: 'linear-gradient(to right, #a8c0ff, #3f2b96)',
+        borderRadius: '10px',
+      }}
       component="nav"
       aria-labelledby="nested-list-subheader"
     >
