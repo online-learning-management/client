@@ -49,7 +49,7 @@ export default function Schedule({}: Props) {
 
                 newState[dayIndex][day] = [
                   ...prevState[dayIndex][day],
-                  <Subject name={clazz?.class_id} time={`(${lessons.map((i) => i + 1).join(', ')})`} />,
+                  <Subject name={clazz?.subject?.subject_name} time={`(${lessons.map((i) => i + 1).join(', ')})`} />,
                 ]
 
                 return newState
@@ -91,7 +91,10 @@ export default function Schedule({}: Props) {
 
                 newState[dayIndex][day] = [
                   ...prevState[dayIndex][day],
-                  <Subject name={clazz?.class_id} time={`(${lessons.map((i) => i + 1).join(', ')})`} />,
+                  <Subject
+                    name={clazz?.class?.subject?.subject_name}
+                    time={`(${lessons.map((i) => i + 1).join(', ')})`}
+                  />,
                 ]
 
                 return newState
