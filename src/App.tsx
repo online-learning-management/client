@@ -69,14 +69,17 @@ function App() {
           </Layer>
         }
       />
-      <Route
-        path="register-course"
-        element={
-          <Layer>
-            <RegisterCourse />
-          </Layer>
-        }
-      />
+
+      {user?.role_id === 'r3' && (
+        <Route
+          path="register-course"
+          element={
+            <Layer>
+              <RegisterCourse />
+            </Layer>
+          }
+        />
+      )}
 
       <Route
         path="user-management"
