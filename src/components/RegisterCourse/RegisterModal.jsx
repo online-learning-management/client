@@ -19,7 +19,7 @@ const style = {
 }
 
 export default function RegisterModal(props) {
-  let { open, handleOpen, handleClose, day } = props
+  let { open, handleOpen, handleClose, day, session } = props
   return (
     <div>
       <Modal
@@ -33,7 +33,7 @@ export default function RegisterModal(props) {
             LỰA CHỌN LỚP HỌC PHẦN
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <ListClassToRegister day={day} />
+            <ListClassToRegister day={day} session={session} />
           </Typography>
           <br></br>
           <Button variant="contained" onClick={handleClose}>
