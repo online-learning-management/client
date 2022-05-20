@@ -52,6 +52,8 @@ export default function ListClassToRegister(props) {
   const { data: student } = useStudentQuery.getById(user?.user_id)
   const { data: classes } = useClassQuery.getAll()
 
+  console.log({ student: student?.data, classes: classes?.data })
+
   let handleOpenNotificationModal = () => {
     setOpen(true)
   }
@@ -61,15 +63,14 @@ export default function ListClassToRegister(props) {
   }
 
   let { day, session } = props
-  console.log('session: ', session)
 
   let handleArrayClassSatisfyToShow = (day, arrayClass, session) => {
     let res = arrayClass.filter((item, index) => {
       if (handleStringAndCheckDay(item.schedules, day)) {
-        console.log('logic : ', handleCheckSessionToShowClass(item.schedules, session))
+        // console.log('logic : ', handleCheckSessionToShowClass(item.schedules, session))
 
         if (handleCheckSessionToShowClass(item.schedules, session) === session) {
-          console.log(session, ' ', item)
+          // console.log(session, ' ', item)
           return item
         }
       }
@@ -107,7 +108,7 @@ export default function ListClassToRegister(props) {
     return check
   }
 
-  let arrayClassSatisfyToShow = handleArrayClassSatisfyToShow(day, fake_data_list_class, session)
+  let arrayClassSatisfyToShow = handleArrayClassSatisfyToShow(day, classes?.data || fake_data_list_class, session)
 
   let handleShowScheduleInList = (data) => {
     let days = 'Thứ '
@@ -119,12 +120,14 @@ export default function ListClassToRegister(props) {
     return days + `Tiết(${lesson})`
   }
 
-  let handleOnclickRegisterClass = (shedule) => {
+  let handleOnclickRegisterClass = (shedule, classId) => {
     let check = handleAsSameAsSchedule(shedule, listScheduleOfStudent)
     if (check) {
       setResultRegister(true)
       handleOpenNotificationModal()
     } else {
+      console.log('asdf', { userId: user?.user_id, classId })
+
       setResultRegister(false)
       handleOpenNotificationModal()
     }
@@ -192,7 +195,7 @@ export default function ListClassToRegister(props) {
               <StyledTableCell align="right">
                 <Register
                   name={'Đăng ký'}
-                  handleOnclickRegisterClass={() => handleOnclickRegisterClass(item.schedules)}
+                  handleOnclickRegisterClass={() => handleOnclickRegisterClass(item.schedules, item.class_id)}
                 />
               </StyledTableCell>
             </StyledTableRow>
