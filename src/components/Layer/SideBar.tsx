@@ -91,6 +91,7 @@ const SIDEBAR_TOP = [
     text: 'Đăng ký học phần',
     icon: <SchoolOutlinedIcon />,
     path: '/register-course',
+    student: true,
   },
   // {
   //   text: 'Tài khoản',
@@ -164,7 +165,7 @@ const StyledCollapseNavLink = styled(NavLink)(() => ({
 }))
 
 export default function SideBar({ drawerWidth, open }: SideBarProps) {
-  const { dispatch } = useContext(AuthContext)
+  const { dispatch, user } = useContext(AuthContext)
 
   const [openCollapseItem, setOpenCollapseItem] = useState(true)
 
@@ -208,31 +209,33 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
             <ListItemText primary={'BeeLearning'} secondary="Studying together" sx={{ opacity: open ? 1 : 0 }} />
           </ListItemButton>
 
-          {SIDEBAR_TOP.map(({ text, icon, path }) => (
-            <StyledNavLink key={text} to={path}>
-              <ListItemButton
-                // onClick={() => navigate(path)}
-                sx={{
-                  minHeight: 44,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                  borderRadius: 2,
-                }}
-              >
-                <ListItemIcon
+          {SIDEBAR_TOP.map(({ text, icon, path, student }) =>
+            student && user?.role_id !== 'r3' ? null : (
+              <StyledNavLink key={text} to={path}>
+                <ListItemButton
+                  // onClick={() => navigate(path)}
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
+                    minHeight: 44,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
+                    borderRadius: 2,
                   }}
                 >
-                  {icon}
-                </ListItemIcon>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {icon}
+                  </ListItemIcon>
 
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </StyledNavLink>
-          ))}
+                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </StyledNavLink>
+            )
+          )}
 
           {/* COLLAPSE BUTTON */}
           <Box>

@@ -8,6 +8,10 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 
+import { AuthContext } from '../../contexts/authContext/AuthContext'
+import useStudentQuery from '../../hooks/reactQueryHooks/useStudentQuery'
+import useClassQuery from '../../hooks/reactQueryHooks/useClassQuery'
+
 import NotificationModal from './NotificationModal'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -39,8 +43,14 @@ let Register = (props) => {
 }
 
 export default function ListClassToRegister(props) {
+  const { user } = React.useContext(AuthContext)
+
   let [open, setOpen] = React.useState(false)
   let [resultRegister, setResultRegister] = React.useState(false)
+
+  // react-query
+  const { data: student } = useStudentQuery.getById(user?.user_id)
+  const { data: classes } = useClassQuery.getAll()
 
   let handleOpenNotificationModal = () => {
     setOpen(true)
