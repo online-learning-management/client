@@ -2,6 +2,7 @@ export const USER = 'USER'
 export const ACCESS_TOKEN = 'access_token'
 export const REFRESH_TOKEN = 'refresh_token'
 export const END_POINT = 'http://127.0.0.1:8000/api'
+export const END_POINT_IMG = 'http://127.0.0.1:8000'
 
 // define unique name for react-query
 export const RQ = {

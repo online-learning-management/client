@@ -1,9 +1,36 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import axiosClient from 'src/apis/axiosClient'
+import userApi from 'src/apis/userApi'
 
 import { END_POINT, USER } from 'src/const'
-import { loginFailure, loginStart, loginSuccess, logout as logoutAction } from './AuthActions'
+import {
+  fetchUser as fetchUserAction,
+  loginFailure,
+  loginStart,
+  loginSuccess,
+  logout as logoutAction,
+} from './AuthActions'
+
+export const fetchUser = async (userId: number, dispatch) => {
+  try {
+    const { data } = await userApi.getById(userId)
+
+    const prevLocalUser = JSON.parse(localStorage.getItem(USER))
+
+    localStorage.setItem(
+      USER,
+      JSON.stringify({
+        ...prevLocalUser,
+        ...data.data,
+      })
+    )
+
+    dispatch(fetchUserAction(data.data))
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 export const login = async (body, dispatch) => {
   dispatch(loginStart())

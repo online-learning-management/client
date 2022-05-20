@@ -1,9 +1,17 @@
-import { LOGIN_FAILURE, LOGIN_START, LOGIN_SUCCESS, LOGOUT } from '../const'
+import { FETCH_USER, LOGIN_FAILURE, LOGIN_START, LOGIN_SUCCESS, LOGOUT } from '../const'
 
 const AuthReducer = (state, action) => {
   const { type, payload } = action
 
   switch (type) {
+    case FETCH_USER: {
+      return {
+        user: { ...state?.user, ...payload },
+        isLoading: false,
+        error: false,
+      }
+    }
+
     case LOGIN_START: {
       return {
         user: null,

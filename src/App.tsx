@@ -16,6 +16,7 @@ import { AuthContext } from './contexts/authContext/AuthContext'
 import DetailClass from './components/ClassList/DetailClass/DetailClass.jsx'
 import Schedule from './components/Schedule'
 import RegisterCourse from './components/RegisterCourse/RegisterCourse.jsx'
+import ProfilePage from './pages/ProfilePage'
 
 function App() {
   const { user } = useContext(AuthContext)
@@ -79,6 +80,19 @@ function App() {
           <Layer>
             <RegisterCourse />
           </Layer>
+        }
+      />
+
+      <Route
+        path="profile"
+        element={
+          user ? (
+            <Layer>
+              <ProfilePage />
+            </Layer>
+          ) : (
+            <Navigate to="/login" replace />
+          )
         }
       />
 
