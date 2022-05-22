@@ -116,7 +116,9 @@ export default function ListClassToRegister(props) {
     arr.map((item, index) => {
       days += item.day + 2 + ','
     })
-    let lesson = arr[0].lessons
+    let lesson = arr[0].lessons.map((item, index) => {
+      return item + 1
+    })
     return days + `Tiết(${lesson})`
   }
 

@@ -100,6 +100,8 @@ export default function ClassList() {
   const { data: specialties } = useSpecialtyQuery.getAll()
 
   let dataSpecialtyClass = specialties?.data
+  // console.log('check: ', dataSpecialtyClass)
+
   return (
     <>
       {dataSpecialtyClass &&
@@ -110,11 +112,11 @@ export default function ClassList() {
 
               <div className="flex w-full flex-wrap">
                 {item.subjects &&
-                  item.subjects.map((item1, index) => {
+                  item.subjects.map((item1, index1) => {
                     return (
                       item1 &&
                       item1.classes &&
-                      item1.classes.map((item2, index) => {
+                      item1.classes.map((item2, index2) => {
                         return <ClassItem data={item2} subjectName={item1?.subject_name} />
                       })
                     )

@@ -55,7 +55,10 @@ export default function Subject(props) {
 
   let formatLesson = (data) => {
     let arr = JSON.parse(data)
-    return `(${arr[0].lessons})`
+    let lesson = arr[0].lessons.map((item, index) => {
+      return item + 1
+    })
+    return `(${lesson})`
   }
 
   let arrStudentClass = student?.data?.student?.student_class
