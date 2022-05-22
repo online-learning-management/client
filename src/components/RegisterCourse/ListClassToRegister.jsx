@@ -12,6 +12,8 @@ import { AuthContext } from '../../contexts/authContext/AuthContext'
 import useStudentQuery from '../../hooks/reactQueryHooks/useStudentQuery'
 import useClassQuery from '../../hooks/reactQueryHooks/useClassQuery'
 
+import studentClassApi from '../../apis/studentClassApi'
+
 import NotificationModal from './NotificationModal'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -49,7 +51,7 @@ export default function ListClassToRegister(props) {
   let [resultRegister, setResultRegister] = React.useState(false)
 
   // react-query
-  const { data: student } = useStudentQuery.getById(user?.user_id)
+  const { data: student, refetch: refetchStudent } = useStudentQuery.getById(user?.user_id)
   const { data: classes } = useClassQuery.getAll()
 
   // console.log({ student: student?.data, classes: classes?.data })
@@ -122,13 +124,16 @@ export default function ListClassToRegister(props) {
     return days + `Tiết(${lesson})`
   }
 
-  let handleOnclickRegisterClass = (shedule, classId) => {
+  let handleOnclickRegisterClass = async (shedule, classId) => {
     let check = handleAsSameAsSchedule(shedule, listScheduleOfStudent())
     if (check) {
       setResultRegister(true)
       handleOpenNotificationModal()
     } else {
-      console.log('infor: ', { userId: user?.user_id, classId })
+      try {
+        await studentClassApi.create({ user_id: user?.user_id, class_id: classId })
+        refetchStudent()
+      } catch (error) {}
 
       setResultRegister(false)
       handleOpenNotificationModal()
@@ -138,7 +143,7 @@ export default function ListClassToRegister(props) {
     let arr = student?.data?.student?.student_class.map((item, index) => {
       return JSON.parse(item?.class?.schedules)
     })
-    console.log('arrSchedule: ', arr)
+    // console.log('arrSchedule: ', arr)
     return arr
   }
 
