@@ -52,7 +52,7 @@ export default function ListClassToRegister(props) {
   const { data: student } = useStudentQuery.getById(user?.user_id)
   const { data: classes } = useClassQuery.getAll()
 
-  console.log({ student: student?.data, classes: classes?.data })
+  // console.log({ student: student?.data, classes: classes?.data })
 
   let handleOpenNotificationModal = () => {
     setOpen(true)
@@ -108,7 +108,7 @@ export default function ListClassToRegister(props) {
     return check
   }
 
-  let arrayClassSatisfyToShow = handleArrayClassSatisfyToShow(day, classes?.data || fake_data_list_class, session)
+  let arrayClassSatisfyToShow = classes && classes.data && handleArrayClassSatisfyToShow(day, classes.data, session)
 
   let handleShowScheduleInList = (data) => {
     let days = 'Thứ '
@@ -172,8 +172,6 @@ export default function ListClassToRegister(props) {
     return check
   }
 
-  // console.log(arrayClassSatisfyToShow)
-
   return (
     <TableContainer component={Paper}>
       <NotificationModal open={open} handleClose={handleCloseNotificationModal} resultRegister={resultRegister} />
@@ -189,269 +187,26 @@ export default function ListClassToRegister(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {arrayClassSatisfyToShow.map((item, index) => (
-            <StyledTableRow key={index}>
-              <StyledTableCell component="th" scope="row">
-                {item.subject.subject_name}
-              </StyledTableCell>
-              <StyledTableCell align="right">{item.class_id}</StyledTableCell>
-              <StyledTableCell align="right">{item.teacher.user.full_name}</StyledTableCell>
-              <StyledTableCell align="right">{handleShowScheduleInList(item.schedules)}</StyledTableCell>
-              <StyledTableCell align="right">{item.max_number_students}</StyledTableCell>
-              <StyledTableCell align="right">
-                <Register
-                  name={'Đăng ký'}
-                  handleOnclickRegisterClass={() => handleOnclickRegisterClass(item.schedules, item.class_id)}
-                />
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
+          {arrayClassSatisfyToShow &&
+            arrayClassSatisfyToShow.map((item, index) => (
+              <StyledTableRow key={index}>
+                <StyledTableCell component="th" scope="row">
+                  {item.subject.subject_name}
+                </StyledTableCell>
+                <StyledTableCell align="right">{item.class_id}</StyledTableCell>
+                <StyledTableCell align="right">{item.teacher.user.full_name}</StyledTableCell>
+                <StyledTableCell align="right">{handleShowScheduleInList(item.schedules)}</StyledTableCell>
+                <StyledTableCell align="right">{item.max_number_students}</StyledTableCell>
+                <StyledTableCell align="right">
+                  <Register
+                    name={'Đăng ký'}
+                    handleOnclickRegisterClass={() => handleOnclickRegisterClass(item.schedules, item.class_id)}
+                  />
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>
   )
 }
-
-let fake_data_list_class = [
-  {
-    class_id: 'PHP007',
-    start_date: 'Fri May 20 2022 10:43:50 GMT+0700',
-    max_number_students: 70,
-    current_number_students: 0,
-    user_id: 3,
-    schedules: '[{"day":1,"lessons":[7,8,9]},{"day":4,"lessons":[7,8,9]}]',
-    subject_id: 2,
-    teacher: {
-      user_id: 3,
-      specialty_id: 2,
-      user: {
-        user_id: 3,
-        full_name: 'Hoang Tuan Hieu',
-        email: 'tranducha2@gmail.com',
-        date_of_birth: '1996-01-01',
-        gender: 'fe-male',
-        address: 'Bac Ninh',
-        avatar: '',
-        username: 'hoangtuanhieu',
-        role_id: 'r2',
-      },
-    },
-    subject: {
-      id: 1,
-      subject_name: 'Tiếng anh công nghệ thông tin',
-      image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_web_ReactJS.png',
-      description:
-        'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
-      specialty_id: 1,
-      credit_id: 1,
-      background_color: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
-    },
-  },
-  {
-    class_id: 'PHP008',
-    start_date: 'Fri May 20 2022 10:47:44 GMT+0700',
-    max_number_students: 70,
-    current_number_students: 0,
-    user_id: 3,
-    schedules: '[{"day":4,"lessons":[1,2,3]}]',
-    subject_id: 2,
-    teacher: {
-      user_id: 3,
-      specialty_id: 2,
-      user: {
-        user_id: 3,
-        full_name: 'Hoang Tuan Hieu',
-        email: 'tranducha2@gmail.com',
-        date_of_birth: '1996-01-01',
-        gender: 'fe-male',
-        address: 'Bac Ninh',
-        avatar: '',
-        username: 'hoangtuanhieu',
-        role_id: 'r2',
-      },
-    },
-    subject: {
-      id: 3,
-      subject_name: 'Tiếng anh công nghệ thông tin 2',
-      image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_03_youtube.png',
-      description:
-        'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
-      specialty_id: 1,
-      credit_id: 2,
-      background_color: 'linear-gradient(to right, #fc4a1a, #f7b733)',
-    },
-  },
-  {
-    class_id: 'PHP007',
-    start_date: 'Fri May 20 2022 10:43:50 GMT+0700',
-    max_number_students: 70,
-    current_number_students: 0,
-    user_id: 3,
-    schedules: '[{"day":1,"lessons":[7,8,9]}]',
-    subject_id: 2,
-    teacher: {
-      user_id: 3,
-      specialty_id: 2,
-      user: {
-        user_id: 3,
-        full_name: 'Hoang Tuan Hieu',
-        email: 'tranducha2@gmail.com',
-        date_of_birth: '1996-01-01',
-        gender: 'fe-male',
-        address: 'Bac Ninh',
-        avatar: '',
-        username: 'hoangtuanhieu',
-        role_id: 'r2',
-      },
-    },
-    subject: {
-      id: 1,
-      subject_name: 'Tiếng anh công nghệ thông tin',
-      image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_web_ReactJS.png',
-      description:
-        'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
-      specialty_id: 1,
-      credit_id: 1,
-      background_color: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
-    },
-  },
-  {
-    class_id: 'PHP009',
-    start_date: 'Fri May 20 2022 10:47:44 GMT+0700',
-    max_number_students: 70,
-    current_number_students: 0,
-    user_id: 3,
-    schedules: '[{"day":4,"lessons":[7,8,9]}]',
-    subject_id: 2,
-    teacher: {
-      user_id: 3,
-      specialty_id: 2,
-      user: {
-        user_id: 3,
-        full_name: 'Hoang Tuan Hieu',
-        email: 'tranducha2@gmail.com',
-        date_of_birth: '1996-01-01',
-        gender: 'fe-male',
-        address: 'Bac Ninh',
-        avatar: '',
-        username: 'hoangtuanhieu',
-        role_id: 'r2',
-      },
-    },
-    subject: {
-      id: 3,
-      subject_name: 'Tiếng anh công nghệ thông tin 2',
-      image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_03_youtube.png',
-      description:
-        'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
-      specialty_id: 1,
-      credit_id: 2,
-      background_color: 'linear-gradient(to right, #fc4a1a, #f7b733)',
-    },
-  },
-  {
-    class_id: 'PHP0010',
-    start_date: 'Fri May 20 2022 10:47:44 GMT+0700',
-    max_number_students: 70,
-    current_number_students: 0,
-    user_id: 3,
-    schedules: '[{"day":0,"lessons":[1,2,3]},{"day":5,"lessons":[1,2,3]}]',
-    subject_id: 2,
-    teacher: {
-      user_id: 3,
-      specialty_id: 2,
-      user: {
-        user_id: 3,
-        full_name: 'Hoang Tuan Hieu',
-        email: 'tranducha2@gmail.com',
-        date_of_birth: '1996-01-01',
-        gender: 'fe-male',
-        address: 'Bac Ninh',
-        avatar: '',
-        username: 'hoangtuanhieu',
-        role_id: 'r2',
-      },
-    },
-    subject: {
-      id: 3,
-      subject_name: 'Tiếng anh công nghệ thông tin 2',
-      image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_03_youtube.png',
-      description:
-        'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
-      specialty_id: 1,
-      credit_id: 2,
-      background_color: 'linear-gradient(to right, #fc4a1a, #f7b733)',
-    },
-  },
-]
-
-let fake_data_list_class_of_student = [
-  {
-    class_id: 'PHP007',
-    start_date: 'Fri May 20 2022 10:43:50 GMT+0700',
-    max_number_students: 70,
-    current_number_students: 0,
-    user_id: 3,
-    schedules: '[{"day":0,"lessons":[7,8,9]},{"day":3,"lessons":[6,7,8,9]}]',
-    subject_id: 2,
-    teacher: {
-      user_id: 3,
-      specialty_id: 2,
-      user: {
-        user_id: 3,
-        full_name: 'Hoang Tuan Hieu',
-        email: 'tranducha2@gmail.com',
-        date_of_birth: '1996-01-01',
-        gender: 'fe-male',
-        address: 'Bac Ninh',
-        avatar: '',
-        username: 'hoangtuanhieu',
-        role_id: 'r2',
-      },
-    },
-    subject: {
-      id: 1,
-      subject_name: 'Tiếng anh công nghệ thông tin',
-      image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_web_ReactJS.png',
-      description:
-        'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
-      specialty_id: 1,
-      credit_id: 1,
-      background_color: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
-    },
-  },
-  {
-    class_id: 'PHP007',
-    start_date: 'Fri May 20 2022 10:43:50 GMT+0700',
-    max_number_students: 70,
-    current_number_students: 0,
-    user_id: 3,
-    schedules: '[{"day":0,"lessons":[1,2,3]}]',
-    subject_id: 2,
-    teacher: {
-      user_id: 3,
-      specialty_id: 2,
-      user: {
-        user_id: 3,
-        full_name: 'Hoang Tuan Hieu',
-        email: 'tranducha2@gmail.com',
-        date_of_birth: '1996-01-01',
-        gender: 'fe-male',
-        address: 'Bac Ninh',
-        avatar: '',
-        username: 'hoangtuanhieu',
-        role_id: 'r2',
-      },
-    },
-    subject: {
-      id: 1,
-      subject_name: 'Tiếng anh công nghệ thông tin',
-      image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_web_ReactJS.png',
-      description:
-        'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
-      specialty_id: 1,
-      credit_id: 1,
-      background_color: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
-    },
-  },
-]
