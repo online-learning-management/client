@@ -39,6 +39,8 @@ type FormInputs = {
   class_id: string
   start_date: string
   max_number_students: number
+  image: string
+  description: string
 
   user_id: number
   subject_id: number
@@ -49,6 +51,8 @@ const schema: SchemaOf<FormInputs> = object().shape({
   class_id: string().required('Nhập mã lớp!').default(' '),
   start_date: string().required('Nhập ngày mở lớp!').default(' '),
   max_number_students: number().required('Nhập sĩ số tối đa!').default(70),
+  image: string().required('Nhập link ảnh!').default(' '),
+  description: string().required('Nhập mô tả lớp học!').default(' '),
 
   user_id: number().required('Chọn giảng viên!').default(0),
   subject_id: number().required('Chọn môn học!').default(0),
@@ -277,6 +281,30 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
               {...register('max_number_students')}
             />
           </Stack>
+
+          <TextField
+            label="Link ảnh"
+            size="small"
+            fullWidth
+            variant="outlined"
+            type="text"
+            error={!!errors.image}
+            helperText={errors.image?.message}
+            {...register('image')}
+          />
+
+          <TextField
+            label="Mô tả"
+            size="small"
+            fullWidth
+            variant="outlined"
+            type="text"
+            multiline
+            minRows={6}
+            error={!!errors.description}
+            helperText={errors.description?.message}
+            {...register('description')}
+          />
 
           {!!watch('user_id') && <RegisterSchedule schedules={schedules} handleCheckSchedule={handleCheckSchedule} />}
 

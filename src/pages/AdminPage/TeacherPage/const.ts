@@ -8,6 +8,10 @@ type ColumnType = {
 
 export const COLUMNS: readonly ColumnType[] = [
   {
+    Header: 'Họ tên',
+    accessor: 'full_name',
+  },
+  {
     Header: 'Tên đăng nhập',
     accessor: 'username',
   },

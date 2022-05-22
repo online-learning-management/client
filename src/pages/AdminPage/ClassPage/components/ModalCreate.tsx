@@ -39,6 +39,8 @@ type FormInputs = {
   class_id: string
   start_date: string
   max_number_students: number
+  image: string
+  description: string
 
   user_id: number
   subject_id: number
@@ -49,6 +51,8 @@ const schema: SchemaOf<FormInputs> = object().shape({
   class_id: string().required('Nhập mã lớp!'),
   start_date: string().required('Nhập ngày mở lớp!'),
   max_number_students: number().required('Nhập sĩ số tối đa!'),
+  image: string().required('Nhập link ảnh!'),
+  description: string().required('Nhập mô tả lớp học!'),
 
   user_id: number().required('Chọn giảng viên!'),
   subject_id: number().required('Chọn môn học!'),
@@ -157,23 +161,12 @@ export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
             {FORM_CREATE_LABEL}
           </Typography>
 
-          <TextField
-            autoFocus
-            label="Mã lớp học"
-            size="small"
-            fullWidth
-            variant="outlined"
-            type="text"
-            error={!!errors.class_id}
-            helperText={errors.class_id?.message}
-            {...register('class_id')}
-          />
-
           <Controller
             name="specialty_id"
             control={control}
             render={({ field, fieldState }) => (
               <TextField
+                autoFocus
                 label="Chuyên khoa"
                 size="small"
                 fullWidth
@@ -237,6 +230,17 @@ export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
             )}
           />
 
+          <TextField
+            label="Mã lớp học"
+            size="small"
+            fullWidth
+            variant="outlined"
+            type="text"
+            error={!!errors.class_id}
+            helperText={errors.class_id?.message}
+            {...register('class_id')}
+          />
+
           <Stack spacing={2} direction="row">
             <Controller
               name="start_date"
@@ -273,6 +277,30 @@ export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
               {...register('max_number_students')}
             />
           </Stack>
+
+          <TextField
+            label="Link ảnh"
+            size="small"
+            fullWidth
+            variant="outlined"
+            type="text"
+            error={!!errors.image}
+            helperText={errors.image?.message}
+            {...register('image')}
+          />
+
+          <TextField
+            label="Mô tả"
+            size="small"
+            fullWidth
+            variant="outlined"
+            type="text"
+            multiline
+            minRows={6}
+            error={!!errors.description}
+            helperText={errors.description?.message}
+            {...register('description')}
+          />
 
           {!!watch('user_id') && <RegisterSchedule schedules={schedules} handleCheckSchedule={handleCheckSchedule} />}
 
