@@ -15,19 +15,27 @@ import { CardActionArea } from '@mui/material'
 import { Link } from 'react-router-dom'
 
 export default function ClassItem(props) {
-  let { data } = props
+  let { data, subjectName } = props
+  // console.log('check from class item: ', data)
   return (
-    <Link to={`detail-class-${data.id}`} className="no-underline">
-      <Card sx={{ maxWidth: 480, borderRadius: '10px' }}>
+    <Link to={`detail-class-${data?.class_id}`} className="no-underline w-1/4 flex justify-center mb-5">
+      <Card
+        sx={{
+          width: '95%',
+          borderRadius: '10px',
+          background: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
+        }}
+      >
+        {/* , background: `${data?.background_color}`  */}
         <CardActionArea>
-          <CardMedia component="img" height="200" image={data?.image} alt="green iguana" />
+          <CardMedia component="img" height="140" image={data?.image} alt="green iguana" />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {data?.className}
+            <Typography gutterBottom variant="h6" component="div" className="text-center text-white">
+              {subjectName}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            {/* <Typography variant="body2" color="text.secondary">
               {data?.description}
-            </Typography>
+            </Typography> */}
           </CardContent>
         </CardActionArea>
       </Card>

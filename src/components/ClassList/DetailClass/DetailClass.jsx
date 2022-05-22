@@ -20,7 +20,7 @@ export default function DetailClass() {
 
   return (
     <>
-      <h1>{`Khóa học thứ ${id}`}</h1>
+      <h1>{`Lớp học ${id}`}</h1>
       <br></br>
       <p>
         Môn học này sẽ giúp sinh viên nắm vững kiến thức nền tảng về PHP, và có khả năng xây dựng một website hoàn chỉnh

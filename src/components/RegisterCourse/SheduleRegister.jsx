@@ -1,27 +1,32 @@
-import React from 'react'
+import React, { useState } from 'react'
 import RegisterModal from './RegisterModal'
+import useStudentQuery from '../../hooks/reactQueryHooks/useStudentQuery'
+import { AuthContext } from '../../contexts/authContext/AuthContext'
+
+import Subject from './Subject'
 
 // type Props = {}
 
 export default function ScheduleRegister(Props) {
-  const Subject = (props) => {
-    return (
-      <div className="bg-purple text-white text-base rounded mb-2">
-        <p className="my-1">{props.name}</p>
-        <p className="my-1">{props.time}</p>
-      </div>
-    )
-  }
   let Select = (props) => {
     return (
-      <div className="text-red-500 text-base rounded mb-2 cursor-pointer" onClick={handleOnclickSelect}>
-        <b className="my-1">{props.name}</b>
+      <div
+        className="text-red-500 text-base rounded mb-2 cursor-pointer"
+        onClick={() => handleOnclickSelect(props?.day, props?.session)}
+      >
+        <b className="my-1">{props?.name}</b>
       </div>
     )
   }
-  let handleOnclickSelect = () => {
+
+  let handleOnclickSelect = (day, session) => {
+    setDay(day)
+    setSession(session)
     handleOpen()
   }
+
+  let [day, setDay] = useState('')
+  let [session, setSession] = useState('')
 
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => setOpen(true)
@@ -29,7 +34,7 @@ export default function ScheduleRegister(Props) {
 
   return (
     <div>
-      <RegisterModal open={open} handleOpen={handleOpen} handleClose={handleClose} />
+      <RegisterModal open={open} handleOpen={handleOpen} handleClose={handleClose} day={day} session={session} />
       <p className="my-2 text-center font-Inter text-2xl font-normal">
         06 <span className="font-black text-[28px]">Tháng 4</span> 2022
       </p>
@@ -53,80 +58,175 @@ export default function ScheduleRegister(Props) {
           <tr className="child:border child:border-solid h-36 child:font-medium">
             <td>Sáng</td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={0} session={'morning'} />
+              <Subject day={0} session={'morning'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={1} session={'morning'} />
+              <Subject day={1} session={'morning'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
-              <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} />
-              <Subject name={'Lập trình JAVA'} time={'7:00 - 8:00'} />
+              <Select name={'[Chọn]'} day={2} session={'morning'} />
+              <Subject day={2} session={'morning'} />
+
+              {/* <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} /> */}
+              {/* <Subject name={'Lập trình JAVA'} time={'7:00 - 8:00'} /> */}
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={3} session={'morning'} />
+              <Subject day={3} session={'morning'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={4} session={'morning'} />
+              <Subject day={4} session={'morning'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={5} session={'morning'} />
+              <Subject day={5} session={'morning'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={6} session={'morning'} />
+              <Subject day={6} session={'morning'} />
             </td>
           </tr>
           <tr className="child:border child:border-solid h-36 child:font-medium">
             <td>Chiều</td>
             <td>
-              <Select name={'[Chọn]'} />
-              <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} />
+              <Select name={'[Chọn]'} day={0} session={'afternoon'} />
+              {/* <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} /> */}
+              <Subject day={0} session={'afternoon'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={1} session={'afternoon'} />
+              <Subject day={1} session={'afternoon'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={2} session={'afternoon'} />
+              <Subject day={2} session={'afternoon'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
-              <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} />
+              <Select name={'[Chọn]'} day={3} session={'afternoon'} />
+              {/* <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} /> */}
+              <Subject day={3} session={'afternoon'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={4} session={'afternoon'} />
+              <Subject day={4} session={'afternoon'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={5} session={'afternoon'} />
+              <Subject day={5} session={'afternoon'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={6} session={'afternoon'} />
+              <Subject day={6} session={'afternoon'} />
             </td>
           </tr>
           <tr className="child:border child:border-solid h-36 child:font-medium ">
             <td className="rounded-bl-lg">Tối</td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={0} session={'evening'} />
+              <Subject day={0} session={'evening'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={1} session={'evening'} />
+              <Subject day={1} session={'evening'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={2} session={'evening'} />
+              <Subject day={2} session={'evening'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
-              <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} />
+              <Select name={'[Chọn]'} day={3} session={'evening'} />
+              {/* <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} /> */}
+              <Subject day={3} session={'evening'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={4} session={'evening'} />
+              <Subject day={4} session={'evening'} />
             </td>
             <td>
-              <Select name={'[Chọn]'} />
+              <Select name={'[Chọn]'} day={5} session={'evening'} />
+              <Subject day={5} session={'evening'} />
             </td>
-            <td className="rounded-br-lg"></td>
+            <td className="rounded-br-lg">
+              <Select name={'[Chọn]'} day={6} session={'evening'} />
+              <Subject day={6} session={'evening'} />
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
   )
 }
+
+let fake_data_list_class_of_student = [
+  {
+    class_id: 'PHP007',
+    start_date: 'Fri May 20 2022 10:43:50 GMT+0700',
+    max_number_students: 70,
+    current_number_students: 0,
+    user_id: 3,
+    schedules: '[{"day":0,"lessons":[7,8]},{"day":3,"lessons":[7,8]}]',
+    subject_id: 2,
+    teacher: {
+      user_id: 3,
+      specialty_id: 2,
+      user: {
+        user_id: 3,
+        full_name: 'Hoang Tuan Hieu',
+        email: 'tranducha2@gmail.com',
+        date_of_birth: '1996-01-01',
+        gender: 'fe-male',
+        address: 'Bac Ninh',
+        avatar: '',
+        username: 'hoangtuanhieu',
+        role_id: 'r2',
+      },
+    },
+    subject: {
+      id: 1,
+      subject_name: 'Tiếng anh công nghệ thông tin',
+      image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_web_ReactJS.png',
+      description:
+        'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
+      specialty_id: 1,
+      credit_id: 1,
+      background_color: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
+    },
+  },
+  {
+    class_id: 'PHP007',
+    start_date: 'Fri May 20 2022 10:43:50 GMT+0700',
+    max_number_students: 70,
+    current_number_students: 0,
+    user_id: 3,
+    schedules: '[{"day":0,"lessons":[1,2,3]}]',
+    subject_id: 2,
+    teacher: {
+      user_id: 3,
+      specialty_id: 2,
+      user: {
+        user_id: 3,
+        full_name: 'Hoang Tuan Hieu',
+        email: 'tranducha2@gmail.com',
+        date_of_birth: '1996-01-01',
+        gender: 'fe-male',
+        address: 'Bac Ninh',
+        avatar: '',
+        username: 'hoangtuanhieu',
+        role_id: 'r2',
+      },
+    },
+    subject: {
+      id: 1,
+      subject_name: 'Lập trình web bằng PHP',
+      image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_web_ReactJS.png',
+      description:
+        'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
+      specialty_id: 1,
+      credit_id: 1,
+      background_color: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
+    },
+  },
+]

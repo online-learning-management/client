@@ -11,8 +11,8 @@ import Stack from '@mui/material/Stack'
 
 const bull = <Box component="span" sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}></Box>
 
-export default function CourseItem(props) {
-  let { title, bg, img } = props
+export default function OutstandingClass(props) {
+  let { data, id } = props
   return (
     <Box
       sx={{
@@ -23,15 +23,15 @@ export default function CourseItem(props) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        background: `${bg}`,
+        background: `${data?.subject?.background_color}`,
         borderRadius: '10px',
         fontFamily: 'Roboto Slab',
         orientation: 'horizontal',
       }}
     >
-      <img src={`${img}`} alt="" className=" w-10/12 h-10/12 bg-opacity-50" />
+      <img src={`${data?.subject?.image}`} alt="" className=" w-10/12 h-10/12 bg-opacity-50" />
       <Typography variant="h6" component="div" className=" text-white">
-        {title}
+        {data?.subject?.subject_name}
       </Typography>
     </Box>
   )

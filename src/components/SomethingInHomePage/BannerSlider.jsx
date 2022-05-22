@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom'
 
 import Carousel from 'react-elastic-carousel'
 
-let ContentItem = (props) => {
+let BannerItem = (props) => {
   let { content, title, id, img, bg } = props
   return (
     <Box
@@ -46,7 +46,7 @@ let ContentItem = (props) => {
   )
 }
 
-export default function HomePageSlider() {
+export default function BannerSlider() {
   const carouselRef = React.useRef(null)
   const onNextStart = (currentItem, nextItem) => {
     if (currentItem.index === nextItem.index) {
@@ -65,7 +65,7 @@ export default function HomePageSlider() {
         onNextStart={onNextStart}
       >
         {fakeData.map((item, index) => {
-          return <ContentItem content={item?.content} id={item?.id} title={item?.title} bg={item?.bg} img={item?.img} />
+          return <BannerItem content={item?.content} id={item?.id} title={item?.title} bg={item?.bg} img={item?.img} />
         })}
       </Carousel>
     </>

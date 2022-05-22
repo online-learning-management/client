@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
-import ListSubjectToRegister from './ListSubjectToRegister'
+import ListClassToRegister from './ListClassToRegister'
 
 const style = {
   position: 'absolute',
@@ -19,7 +19,7 @@ const style = {
 }
 
 export default function NotificationModal(props) {
-  let { open, handleClose } = props
+  let { open, handleClose, resultRegister } = props
   return (
     <>
       <Modal
@@ -34,7 +34,7 @@ export default function NotificationModal(props) {
           </Typography>
           <br></br>
           <Typography variant="body1" component="h2">
-            Đăng ký học phần không thành công do trùng lịch học
+            {resultRegister ? 'Đăng ký học phần không thành công do trùng lịch học' : 'Đăng ký học phần thành công'}
           </Typography>
           <br></br>
 
