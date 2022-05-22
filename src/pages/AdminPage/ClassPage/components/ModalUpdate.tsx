@@ -1,13 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
 
 // MUI ICONS
-import {} from '@mui/icons-material'
+import { CloseOutlined, ColorLensOutlined } from '@mui/icons-material'
 
 // MUI COMPONENTS
-import { Box, Stack, Button, MenuItem, TextField, Typography } from '@mui/material'
+import { Box, Stack, Button, MenuItem, TextField, Typography, InputAdornment, IconButton } from '@mui/material'
 
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
+
+//
+import { SketchPicker } from 'react-color'
 
 // REACT-HOOK-FORM, YUP
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -41,6 +44,7 @@ type FormInputs = {
   max_number_students: number
   image: string
   description: string
+  bg_color: string
 
   user_id: number
   subject_id: number
@@ -53,6 +57,7 @@ const schema: SchemaOf<FormInputs> = object().shape({
   max_number_students: number().required('Nhập sĩ số tối đa!').default(70),
   image: string().required('Nhập link ảnh!').default(' '),
   description: string().required('Nhập mô tả lớp học!').default(' '),
+  bg_color: string().required('Nhập mã màu!').default(' '),
 
   user_id: number().required('Chọn giảng viên!').default(0),
   subject_id: number().required('Chọn môn học!').default(0),
@@ -71,6 +76,9 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
   const clone2DArray = useMemo(() => TWO_D_ARRAY.map((row) => row.slice()), [])
   const [schedules, setSchedules] = useState<number[][]>(clone2DArray)
 
+  const [color, setColor] = useState({})
+  const [showColorPicker, setShowColorPicker] = useState(false)
+
   const [specialtySelected, setSpecialtySelected] = useState<number>()
   const [teacherSelected, setTeacherSelected] = useState<number>()
 
@@ -81,6 +89,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
     register,
     reset,
     watch,
+    setValue,
     formState: { errors },
     handleSubmit: reactHookFormHandleSubmit,
   } = useForm<FormInputs | any>({
@@ -100,6 +109,10 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
   const { mutate: update } = useClassMutation.update(onSuccess)
 
   // =================== EFFECT ===================
+  useEffect(() => {
+    color?.hex && setValue('bg_color', color?.hex)
+  }, [color])
+
   useEffect(() => {
     initData && reset(initData)
   }, [initData])
@@ -282,16 +295,62 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
             />
           </Stack>
 
-          <TextField
-            label="Link ảnh"
-            size="small"
-            fullWidth
-            variant="outlined"
-            type="text"
-            error={!!errors.image}
-            helperText={errors.image?.message}
-            {...register('image')}
-          />
+          <Stack spacing={2} direction="row" sx={{ position: 'relative' }}>
+            <TextField
+              label="Link ảnh"
+              size="small"
+              fullWidth
+              variant="outlined"
+              type="text"
+              error={!!errors.image}
+              helperText={errors.image?.message}
+              {...register('image')}
+            />
+
+            <TextField
+              label="Màu nền"
+              size="small"
+              fullWidth
+              variant="outlined"
+              type="text"
+              sx={{ width: 260 }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    {showColorPicker ? (
+                      <IconButton size="small" onClick={() => setShowColorPicker(false)}>
+                        <CloseOutlined />
+                      </IconButton>
+                    ) : (
+                      <IconButton size="small" onClick={() => setShowColorPicker(true)}>
+                        <ColorLensOutlined />
+                      </IconButton>
+                    )}
+                  </InputAdornment>
+                ),
+              }}
+              error={!!errors.bg_color}
+              helperText={errors.bg_color?.message}
+              {...register('bg_color')}
+            />
+
+            <Box
+              sx={{
+                position: 'absolute',
+                right: 0,
+                bottom: 42,
+                zIndex: 20,
+                display: showColorPicker ? 'block' : 'none',
+              }}
+            >
+              <SketchPicker color={color} onChangeComplete={setColor} />
+              {/* <Controller
+                name="bg_color"
+                control={control}
+                render={({ field: { value, onChange } }) => <SketchPicker color={value} onChangeComplete={onChange} />}
+              /> */}
+            </Box>
+          </Stack>
 
           <TextField
             label="Mô tả"
