@@ -2,6 +2,8 @@ import ClassItem from './ClassItem'
 import { Grid } from '@mui/material'
 import React, { Component, useState } from 'react'
 import Carousel from 'react-elastic-carousel'
+import { AuthContext } from '../../contexts/authContext/AuthContext'
+import useSpecialtyQuery from '../../hooks/reactQueryHooks/useSpecialtyQuery'
 
 let fakeDataClass = [
   {
@@ -12,8 +14,16 @@ let fakeDataClass = [
         id: 1,
         subject_name: 'Tiếng anh công nghệ thông tin',
         image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_web_ReactJS.png',
-        description:
-          'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
+        description: 'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú',
+        specialty_id: 1,
+        credit_id: 1,
+        background_color: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
+      },
+      {
+        id: 1,
+        subject_name: 'Tiếng anh công nghệ thông tin',
+        image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_web_ReactJS.png',
+        description: 'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú',
         specialty_id: 1,
         credit_id: 1,
         background_color: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
@@ -22,8 +32,7 @@ let fakeDataClass = [
         id: 3,
         subject_name: 'Tiếng anh công nghệ thông tin 2',
         image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_03_youtube.png',
-        description:
-          'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
+        description: 'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú',
         specialty_id: 1,
         credit_id: 2,
         background_color: 'linear-gradient(to right, #fc4a1a, #f7b733)',
@@ -32,8 +41,7 @@ let fakeDataClass = [
         id: 4,
         subject_name: 'Tiếng anh công nghệ thông tin',
         image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_web_ReactJS.png',
-        description:
-          'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
+        description: 'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú',
         specialty_id: 1,
         credit_id: 1,
         background_color: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
@@ -42,8 +50,7 @@ let fakeDataClass = [
         id: 5,
         subject_name: 'Tiếng anh công nghệ thông tin 2',
         image: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_03_youtube.png',
-        description:
-          'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú. Sau khi học xong thì không ngán bất cứ một ai, cứ đến là đón',
+        description: 'Với kiến thức ong đốt đặc trưng đã làm nên thương hiệu của thầy Nguyễn Trung Phú',
         specialty_id: 1,
         credit_id: 2,
         background_color: 'linear-gradient(to right, #fc4a1a, #f7b733)',
@@ -89,21 +96,33 @@ let fakeDataClass = [
 ]
 
 export default function ClassList() {
+  const { user } = React.useContext(AuthContext)
+  const { data: specialties } = useSpecialtyQuery.getAll()
+
+  let dataSpecialtyClass = specialties?.data
   return (
     <>
-      {fakeDataClass.map((item, index) => {
-        return (
-          <div>
-            <h2 className="pl-16 py-6">{item.specialty_name}</h2>
+      {dataSpecialtyClass &&
+        dataSpecialtyClass.map((item, index) => {
+          return (
+            <div key={index}>
+              <h2 className="pl-16 py-6">{item.specialty_name}</h2>
 
-            <Carousel itemsToShow={3} disableArrowsOnEnd={false} disableArrowsOnStart={false}>
-              {item.subjects.map((item, index) => {
-                return <ClassItem data={item} id={item.id} />
-              })}
-            </Carousel>
-          </div>
-        )
-      })}
+              <div className="flex w-full flex-wrap">
+                {item.subjects &&
+                  item.subjects.map((item1, index) => {
+                    return (
+                      item1 &&
+                      item1.classes &&
+                      item1.classes.map((item2, index) => {
+                        return <ClassItem data={item2} subjectName={item1?.subject_name} />
+                      })
+                    )
+                  })}
+              </div>
+            </div>
+          )
+        })}
     </>
   )
 }

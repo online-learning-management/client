@@ -121,21 +121,25 @@ export default function ListClassToRegister(props) {
   }
 
   let handleOnclickRegisterClass = (shedule, classId) => {
-    let check = handleAsSameAsSchedule(shedule, listScheduleOfStudent)
+    let check = handleAsSameAsSchedule(shedule, listScheduleOfStudent())
     if (check) {
       setResultRegister(true)
       handleOpenNotificationModal()
     } else {
-      console.log('asdf', { userId: user?.user_id, classId })
+      console.log('infor: ', { userId: user?.user_id, classId })
 
       setResultRegister(false)
       handleOpenNotificationModal()
     }
   }
+  let listScheduleOfStudent = () => {
+    let arr = student?.data?.student?.student_class.map((item, index) => {
+      return JSON.parse(item?.class?.schedules)
+    })
+    console.log('arrSchedule: ', arr)
+    return arr
+  }
 
-  let listScheduleOfStudent = fake_data_list_class_of_student.map((item, index) => {
-    return JSON.parse(item.schedules)
-  })
   // console.log(listScheduleOfStudent)
 
   let handleAsSameAsSchedule = (currentSchedule, prevSchedule) => {

@@ -1,68 +1,13 @@
 import React, { useState } from 'react'
 import RegisterModal from './RegisterModal'
+import useStudentQuery from '../../hooks/reactQueryHooks/useStudentQuery'
+import { AuthContext } from '../../contexts/authContext/AuthContext'
+
+import Subject from './Subject'
 
 // type Props = {}
 
 export default function ScheduleRegister(Props) {
-  const Subject = (props) => {
-    let { day, session } = props
-    let handleArrayClassSatisfyToShow = (day, arrayClass, session) => {
-      let res = arrayClass.filter((item, index) => {
-        if (handleStringAndCheckDay(item.schedules, day)) {
-          if (handleCheckSessionToShowClass(item.schedules, session) === session) {
-            return item
-          }
-        }
-      })
-      return res
-    }
-
-    let handleCheckSessionToShowClass = (json, session) => {
-      let checkSession = ''
-      let arr = JSON.parse(json)
-      arr.map((item) => {
-        item.lessons.forEach((item1) => {
-          if (item1 > 0 && item1 < 7) {
-            checkSession = 'morning'
-          }
-          if (item1 >= 7 && item1 < 13) {
-            checkSession = 'afternoon'
-          }
-          if (item1 >= 13 && item1 <= 16) {
-            checkSession = 'evening'
-          }
-        })
-      })
-      return checkSession
-    }
-
-    let handleStringAndCheckDay = (json, day) => {
-      let check = false
-      let arr = JSON.parse(json)
-      arr.map((item, index) => {
-        if (item.day == day) {
-          check = true
-        }
-      })
-      return check
-    }
-
-    let formatLesson = (data) => {
-      let arr = JSON.parse(data)
-      return `(${arr[0].lessons})`
-    }
-
-    let arrayClassSatisfyToShow = handleArrayClassSatisfyToShow(day, fake_data_list_class_of_student, session)
-
-    return arrayClassSatisfyToShow.map((item, index) => {
-      return (
-        <div className="bg-purple text-white text-base rounded mb-2" key={index}>
-          <p className="my-1">{item.subject.subject_name}</p>
-          <p className="my-1">{formatLesson(item.schedules)}</p>
-        </div>
-      )
-    })
-  }
   let Select = (props) => {
     return (
       <div
