@@ -80,7 +80,7 @@ export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
 
           <TextField
             autoFocus
-            label="Tên môn học"
+            label="Tên chuyên khoa"
             size="small"
             fullWidth
             variant="outlined"
