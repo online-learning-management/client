@@ -66,9 +66,7 @@ export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
   }, [open])
 
   // =================== FUNCTIONS HANDLE ===================
-  const handleSubmit: SubmitHandler<FormInputs> = (data: FormInputs) => {
-    create(data)
-  }
+  const handleSubmit: SubmitHandler<FormInputs> = (data: FormInputs) => create(data)
 
   return (
     <ModalCustom width={800} open={open} onClose={handleClose}>
