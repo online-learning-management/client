@@ -17,7 +17,7 @@ import { login } from 'src/contexts/authContext/apiCall'
 import { AuthContext } from 'src/contexts/authContext/AuthContext'
 
 const RightSide = styled(Grid)({
-  backgroundImage: 'url(src/images/bg.jpeg)',
+  backgroundImage: 'url(src/images/background.jpg)',
   backgroundRepeat: 'no-repeat',
   backgroundPosition: 'center',
   backgroundSize: 'cover',

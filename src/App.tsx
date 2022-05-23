@@ -56,9 +56,25 @@ function App() {
       <Route
         path="classes/detail-class-:id"
         element={
-          <Layer>
-            <DetailClass />
-          </Layer>
+          user ? (
+            <Layer>
+              <DetailClass />
+            </Layer>
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+      <Route
+        path="schedule/detail-class-:id"
+        element={
+          user ? (
+            <Layer>
+              <DetailClass />
+            </Layer>
+          ) : (
+            <Navigate to="/login" replace />
+          )
         }
       />
 

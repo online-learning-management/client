@@ -18,7 +18,7 @@ export default function ClassList() {
         dataSpecialtyClass.map((item, index) => {
           return (
             <div key={index}>
-              <h2 className="pl-16 py-6">{item.specialty_name}</h2>
+              <h2 className="pl-4 py-6">{item.specialty_name}</h2>
 
               <div className="flex w-full flex-wrap">
                 {item.subjects &&

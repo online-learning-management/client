@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from 'src/contexts/authContext/AuthContext'
 import useStudentQuery from 'src/hooks/reactQueryHooks/useStudentQuery'
 import useTeacherQuery from 'src/hooks/reactQueryHooks/useTeacherQuery'
+import { Link } from 'react-router-dom'
 
 type Props = {}
 
@@ -17,12 +18,14 @@ export default function Schedule({}: Props) {
   const { data: teacher } = useTeacherQuery.getById(user?.role_id === 'r2' && user?.user_id)
   const { data: student } = useStudentQuery.getById(user?.role_id === 'r3' && user?.user_id)
 
-  const Subject = ({ name, time }: { name: string; time: string }) => {
+  const Subject = ({ name, time, classId }: { name: string; time: string; classId: string }) => {
     return (
-      <div className="bg-purple text-white text-base rounded mb-2">
-        <p className="my-1">{name}</p>
-        <p className="my-1">{time}</p>
-      </div>
+      <Link to={`detail-class-${classId}`}>
+        <div className="bg-purple text-white text-base rounded mb-2">
+          <p className="my-1">{name}</p>
+          <p className="my-1">{time}</p>
+        </div>
+      </Link>
     )
   }
 
@@ -49,9 +52,12 @@ export default function Schedule({}: Props) {
 
                 newState[dayIndex][day] = [
                   ...prevState[dayIndex][day],
-                  <Subject name={clazz?.subject?.subject_name} time={`(${lessons.map((i) => i + 1).join(', ')})`} />,
+                  <Subject
+                    name={clazz?.subject?.subject_name}
+                    time={`(${lessons.map((i) => i + 1).join(', ')})`}
+                    classId={clazz.class_id}
+                  />,
                 ]
-
                 return newState
               })
             })
@@ -88,15 +94,14 @@ export default function Schedule({}: Props) {
 
               setSchedules((prevState) => {
                 const newState = prevState.map((row) => row.slice())
-
                 newState[dayIndex][day] = [
                   ...prevState[dayIndex][day],
                   <Subject
                     name={clazz?.class?.subject?.subject_name}
                     time={`(${lessons.map((i) => i + 1).join(', ')})`}
+                    classId={clazz.class_id}
                   />,
                 ]
-
                 return newState
               })
             })
@@ -111,6 +116,7 @@ export default function Schedule({}: Props) {
         [[], [], [], [], [], [], []],
       ])
   }, [student?.data])
+  console.log('data: ', schedules)
 
   return (
     <div>
@@ -166,46 +172,6 @@ export default function Schedule({}: Props) {
               })}
             </tr>
           ))}
-
-          {/* <tr className="child:border child:border-solid h-36 child:font-medium">
-            <td>Sáng</td>
-            <td></td>
-            <td></td>
-            <td>
-              <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} />
-              <Subject name={'Lập trình JAVA'} time={'7:00 - 8:00'} />
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr className="child:border child:border-solid h-36 child:font-medium">
-            <td>Chiều</td>
-            <td>
-              <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} />
-            </td>
-            <td></td>
-            <td></td>
-            <td>
-              <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} />
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr className="child:border child:border-solid h-36 child:font-medium ">
-            <td className="rounded-bl-lg">Tối</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-              <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} />
-            </td>
-            <td></td>
-            <td></td>
-            <td className="rounded-br-lg"></td>
-          </tr> */}
         </tbody>
       </table>
     </div>

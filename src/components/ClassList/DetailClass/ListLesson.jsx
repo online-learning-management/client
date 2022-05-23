@@ -2,45 +2,48 @@ import React from 'react'
 
 import DetailLesson from './DetailLesson'
 
-let dataFake = [
+let data = [
   {
     id: 1,
-    content: 'Giới thiệu về môn học',
+    class_id: 'TACNTT06',
+    content: 'Buổi 1: Giới thiệu về môn học',
+    link_document: 'https://classroom.google.com/h',
+    link_class_online: 'https://meet.google.com/yhn-ggds-qyt?pli=1&authuser=0',
+    created_at: '2022-05-22T15:52:19.000000Z',
+    updated_at: '2022-05-22T15:52:19.000000Z',
   },
   {
     id: 2,
-    content: 'Làm quen cơ bản PHP',
+    class_id: 'TACNTT06',
+    content: 'Buổi 2: Làm quen cơ bản PHP',
+    link_document: 'https://classroom.google.com/h',
+    link_class_online: 'https://meet.google.com/yhn-ggds-qyt?pli=1&authuser=0',
+    created_at: '2022-05-22T15:52:19.000000Z',
+    updated_at: '2022-05-22T15:52:19.000000Z',
   },
   {
-    id: 3,
-    content: 'Phương thức GET, POST',
-  },
-  {
-    id: 4,
-    content: 'Cookies và Session trong PHP',
-  },
-  {
-    id: 5,
-    content: 'Làm quen với CSDL MySQL',
-  },
-  {
-    id: 6,
-    content: 'Kết nối CSDL MySQL',
-  },
-  {
-    id: 7,
-    content: 'Ôn tập tổng hợp',
+    id: 1,
+    class_id: 'TACNTT06',
+    content: 'Buổi 3: Phương thức GET, POST',
+    link_document: 'https://classroom.google.com/h',
+    link_class_online: 'https://meet.google.com/yhn-ggds-qyt?pli=1&authuser=0',
+    created_at: '2022-05-22T15:52:19.000000Z',
+    updated_at: '2022-05-22T15:52:19.000000Z',
   },
 ]
 
-export default function ListLesson() {
+export default function ListLesson(props) {
+  let { classId } = props
+  // console.log('classId: ', classId)
+  //data= call api bảng class_document bằng classId
+
   return (
     <div className="listLesson w-6/12">
-      {dataFake.map((item, index) => {
+      {data.map((item, index) => {
         return (
           <>
             <br></br>
-            <DetailLesson item={item} />
+            <DetailLesson data={item} />
           </>
         )
       })}

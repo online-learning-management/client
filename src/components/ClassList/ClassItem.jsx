@@ -23,7 +23,7 @@ export default function ClassItem(props) {
         sx={{
           width: '95%',
           borderRadius: '10px',
-          background: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
+          background: `${data?.bg_color}`,
         }}
       >
         {/* , background: `${data?.background_color}`  */}
