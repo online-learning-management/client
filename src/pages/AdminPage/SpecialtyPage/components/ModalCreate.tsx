@@ -39,7 +39,7 @@ type ModalCreateProps = {
   handleClose: () => void
 }
 
-export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
+export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
   // =================== STATES ===================
 
   // =================== DATA ===================
