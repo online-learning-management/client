@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import ListLesson from './ListLesson'
+
+import { AddBoxOutlined } from '@mui/icons-material'
 
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -15,24 +17,52 @@ import Stack from '@mui/material/Stack'
 import CardMedia from '@mui/material/CardMedia'
 import { CardActionArea } from '@mui/material'
 
+import { AuthContext } from 'src/contexts/authContext/AuthContext'
+
+// MODALS
+import ModalCreate from './ModalCreate'
+
+// REACT-QUERY-HOOKS
+import useClassQuery from 'src/hooks/reactQueryHooks/useClassQuery'
+
 export default function DetailClass() {
   let { id } = useParams()
+  const { user } = useContext(AuthContext)
+
+  // ======================STATE=======================
+  // modals
+  const [openModalCreate, setOpenModalCreate] = useState(false)
+
+  // ============ DATA ============
+  // react-query
+  const { data: classDetail } = useClassQuery.getById(id)
 
   return (
     <>
       <h1>{`Lớp học ${id}`}</h1>
       <br></br>
-      <p>
-        Môn học này sẽ giúp sinh viên nắm vững kiến thức nền tảng về PHP, và có khả năng xây dựng một website hoàn chỉnh
-        cả về front end và back end
-      </p>
+      <p>{classDetail?.data.description}</p>
       <br></br>
       <h3>Nội dung chương trình học:</h3>
       <br></br>
 
       <div className="detailClass flex w-full">
-        <ListLesson />
-        <div className="descriptionLesson w-6/12 flex flex-col items-center">
+        <div className="flex-1">
+          <ListLesson data={classDetail?.data.documents} />
+
+          {user && user?.role_id !== 'r3' && (
+            <Button
+              onClick={() => setOpenModalCreate(true)}
+              sx={{ mt: 2 }}
+              variant="outlined"
+              endIcon={<AddBoxOutlined />}
+            >
+              Thêm bài học
+            </Button>
+          )}
+        </div>
+
+        <div className="descriptionLesson flex-1 flex flex-col items-center">
           <br></br>
           <Card sx={{ width: 600 }}>
             <CardActionArea>
@@ -63,6 +93,9 @@ export default function DetailClass() {
           </Card>
         </div>
       </div>
+
+      {/* CREATE MODAL */}
+      <ModalCreate open={openModalCreate} handleClose={() => setOpenModalCreate(false)} classId={id} />
     </>
   )
 }

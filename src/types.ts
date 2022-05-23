@@ -55,9 +55,19 @@ export type ClassType = {
   image: string
   description: string
   bg_color: string
+  documents: DocumentType[]
 
   user_id: number
   subject_id: number
+}
+
+export type DocumentType = {
+  id?: number
+  name: string
+  link?: string
+  document?: string
+
+  class_id: string
 }
 
 export type StudentClassType = {
