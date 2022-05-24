@@ -1,10 +1,10 @@
 import DetailLesson from './DetailLesson'
 
 export default function ListLesson(props) {
-  let { data, isStudentInThisClass } = props
+  let { data, isInThisClass } = props
   return (
     <>
-      {isStudentInThisClass ? (
+      {isInThisClass ? (
         <div className="listLesson w-full">
           {data &&
             data.map((item) => {

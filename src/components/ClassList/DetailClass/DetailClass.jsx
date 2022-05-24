@@ -28,12 +28,11 @@ import ModalCreate from './ModalCreate'
 // REACT-QUERY-HOOKS
 import useClassQuery from '../../../hooks/reactQueryHooks/useClassQuery'
 import useStudentQuery from '../../../hooks/reactQueryHooks/useStudentQuery'
+import useTeacherQuery from '../../../hooks/reactQueryHooks/useTeacherQuery'
 
 export default function DetailClass() {
   let { id } = useParams()
   const { user } = useContext(AuthContext)
-
-  const { data: student } = useStudentQuery.getById(user?.role_id === 'r3' && user?.user_id)
 
   // ======================STATE=======================
   // modals
@@ -42,12 +41,17 @@ export default function DetailClass() {
   // ============ DATA ============
   // react-query
   const { data: classDetail } = useClassQuery.getById(id)
+  const { data: student } = useStudentQuery.getById(user?.role_id === 'r3' && user?.user_id)
+  const { data: teacher } = useTeacherQuery.getById(user?.role_id === 'r2' && user?.user_id)
 
   console.log('detailClass: ', classDetail?.data)
   // console.log('subject: ', classDetail?.data?.teacher?.user?.full_name)
   // console.log('student: ', student?.data?.student?.student_class)
+  console.log('student: ', student?.data)
 
-  let arrClassOfStudent = (arr, id) => {
+  console.log('teacher: ', teacher?.data)
+
+  let checkStudentInClass = (arr, id) => {
     let check = false
     arr &&
       arr.map((item, index) => {
@@ -57,8 +61,25 @@ export default function DetailClass() {
       })
     return check
   }
-  let isStudentInThisClass = arrClassOfStudent(student?.data?.student?.student_class, id)
-  console.log('condition: ', isStudentInThisClass)
+
+  let checkTeacherInClass = (arr, id) => {
+    let check = false
+    arr &&
+      arr.map((item, index) => {
+        if (item && item.class_id === id) {
+          check = true
+        }
+      })
+    return check
+  }
+  let isInThisClass
+  if (user?.role_id === 'r3') {
+    isInThisClass = checkStudentInClass(student?.data?.student?.student_class, id)
+  }
+  if (user?.role_id === 'r2') {
+    isInThisClass = checkTeacherInClass(teacher?.data?.teacher?.classes, id)
+  }
+  console.log('condition: ', isInThisClass)
 
   return (
     <>
@@ -71,9 +92,9 @@ export default function DetailClass() {
 
       <div className="detailClass flex w-full">
         <div className="flex-1">
-          <ListLesson data={classDetail?.data?.documents} isStudentInThisClass={isStudentInThisClass} />
+          <ListLesson data={classDetail?.data?.documents} isInThisClass={isInThisClass} />
 
-          {user && user?.role_id !== 'r3' && (
+          {user && user?.role_id !== 'r3' && isInThisClass && (
             <Button
               onClick={() => setOpenModalCreate(true)}
               sx={{ mt: 2 }}
