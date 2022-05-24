@@ -19,7 +19,7 @@ export const COLUMNS: readonly ColumnType[] = [
   {
     Header: 'Ngày sinh',
     accessor: 'date_of_birth',
-    Cell: (props) => moment(props.value).format('DD-MM-YYYY'),
+    Cell: (props) => moment(props.value).format('DD/MM/YYYY'),
   },
   {
     Header: 'Giới tính',

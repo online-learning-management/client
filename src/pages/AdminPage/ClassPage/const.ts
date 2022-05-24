@@ -15,7 +15,7 @@ export const COLUMNS: readonly ColumnType[] = [
   {
     Header: 'Ngày bắt đầu',
     accessor: 'start_date',
-    Cell: (props) => moment(props.value).format('DD-MM-YYYY'),
+    Cell: (props) => moment(props.value).format('DD/MM/YYYY'),
   },
   {
     Header: 'Sĩ số tối đa',
