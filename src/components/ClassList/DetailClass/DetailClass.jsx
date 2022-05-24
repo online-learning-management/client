@@ -19,15 +19,21 @@ import { CardActionArea } from '@mui/material'
 
 import { AuthContext } from '../../../contexts/authContext/AuthContext'
 
+//moment
+import moment from 'moment'
+
 // MODALS
 import ModalCreate from './ModalCreate'
 
 // REACT-QUERY-HOOKS
 import useClassQuery from '../../../hooks/reactQueryHooks/useClassQuery'
+import useStudentQuery from '../../../hooks/reactQueryHooks/useStudentQuery'
 
 export default function DetailClass() {
   let { id } = useParams()
   const { user } = useContext(AuthContext)
+
+  const { data: student } = useStudentQuery.getById(user?.role_id === 'r3' && user?.user_id)
 
   // ======================STATE=======================
   // modals
@@ -37,8 +43,22 @@ export default function DetailClass() {
   // react-query
   const { data: classDetail } = useClassQuery.getById(id)
 
-  // console.log('detailClass: ', classDetail?.data)
+  console.log('detailClass: ', classDetail?.data)
   // console.log('subject: ', classDetail?.data?.teacher?.user?.full_name)
+  // console.log('student: ', student?.data?.student?.student_class)
+
+  let arrClassOfStudent = (arr, id) => {
+    let check = false
+    arr &&
+      arr.map((item, index) => {
+        if (item && item.class_id === id) {
+          check = true
+        }
+      })
+    return check
+  }
+  let isStudentInThisClass = arrClassOfStudent(student?.data?.student?.student_class, id)
+  console.log('condition: ', isStudentInThisClass)
 
   return (
     <>
@@ -51,7 +71,7 @@ export default function DetailClass() {
 
       <div className="detailClass flex w-full">
         <div className="flex-1">
-          <ListLesson data={classDetail?.data?.documents} />
+          <ListLesson data={classDetail?.data?.documents} isStudentInThisClass={isStudentInThisClass} />
 
           {user && user?.role_id !== 'r3' && (
             <Button
@@ -67,9 +87,9 @@ export default function DetailClass() {
 
         <div className="descriptionLesson flex-1 flex flex-col items-center">
           <br></br>
-          <Card sx={{ width: 600, background: `${classDetail?.data.bg_color}`, borderRadius: '10px' }}>
+          <Card sx={{ width: 500, background: `${classDetail?.data.bg_color}`, borderRadius: '10px' }}>
             <CardActionArea>
-              <CardMedia component="img" height="360" image={`${classDetail?.data.image}`} alt="green iguana" />
+              <CardMedia component="img" height="200" image={`${classDetail?.data.image}`} alt="green iguana" />
               <CardContent className="ml-4">
                 <Typography gutterBottom variant="h5" component="div" className="text-white">
                   {classDetail?.data?.subject?.subject_name}
@@ -81,10 +101,10 @@ export default function DetailClass() {
                   Thời lương: 3 tháng
                 </Typography>
                 <Typography variant="body1" color="white">
-                  {`Ngày bắt đầu: ${classDetail?.data?.start_date}`}
+                  {`Ngày bắt đầu: ${moment(classDetail?.data?.start_date).format('DD/MM/YYYY')}`}
                 </Typography>
                 <Typography variant="body1" color="white">
-                  Kết thúc: 30/06/2022
+                  Ngày kết thúc: 30/06/2022
                 </Typography>
               </CardContent>
             </CardActionArea>

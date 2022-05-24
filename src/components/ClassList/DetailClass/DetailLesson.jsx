@@ -51,7 +51,7 @@ export default function DetailLesson(props) {
           {open ? <ExpandLess /> : <ExpandMore />}
           {user && user?.role_id !== 'r3' && (
             <IconButton color="success" onClick={() => setOpenModalUpdate({ visible: true, data: data })}>
-              <EditOutlined />
+              <EditOutlined sx={{ color: 'white' }} />
             </IconButton>
           )}
         </ListItemButton>
