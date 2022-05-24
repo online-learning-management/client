@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { UserType } from 'src/types'
 
 type ColumnType = {
@@ -18,6 +19,7 @@ export const COLUMNS: readonly ColumnType[] = [
   {
     Header: 'Ngày sinh',
     accessor: 'date_of_birth',
+    Cell: (props) => moment(props.value).format('DD-MM-YYYY'),
   },
   {
     Header: 'Giới tính',
