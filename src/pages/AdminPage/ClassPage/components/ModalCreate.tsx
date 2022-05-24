@@ -69,7 +69,7 @@ type ModalCreateProps = {
   handleClose: () => void
 }
 
-export default function ModalUpdate({ open, handleClose }: ModalCreateProps) {
+export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
   // =================== STATES ===================
   const clone2DArray = useMemo(() => TWO_D_ARRAY.map((row) => row.slice()), [])
   const [schedules, setSchedules] = useState<number[][]>(clone2DArray)

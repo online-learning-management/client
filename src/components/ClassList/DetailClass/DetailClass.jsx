@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import ListLesson from './ListLesson'
+
+import { AddBoxOutlined } from '@mui/icons-material'
 
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -15,75 +17,73 @@ import Stack from '@mui/material/Stack'
 import CardMedia from '@mui/material/CardMedia'
 import { CardActionArea } from '@mui/material'
 
-import classApi from '../../.././apis/classApi'
-import teacherApi from '../../.././apis/teacherApi'
+import { AuthContext } from '../../../contexts/authContext/AuthContext'
+
+// MODALS
+import ModalCreate from './ModalCreate'
+
+// REACT-QUERY-HOOKS
+import useClassQuery from '../../../hooks/reactQueryHooks/useClassQuery'
 
 export default function DetailClass() {
   let { id } = useParams()
+  const { user } = useContext(AuthContext)
 
-  let [detailClass, setDetailClass] = useState({})
-  let [teacherData, setTeacherData] = useState({})
+  // ======================STATE=======================
+  // modals
+  const [openModalCreate, setOpenModalCreate] = useState(false)
 
-  useEffect(async () => {
-    try {
-      let data = await classApi.getById(id)
-      if (data && data.statusText === 'OK' && data.data) {
-        setDetailClass(data.data.data)
-      }
-    } catch (e) {
-      console.log(e)
-    }
-  }, [])
+  // ============ DATA ============
+  // react-query
+  const { data: classDetail } = useClassQuery.getById(id)
 
-  // console.log('userId: ', detailClass?.user_id)
-
-  // let getTeacherData = async () => {
-  //   try {
-  //     let data = await teacherApi.getById(detailClass?.user_id)
-  //     if (data && data.statusText === 'OK') {
-  //       setTeacherData(data?.data?.data)
-  //     }
-  //   } catch (e) {
-  //     console.log(e)
-  //   }
-  // }
-
-  // console.log('check data detailClass: ', detailClass?.start_date)
-
-  // console.log('check teacher data: ', teacherData)
-
-  // console.log('time: ', moment().zone('2013-03-07T07:00:00-08:00'))
+  // console.log('detailClass: ', classDetail?.data)
+  // console.log('subject: ', classDetail?.data?.teacher?.user?.full_name)
 
   return (
     <>
-      <h1>{`Lớp học ${id}`}</h1>
+      <h1>{classDetail?.data?.subject?.subject_name}</h1>
       <br></br>
-      <p>{detailClass?.description}</p>
+      <p>{classDetail?.data.description}</p>
       <br></br>
       <h3>Nội dung chương trình học:</h3>
       <br></br>
 
       <div className="detailClass flex w-full">
-        <ListLesson classId={id} />
-        <div className="descriptionLesson w-6/12 flex flex-col items-center">
+        <div className="flex-1">
+          <ListLesson data={classDetail?.data?.documents} />
+
+          {user && user?.role_id !== 'r3' && (
+            <Button
+              onClick={() => setOpenModalCreate(true)}
+              sx={{ mt: 2 }}
+              variant="outlined"
+              endIcon={<AddBoxOutlined />}
+            >
+              Thêm bài học
+            </Button>
+          )}
+        </div>
+
+        <div className="descriptionLesson flex-1 flex flex-col items-center">
           <br></br>
-          <Card sx={{ width: 600, background: `${detailClass.bg_color}`, borderRadius: '10px' }}>
+          <Card sx={{ width: 600, background: `${classDetail?.data.bg_color}`, borderRadius: '10px' }}>
             <CardActionArea>
-              <CardMedia component="img" height="360" image={`${detailClass.image}`} alt="green iguana" />
-              <CardContent>
+              <CardMedia component="img" height="360" image={`${classDetail?.data.image}`} alt="green iguana" />
+              <CardContent className="ml-4">
                 <Typography gutterBottom variant="h5" component="div" className="text-white">
-                  {detailClass?.subject?.subject_name}
+                  {classDetail?.data?.subject?.subject_name}
                 </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  {/* {`Giáo viên: ${teacherData?.full_name}`} */}
+                <Typography variant="body1" color="white">
+                  {`Giáo viên: ${classDetail?.data?.teacher?.user?.full_name}`}
                 </Typography>
-                <Typography variant="body1" color="text.secondary">
+                <Typography variant="body1" color="white">
                   Thời lương: 3 tháng
                 </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  {detailClass.start_date}
+                <Typography variant="body1" color="white">
+                  {`Ngày bắt đầu: ${classDetail?.data?.start_date}`}
                 </Typography>
-                <Typography variant="body1" color="text.secondary">
+                <Typography variant="body1" color="white">
                   Kết thúc: 30/06/2022
                 </Typography>
               </CardContent>
@@ -91,6 +91,9 @@ export default function DetailClass() {
           </Card>
         </div>
       </div>
+
+      {/* CREATE MODAL */}
+      <ModalCreate open={openModalCreate} handleClose={() => setOpenModalCreate(false)} classId={id} />
     </>
   )
 }

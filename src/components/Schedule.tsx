@@ -20,7 +20,7 @@ export default function Schedule({}: Props) {
 
   const Subject = ({ name, time, classId }: { name: string; time: string; classId: string }) => {
     return (
-      <Link to={`detail-class-${classId}`}>
+      <Link to={`detail-class-${classId}`} className="no-underline">
         <div className="bg-purple text-white text-base rounded mb-2">
           <p className="my-1">{name}</p>
           <p className="my-1">{time}</p>

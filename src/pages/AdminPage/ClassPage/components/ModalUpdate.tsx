@@ -44,7 +44,7 @@ type FormInputs = {
   max_number_students: number
   image: string
   description: string
-  bg_color: string
+  bg_color?: string
 
   user_id: number
   subject_id: number
@@ -57,7 +57,7 @@ const schema: SchemaOf<FormInputs> = object().shape({
   max_number_students: number().required('Nhập sĩ số tối đa!').default(70),
   image: string().required('Nhập link ảnh!').default(' '),
   description: string().required('Nhập mô tả lớp học!').default(' '),
-  bg_color: string().required('Nhập mã màu!').default(' '),
+  bg_color: string().default(' '),
 
   user_id: number().required('Chọn giảng viên!').default(0),
   subject_id: number().required('Chọn môn học!').default(0),
@@ -110,7 +110,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
 
   // =================== EFFECT ===================
   useEffect(() => {
-    color?.hex && setValue('bg_color', color?.hex)
+    color?.hex && setValue('bg_color', color?.hex || ' ')
   }, [color])
 
   useEffect(() => {
@@ -179,7 +179,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
           </Typography>
 
           <TextField
-            autoFocus
+            disabled
             label="Mã lớp học"
             size="small"
             fullWidth
@@ -369,7 +369,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
 
           <Box py={2}>
             <Button fullWidth variant="contained" type="submit">
-              Tạo mới
+              Lưu thay đổi
             </Button>
           </Box>
         </Stack>

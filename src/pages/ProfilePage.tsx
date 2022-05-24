@@ -3,7 +3,7 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { Avatar, Box, Button, Stack, styled } from '@mui/material'
 import { CameraAlt } from '@mui/icons-material'
 
-import Image from 'src/images/bg.jpeg'
+import Image from 'src/images/background.jpg'
 import { AuthContext } from 'src/contexts/authContext/AuthContext'
 import userApi from 'src/apis/userApi'
 import { END_POINT_IMG } from 'src/const'
