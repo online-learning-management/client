@@ -13,11 +13,12 @@ import CardMedia from '@mui/material/CardMedia'
 import { CardActionArea } from '@mui/material'
 
 import { Link } from 'react-router-dom'
+import useClassQuery from '../../hooks/reactQueryHooks/useClassQuery'
 
 import Carousel from 'react-elastic-carousel'
 
 let BannerItem = (props) => {
-  let { content, title, id, img, bg } = props
+  let { description, subjectName, id, image, bgColor } = props
   return (
     <Box
       sx={{
@@ -25,7 +26,7 @@ let BannerItem = (props) => {
         height: 300,
         display: 'flex',
         alignItems: 'center',
-        background: `${bg}`,
+        background: `${bgColor}`,
         borderRadius: '10px',
         fontFamily: 'Roboto Slab',
         orientation: 'horizontal',
@@ -34,20 +35,25 @@ let BannerItem = (props) => {
     >
       <CardContent sx={{ color: 'white' }}>
         <Typography gutterBottom variant="h4" component="div">
-          {title}
+          {subjectName}
         </Typography>
         <Typography variant="h6" color="text.secondary">
-          {content}
+          {description}
         </Typography>
       </CardContent>
 
-      <img src={`${img}`} alt="" className=" w-2/5 h-full bg-opacity-50" />
+      <img src={`${image}`} alt="" className=" w-2/5 h-full bg-opacity-50" />
     </Box>
   )
 }
 
 export default function BannerSlider() {
   const carouselRef = React.useRef(null)
+
+  //react query
+  const { data } = useClassQuery.getAll({ sort_by: 'current_number_students', order: 'desc', limit: 10 })
+  let dataClass = data?.data
+
   const onNextStart = (currentItem, nextItem) => {
     if (currentItem.index === nextItem.index) {
       carouselRef.current.goTo(0)
@@ -64,69 +70,19 @@ export default function BannerSlider() {
         ref={carouselRef}
         onNextStart={onNextStart}
       >
-        {fakeData.map((item, index) => {
-          return <BannerItem content={item?.content} id={item?.id} title={item?.title} bg={item?.bg} img={item?.img} />
-        })}
+        {dataClass &&
+          dataClass.map((item, index) => {
+            return (
+              <BannerItem
+                description={item?.description}
+                id={item?.class_id}
+                subjectName={item?.subject?.subject_name}
+                bgColor={item?.bg_color}
+                image={item?.image}
+              />
+            )
+          })}
       </Carousel>
     </>
   )
 }
-
-let fakeData = [
-  {
-    id: 1,
-    title: 'Lập trình web với ReactJS',
-    content: 'Môn học giúp các bạn có thể nẳm được cách bị ong đốt hiệu quả',
-    img: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_web_ReactJS.png',
-    bg: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
-  },
-  {
-    id: 1,
-    title: 'Lập trình Java',
-    content: 'Môn học giúp các bạn có thể nẳm được cách bị ong đốt hiệu quả',
-    bg: 'linear-gradient(to right, #fc4a1a, #f7b733)',
-    img: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_03_youtube.png',
-  },
-  {
-    id: 1,
-    title: 'Lập trình web với ReactJS',
-    content: 'Môn học giúp các bạn có thể nẳm được cách bị ong đốt hiệu quả',
-    img: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_web_ReactJS.png',
-    bg: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
-  },
-  {
-    id: 1,
-    title: 'Lập trình Java',
-    content: 'Môn học giúp các bạn có thể nẳm được cách bị ong đốt hiệu quả',
-    bg: 'linear-gradient(to right, #fc4a1a, #f7b733)',
-    img: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_01_2.png',
-  },
-  {
-    id: 1,
-    title: 'Lập trình web với ReactJS',
-    content: 'Môn học giúp các bạn có thể nẳm được cách bị ong đốt hiệu quả',
-    img: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_web_ReactJS.png',
-    bg: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
-  },
-  {
-    id: 1,
-    title: 'Lập trình Java',
-    content: 'Môn học giúp các bạn có thể nẳm được cách bị ong đốt hiệu quả',
-    bg: 'linear-gradient(to right, #fc4a1a, #f7b733)',
-    img: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_01_2.png',
-  },
-  {
-    id: 1,
-    title: 'Lập trình web với ReactJS',
-    content: 'Môn học giúp các bạn có thể nẳm được cách bị ong đốt hiệu quả',
-    img: 'https://files.fullstack.edu.vn/f8-prod/banners/Banner_web_ReactJS.png',
-    bg: 'linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)',
-  },
-  // {
-  //   id: 1,
-  //   title: 'Lập trình web bằng PHP',
-  //   content: 'Môn học giúp các bạn có thể nẳm được cách bị ong đốt hiệu quả',
-  //   bg: 'linear-gradient(to right, #fc4a1a, #f7b733)',
-  //   img: 'src/images/laravel.png',
-  // },
-]

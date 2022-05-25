@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import RegisterModal from './RegisterModal'
 import useStudentQuery from '../../hooks/reactQueryHooks/useStudentQuery'
 import { AuthContext } from '../../contexts/authContext/AuthContext'
+import moment from 'moment'
 
 import Subject from './Subject'
 
@@ -36,8 +37,10 @@ export default function ScheduleRegister(Props) {
     <div>
       <RegisterModal open={open} handleOpen={handleOpen} handleClose={handleClose} day={day} session={session} />
       <p className="my-2 text-center font-Inter text-2xl font-normal">
-        06 <span className="font-black text-[28px]">Tháng 4</span> 2022
+        {moment().format('DD ')}
+        <span className="font-black text-[28px]">{moment().format('[Tháng] M')}</span> {moment().format('YYYY')}
       </p>
+      <br></br>
       <table
         style={{ borderSpacing: 0 }}
         className="border-black w-full text-center table-fixed text-xl font-Inter rounded-lg shadow-fakeBorderTable"

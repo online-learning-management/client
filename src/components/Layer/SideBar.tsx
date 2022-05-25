@@ -238,73 +238,75 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
           )}
 
           {/* COLLAPSE BUTTON */}
-          <Box>
-            {/* <StyledNavLink to="/user-management"> */}
-            <ListItemButton
-              onClick={() => setOpenCollapseItem(!openCollapseItem)}
-              sx={{
-                minHeight: 44,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-                pr: 1.5,
-                borderRadius: 2,
-              }}
-            >
-              <ListItemIcon
+          {user && user?.role_id === 'r1' && (
+            <Box>
+              {/* <StyledNavLink to="/user-management"> */}
+              <ListItemButton
+                onClick={() => setOpenCollapseItem(!openCollapseItem)}
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
+                  minHeight: 44,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                  pr: 1.5,
+                  borderRadius: 2,
                 }}
               >
-                <AdminPanelSettingsOutlinedIcon />
-              </ListItemIcon>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <AdminPanelSettingsOutlinedIcon />
+                </ListItemIcon>
 
-              <ListItemText primary="Quản lý" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="Quản lý" sx={{ opacity: open ? 1 : 0 }} />
 
-              {openCollapseItem ? <KeyboardArrowUpOutlined /> : <KeyboardArrowDownOutlined />}
-            </ListItemButton>
-            {/* </StyledNavLink> */}
+                {openCollapseItem ? <KeyboardArrowUpOutlined /> : <KeyboardArrowDownOutlined />}
+              </ListItemButton>
+              {/* </StyledNavLink> */}
 
-            <Collapse in={openCollapseItem} timeout="auto" unmountOnExit>
-              <List
-                component="div"
-                disablePadding
-                sx={{
-                  mt: 1,
-                  position: 'relative',
-                  '&:after': {
-                    content: "''",
-                    position: 'absolute',
-                    left: '30px',
-                    top: 0,
-                    height: '100%',
-                    width: '1px',
-                    opacity: 1,
-                    bgcolor: 'primary.main',
-                  },
-                }}
-              >
-                {SIDEBAR_TOP_ITEMS.map(({ text, path }) => (
-                  <StyledCollapseNavLink key={text} to={path}>
-                    <ListItemButton disableRipple={true}>
-                      {/* <ListItemIcon
-                        sx={{
-                          minWidth: 0,
-                          mr: open ? 3 : 'auto',
-                          justifyContent: 'center',
-                        }}
-                      >
-                        {icon}
-                      </ListItemIcon> */}
+              <Collapse in={openCollapseItem} timeout="auto" unmountOnExit>
+                <List
+                  component="div"
+                  disablePadding
+                  sx={{
+                    mt: 1,
+                    position: 'relative',
+                    '&:after': {
+                      content: "''",
+                      position: 'absolute',
+                      left: '30px',
+                      top: 0,
+                      height: '100%',
+                      width: '1px',
+                      opacity: 1,
+                      bgcolor: 'primary.main',
+                    },
+                  }}
+                >
+                  {SIDEBAR_TOP_ITEMS.map(({ text, path }) => (
+                    <StyledCollapseNavLink key={text} to={path}>
+                      <ListItemButton disableRipple={true}>
+                        {/* <ListItemIcon
+                                  sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                  }}
+                                >
+                                  {icon}
+                                </ListItemIcon> */}
 
-                      <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                    </ListItemButton>
-                  </StyledCollapseNavLink>
-                ))}
-              </List>
-            </Collapse>
-          </Box>
+                        <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                      </ListItemButton>
+                    </StyledCollapseNavLink>
+                  ))}
+                </List>
+              </Collapse>
+            </Box>
+          )}
         </Box>
 
         {/* BOTTOM SIDEBAR ITEMS */}

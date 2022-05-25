@@ -118,7 +118,7 @@ function App() {
       <Route
         path="user-management"
         element={
-          user ? (
+          user && user?.role_id === 'r1' ? (
             <Layer>
               <AdminPage />
             </Layer>

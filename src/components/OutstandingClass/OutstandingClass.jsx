@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography'
 import { Grid } from '@mui/material'
 import { flexbox, width } from '@mui/system'
 import Stack from '@mui/material/Stack'
+import { Link } from 'react-router-dom'
 
 const bull = <Box component="span" sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}></Box>
 
@@ -20,19 +21,19 @@ export default function OutstandingClass(props) {
         height: '200px',
         m: '16px',
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
-        background: `${data?.subject?.background_color}`,
+        background: `${data?.bg_color}`,
         borderRadius: '10px',
         fontFamily: 'Roboto Slab',
         orientation: 'horizontal',
       }}
     >
-      <img src={`${data?.subject?.image}`} alt="" className=" w-10/12 h-10/12 bg-opacity-50" />
-      <Typography variant="h6" component="div" className=" text-white">
-        {data?.subject?.subject_name}
-      </Typography>
+      <Link to={`classes/detail-class-${id}`} className="no-underline flex flex-col items-center ">
+        <img src={`${data?.image}`} alt="" className=" w-10/12 h-10/12 bg-opacity-50" />
+        <Typography variant="h6" component="div" className=" text-white">
+          {data?.subject?.subject_name}
+        </Typography>
+      </Link>
     </Box>
   )
 }

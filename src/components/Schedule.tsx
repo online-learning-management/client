@@ -3,6 +3,7 @@ import { AuthContext } from 'src/contexts/authContext/AuthContext'
 import useStudentQuery from 'src/hooks/reactQueryHooks/useStudentQuery'
 import useTeacherQuery from 'src/hooks/reactQueryHooks/useTeacherQuery'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
 
 type Props = {}
 
@@ -121,8 +122,10 @@ export default function Schedule({}: Props) {
   return (
     <div>
       <p className="my-2 text-center font-Inter text-2xl font-normal">
-        06 <span className="font-black text-[28px]">Tháng 4</span> 2022
+        {moment().format('DD ')}
+        <span className="font-black text-[28px]">{moment().format('[Tháng] M')}</span> {moment().format('YYYY')}
       </p>
+      <br></br>
       <table
         style={{ borderSpacing: 0 }}
         className="border-black w-full text-center table-fixed text-xl font-Inter rounded-lg shadow-fakeBorderTable"
