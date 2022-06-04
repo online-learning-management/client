@@ -90,17 +90,18 @@ function App() {
           )
         }
       />
-
-      {user?.role_id === 'r3' && (
-        <Route
-          path="register-course"
-          element={
+      <Route
+        path="register-course"
+        element={
+          user && user?.role_id === 'r3' ? (
             <Layer>
               <RegisterCourse />
             </Layer>
-          }
-        />
-      )}
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
 
       <Route
         path="profile"
