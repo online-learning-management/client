@@ -82,11 +82,11 @@ const SIDEBAR_TOP = [
     icon: <SchoolOutlinedIcon />,
     path: '/classes',
   },
-  {
-    text: 'Thời khóa biểu',
-    icon: <CalendarTodayIcon fontSize="small" />,
-    path: '/schedule',
-  },
+  // {
+  //   text: 'Thời khóa biểu',
+  //   icon: <CalendarTodayIcon fontSize="small" />,
+  //   path: '/schedule',
+  // },
   {
     text: 'Đăng ký học phần',
     icon: <SchoolOutlinedIcon />,
