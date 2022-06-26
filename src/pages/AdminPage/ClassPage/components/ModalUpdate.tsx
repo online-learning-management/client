@@ -48,7 +48,7 @@ type FormInputs = {
 
   user_id: number
   subject_id: number
-  specialty_id: number
+  // specialty_id: number
 }
 
 const schema: SchemaOf<FormInputs> = object().shape({
@@ -61,7 +61,7 @@ const schema: SchemaOf<FormInputs> = object().shape({
 
   user_id: number().required('Chọn giảng viên!').default(0),
   subject_id: number().required('Chọn môn học!').default(0),
-  specialty_id: number().required('Chọn chuyên khoa!').default(0),
+  // specialty_id: number().required('Chọn chuyên khoa!').default(0),
 })
 
 type ModalUpdateProps = {
@@ -117,9 +117,9 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
     initData && reset(initData)
   }, [initData])
 
-  useEffect(() => {
-    setSpecialtySelected(watch('specialty_id'))
-  }, [watch('specialty_id')])
+  // useEffect(() => {
+  //   setSpecialtySelected(watch('specialty_id'))
+  // }, [watch('specialty_id')])
 
   useEffect(() => {
     setTeacherSelected(watch('user_id'))
@@ -190,7 +190,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
             {...register('class_id')}
           />
 
-          <Controller
+          {/* <Controller
             name="specialty_id"
             control={control}
             render={({ field, fieldState }) => (
@@ -210,14 +210,14 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
                 ))}
               </TextField>
             )}
-          />
+          /> */}
 
           <Controller
             name="subject_id"
             control={control}
             render={({ field, fieldState }) => (
               <TextField
-                disabled={!watch('specialty_id')}
+                // disabled={!watch('specialty_id')}
                 label="Môn học"
                 size="small"
                 fullWidth
@@ -240,7 +240,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
             control={control}
             render={({ field, fieldState }) => (
               <TextField
-                disabled={!watch('specialty_id')}
+                // disabled={!watch('specialty_id')}
                 label="Giảng viên"
                 size="small"
                 fullWidth
