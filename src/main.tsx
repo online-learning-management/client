@@ -28,7 +28,7 @@ ReactDOM.render(
           <AuthContextProvider>
             <App />
             <ToastContainer position="top-right" />
-            <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+            {/* <ReactQueryDevtools initialIsOpen={false} position="bottom-right" /> */}
           </AuthContextProvider>
         </QueryClientProvider>
       </BrowserRouter>
