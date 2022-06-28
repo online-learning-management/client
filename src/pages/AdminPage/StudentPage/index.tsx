@@ -22,7 +22,7 @@ import {
 import { LoadingButton } from '@mui/lab'
 
 // MUI ICONS
-import { Loop, EditOutlined, HighlightOffOutlined } from '@mui/icons-material'
+import { Loop, EditOutlined, HighlightOffOutlined, CalendarMonthOutlined } from '@mui/icons-material'
 
 // REACT-TABLE
 import { useTable, useSortBy } from 'react-table'
@@ -39,6 +39,8 @@ import { COLUMNS, FORM_CREATE_LABEL } from './const'
 // MODALS
 import ModalCreate from './components/ModalCreate'
 import ModalUpdate from './components/ModalUpdate'
+import ModalCustom from 'src/components/ModalCustom'
+import Schedule from 'src/components/Schedule'
 
 // REACT-QUERY-HOOKS
 import useStudentQuery from 'src/hooks/reactQueryHooks/useStudentQuery'
@@ -54,7 +56,10 @@ export default function StudentPage() {
   // modals
   const [openModalCreate, setOpenModalCreate] = useState(false)
   const [openModalUpdate, setOpenModalUpdate] = useState(false)
+  const [openModalSchedule, setOpenModalSchedule] = useState(false)
+  const [studentId, setStudentId] = useState('')
 
+  // handle delete
   const [showDialog, setShowDialog] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [deleteId, setDeleteId] = useState()
@@ -141,7 +146,7 @@ export default function StudentPage() {
                     <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>
                   ))}
 
-                  <TableCell align="left" sx={{ width: '140px' }}>
+                  <TableCell align="left" sx={{ width: '160px' }}>
                     <Stack direction="row">
                       <IconButton
                         color="error"
@@ -161,6 +166,16 @@ export default function StudentPage() {
                         }}
                       >
                         <EditOutlined />
+                      </IconButton>
+
+                      <IconButton
+                        color="primary"
+                        onClick={() => {
+                          setOpenModalSchedule(true)
+                          setStudentId(String(row.original.user_id))
+                        }}
+                      >
+                        <CalendarMonthOutlined />
                       </IconButton>
 
                       {/* <IconButton color="info">
@@ -195,6 +210,10 @@ export default function StudentPage() {
         initData={queryData?.data || null}
         handleClose={() => setOpenModalUpdate(false)}
       />
+
+      <ModalCustom width={1200} open={openModalSchedule} onClose={() => setOpenModalSchedule(false)}>
+        <Schedule student_id={studentId} />
+      </ModalCustom>
 
       <Dialog open={showDialog} onClose={() => setShowDialog(false)}>
         <DialogTitle>Bạn có chắc muốn xóa?</DialogTitle>
