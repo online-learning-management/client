@@ -70,11 +70,11 @@ export default function Navbar({ open, drawerWidth, handleDrawerToggle }: Navbar
         </Typography>
 
         <Box sx={{ marginLeft: 'auto' }}>
-          <IconButton size="large" aria-label="show 17 new notifications" sx={{ marginRight: '8px' }}>
+          {/* <IconButton size="large" aria-label="show 17 new notifications" sx={{ marginRight: '8px' }}>
             <Badge badgeContent={17} color="error">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
 
           <Tooltip title="View profile">
             <IconButton sx={{ p: 0 }}>
