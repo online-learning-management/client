@@ -10,7 +10,7 @@ import TeacherPage from './pages/AdminPage/TeacherPage'
 import StudentPage from './pages/AdminPage/StudentPage'
 import ClassManagePage from './pages/AdminPage/ClassPage'
 import SubjectPage from './pages/AdminPage/SubjectPage'
-// import SpecialtyPage from './pages/AdminPage/SpecialtyPage'
+import SpecialtyPage from './pages/AdminPage/SpecialtyPage'
 import { AuthContext } from './contexts/authContext/AuthContext'
 
 import DetailClass from './components/ClassList/DetailClass/DetailClass.jsx'
@@ -136,7 +136,7 @@ function App() {
         <Route path="student" element={<StudentPage />} />
         <Route path="classes" element={<ClassManagePage />} />
         <Route path="subjects" element={<SubjectPage />} />
-        {/* <Route path="specialties" element={<SpecialtyPage />} /> */}
+        <Route path="specialties" element={<SpecialtyPage />} />
       </Route>
     </Routes>
   )

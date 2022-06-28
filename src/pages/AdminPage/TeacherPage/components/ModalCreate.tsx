@@ -52,7 +52,7 @@ type FormInputs = {
   confirm_password: string
   address: string
   date_of_birth: string
-  // specialty_id?: string
+  specialty_id?: string
   gender: string
   avatar?: string
 }
@@ -67,7 +67,7 @@ const schema: SchemaOf<FormInputs> = object().shape({
     .oneOf([ref('password'), null], 'Mật khẩu không trùng khớp!'),
   address: string().required('Yêu cầu nhập địa chỉ!'),
   date_of_birth: string().required('Yêu cầu nhập ngày sinh!'),
-  // specialty_id: string(),
+  specialty_id: string(),
   gender: string().required('Yêu cầu chọn giới tính!'),
   avatar: string(),
 })
@@ -101,7 +101,7 @@ export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
   const onSuccess = () => handleClose()
 
   // react-query
-  // const { data: specialties } = useSpecialtyQuery.getAll()
+  const { data: specialties } = useSpecialtyQuery.getAll()
 
   const { mutate: create } = useTeacherMutation.create(onSuccess)
 
@@ -255,7 +255,7 @@ export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
               )}
             />
 
-            {/* <Controller
+            <Controller
               name="specialty_id"
               control={control}
               render={({ field }) => (
@@ -267,7 +267,7 @@ export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
                   ))}
                 </TextField>
               )}
-            /> */}
+            />
           </Stack>
 
           <Box>
