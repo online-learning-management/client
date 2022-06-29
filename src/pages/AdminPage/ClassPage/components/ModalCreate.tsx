@@ -30,7 +30,7 @@ import { SubjectType } from 'src/types'
 // REACT-QUERY-HOOKS
 import useTeacherQuery from 'src/hooks/reactQueryHooks/useTeacherQuery'
 import useSubjectQuery from 'src/hooks/reactQueryHooks/useSubjectQuery'
-// import useSpecialtyQuery from 'src/hooks/reactQueryHooks/useSpecialtyQuery'
+import useSpecialtyQuery from 'src/hooks/reactQueryHooks/useSpecialtyQuery'
 
 import useClassMutation from 'src/hooks/reactQueryHooks/useClassMutation'
 
@@ -48,7 +48,6 @@ type FormInputs = {
 
   user_id: number
   subject_id: number
-  // specialty_id: number
 }
 
 const schema: SchemaOf<FormInputs> = object().shape({
@@ -61,7 +60,6 @@ const schema: SchemaOf<FormInputs> = object().shape({
 
   user_id: number().required('Chọn giảng viên!'),
   subject_id: number().required('Chọn môn học!'),
-  // specialty_id: number().required('Chọn chuyên khoa!'),
 })
 
 type ModalCreateProps = {
@@ -77,7 +75,7 @@ export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
   const [color, setColor] = useState({})
   const [showColorPicker, setShowColorPicker] = useState(false)
 
-  const [specialtySelected, setSpecialtySelected] = useState<number>()
+  const [subjectSelected, setSubjectSelected] = useState<number>()
   const [teacherSelected, setTeacherSelected] = useState<number>()
 
   // =================== DATA ===================
@@ -104,9 +102,8 @@ export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
 
   // react-query
   const { data: teacher } = useTeacherQuery.getById(teacherSelected)
-  const { data: teachers } = useTeacherQuery.getAll({ specialty_id: specialtySelected }, !!specialtySelected)
-  const { data: subjects } = useSubjectQuery.getAll({ specialty_id: specialtySelected }, !!specialtySelected)
-  // const { data: specialties } = useSpecialtyQuery.getAll()
+  const { data: teachers } = useTeacherQuery.getAll({ subject_id: subjectSelected }, !!subjectSelected)
+  const { data: subjects } = useSubjectQuery.getAll()
 
   const { mutate: create } = useClassMutation.create(onSuccess)
 
@@ -119,9 +116,9 @@ export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
     reset()
   }, [open])
 
-  // useEffect(() => {
-  //   setSpecialtySelected(watch('specialty_id'))
-  // }, [watch('specialty_id')])
+  useEffect(() => {
+    setSubjectSelected(watch('subject_id'))
+  }, [watch('subject_id')])
 
   useEffect(() => {
     setTeacherSelected(watch('user_id'))
@@ -175,35 +172,11 @@ export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
             {FORM_CREATE_LABEL}
           </Typography>
 
-          {/* <Controller
-            name="specialty_id"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                autoFocus
-                label="Chuyên khoa"
-                size="small"
-                fullWidth
-                select
-                error={!!fieldState.error}
-                helperText={fieldState.error?.message}
-                {...field}
-              >
-                {(specialties?.data || []).map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.specialty_name}
-                  </MenuItem>
-                ))}
-              </TextField>
-            )}
-          /> */}
-
           <Controller
             name="subject_id"
             control={control}
             render={({ field, fieldState }) => (
               <TextField
-                // disabled={!watch('specialty_id')}
                 label="Môn học"
                 size="small"
                 fullWidth
@@ -226,7 +199,7 @@ export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
             control={control}
             render={({ field, fieldState }) => (
               <TextField
-                // disabled={!watch('specialty_id')}
+                disabled={!watch('subject_id')}
                 label="Giảng viên"
                 size="small"
                 fullWidth
