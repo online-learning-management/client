@@ -62,7 +62,7 @@ export default function ClassList() {
                       item1 &&
                       item1.classes &&
                       item1.classes.map((item2, index2) => {
-                        console.log('data: ', item2)
+                        // console.log('data: ', item2)
                         return <ClassItem data={item2} subjectName={item1?.subject_name} />
                       })
                     )
