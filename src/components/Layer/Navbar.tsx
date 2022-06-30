@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography'
 
 import { AuthContext } from 'src/contexts/authContext/AuthContext'
 import ProfilePage from 'src/pages/ProfilePage'
+import { END_POINT_IMG } from 'src/const'
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean
@@ -88,7 +89,7 @@ export default function Navbar({ open, drawerWidth, handleDrawerToggle }: Navbar
 
             <Tooltip title="View profile">
               <IconButton sx={{ p: 0 }}>
-                <Avatar alt="Avatar" src="/src/favicon.svg" />
+                <Avatar alt="Avatar" src={user.avatar ? `${END_POINT_IMG}/${user.avatar}` : '/src/favicon.svg'} />
               </IconButton>
             </Tooltip>
           </Box>
