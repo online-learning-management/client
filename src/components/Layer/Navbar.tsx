@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined'
 import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined'
@@ -11,6 +11,7 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 
 import { AuthContext } from 'src/contexts/authContext/AuthContext'
+import ProfilePage from 'src/pages/ProfilePage'
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean
@@ -48,47 +49,53 @@ type NavbarProps = {
 export default function Navbar({ open, drawerWidth, handleDrawerToggle }: NavbarProps) {
   const { user } = useContext(AuthContext)
 
+  const [openProfile, setOpenProfile] = useState(false)
+
   return (
-    <AppBar position="fixed" open={open} drawerWidth={drawerWidth}>
-      <Toolbar>
-        <IconButton
-          // color="inherit"
-          aria-label="open drawer"
-          onClick={handleDrawerToggle}
-          edge="start"
-          sx={{
-            marginRight: 2,
-            marginLeft: '-36px',
-            backgroundColor: 'primary.main',
-            color: 'white',
-            '&:hover': {
+    <>
+      <AppBar position="fixed" sx={{ zIndex: 10 }} open={open} drawerWidth={drawerWidth}>
+        <Toolbar>
+          {/* <IconButton
+            // color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerToggle}
+            edge="start"
+            sx={{
+              marginRight: 2,
+              marginLeft: '-36px',
               backgroundColor: 'primary.main',
-            },
-            width: '22px',
-            height: '22px',
-          }}
-        >
-          {open ? <KeyboardArrowLeftOutlinedIcon fontSize="small" /> : <ChevronRightOutlinedIcon fontSize="small" />}
-        </IconButton>
+              color: 'white',
+              '&:hover': {
+                backgroundColor: 'primary.main',
+              },
+              width: '22px',
+              height: '22px',
+            }}
+          >
+            {open ? <KeyboardArrowLeftOutlinedIcon fontSize="small" /> : <ChevronRightOutlinedIcon fontSize="small" />}
+          </IconButton> */}
 
-        <Typography sx={{ color: 'black' }} variant="h6" noWrap component="h1">
-          Welcome, {user.full_name}
-        </Typography>
+          <Typography sx={{ color: 'black' }} variant="h6" noWrap component="h1">
+            Welcome, {user.full_name}
+          </Typography>
 
-        <Box sx={{ marginLeft: 'auto' }}>
-          {/* <IconButton size="large" aria-label="show 17 new notifications" sx={{ marginRight: '8px' }}>
+          <Box sx={{ marginLeft: 'auto' }} onClick={() => setOpenProfile(true)}>
+            {/* <IconButton size="large" aria-label="show 17 new notifications" sx={{ marginRight: '8px' }}>
             <Badge badgeContent={17} color="error">
               <NotificationsIcon />
             </Badge>
           </IconButton> */}
 
-          <Tooltip title="View profile">
-            <IconButton sx={{ p: 0 }}>
-              <Avatar alt="Avatar" src="/src/favicon.svg" />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      </Toolbar>
-    </AppBar>
+            <Tooltip title="View profile">
+              <IconButton sx={{ p: 0 }}>
+                <Avatar alt="Avatar" src="/src/favicon.svg" />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </Toolbar>
+
+        <ProfilePage open={openProfile} onClose={() => setOpenProfile(false)} />
+      </AppBar>
+    </>
   )
 }

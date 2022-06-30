@@ -119,7 +119,7 @@ function App() {
         }
       />
 
-      <Route
+      {/* <Route
         path="profile"
         element={
           user ? (
@@ -130,7 +130,7 @@ function App() {
             <Navigate to="/login" replace />
           )
         }
-      />
+      /> */}
 
       <Route
         path="user-management"
