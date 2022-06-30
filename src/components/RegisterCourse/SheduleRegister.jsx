@@ -36,11 +36,13 @@ export default function ScheduleRegister(Props) {
   }
 
   let handleOnclickCancelCourse = async (item) => {
-    console.log('item: ', item)
+    let data = {
+      class_id: item,
+      user_id: user?.user_id,
+    }
     try {
-      let res = await studentClassApi.delete(item)
+      let res = await studentClassApi.delete(data)
       if (res) {
-        console.log('ok')
       }
     } catch (error) {
       console.log(error)
