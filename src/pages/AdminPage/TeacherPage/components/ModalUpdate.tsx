@@ -50,7 +50,7 @@ type FormInputs = {
   username: string
   address: string
   date_of_birth: string
-  specialty_id?: number
+  // specialty_id?: number
   gender: string
   avatar?: string
 }
@@ -61,7 +61,7 @@ const schema: SchemaOf<FormInputs> = object().shape({
   username: string().required('Yêu cầu nhập tên tài khoản!').default(' '),
   address: string().required('Yêu cầu nhập địa chỉ!').default(' '),
   date_of_birth: string().required('Yêu cầu nhập ngày sinh!').default(' '),
-  specialty_id: string().nullable().default(''),
+  // specialty_id: string().nullable().default(''),
   gender: string().required('Yêu cầu chọn giới tính!').default(' '),
   avatar: string().nullable().default(' '),
 })
@@ -96,7 +96,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
   const onSuccess = () => handleClose()
 
   // react-query
-  const { data: specialties } = useSpecialtyQuery.getAll()
+  // const { data: specialties } = useSpecialtyQuery.getAll()
 
   const { mutate: update } = useTeacherMutation.update(onSuccess)
 
@@ -107,11 +107,11 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
     }
   }, [initData])
 
-  useEffect(() => {
-    if (initData) {
-      setValue('specialty_id', initData?.teacher?.specialty_id || '')
-    }
-  }, [initData?.teacher?.specialty_id])
+  // useEffect(() => {
+  //   if (initData) {
+  //     setValue('specialty_id', initData?.teacher?.specialty_id || '')
+  //   }
+  // }, [initData?.teacher?.specialty_id])
 
   // =================== FUNCTIONS HANDLE ===================
   const handleSubmit: SubmitHandler<FormInputs> = (data: FormInputs) => {
@@ -206,7 +206,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
               )}
             />
 
-            <Controller
+            {/* <Controller
               name="specialty_id"
               control={control}
               render={({ field }) => (
@@ -218,7 +218,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
                   ))}
                 </TextField>
               )}
-            />
+            /> */}
           </Stack>
 
           <Box>

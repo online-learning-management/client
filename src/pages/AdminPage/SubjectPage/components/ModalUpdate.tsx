@@ -31,13 +31,13 @@ import { FORM_UPDATE_LABEL } from '../const'
 // ======================================================
 type FormInputs = {
   subject_name: string
-  specialty_id: number
+  // specialty_id: number
   credit_id: number
 }
 
 const schema: SchemaOf<FormInputs> = object().shape({
   subject_name: string().required('Nhập tên môn học!').default(' '),
-  specialty_id: number().required('Chọn chuyên khoa!').default(0),
+  // specialty_id: number().required('Chọn chuyên khoa!').default(0),
   credit_id: number().required('Chọn tín chỉ!').default(0),
 })
 
@@ -68,7 +68,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
   const onSuccess = () => handleClose()
 
   // react-query
-  const { data: specialties } = useSpecialtyQuery.getAll()
+  // const { data: specialties } = useSpecialtyQuery.getAll()
   const { data: credits } = useCreditQuery.getAll()
 
   const { mutate: update } = useSubjectMutation.update(onSuccess)
@@ -102,7 +102,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
           />
 
           <Stack spacing={3} direction="row">
-            <Controller
+            {/* <Controller
               name="specialty_id"
               control={control}
               render={({ field, fieldState }) => (
@@ -122,7 +122,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
                   ))}
                 </TextField>
               )}
-            />
+            /> */}
 
             <Controller
               name="credit_id"

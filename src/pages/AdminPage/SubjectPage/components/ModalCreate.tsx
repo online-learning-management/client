@@ -31,13 +31,13 @@ import { FORM_CREATE_LABEL } from '../const'
 // ======================================================
 type FormInputs = {
   subject_name: string
-  specialty_id: number
+  // specialty_id: number
   credit_id: number
 }
 
 const schema: SchemaOf<FormInputs> = object().shape({
   subject_name: string().required('Nhập tên môn học!'),
-  specialty_id: number().required('Chọn chuyên khoa!'),
+  // specialty_id: number().required('Chọn chuyên khoa!'),
   credit_id: number().required('Chọn tín chỉ!'),
 })
 
@@ -65,7 +65,7 @@ export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
   const onSuccess = () => handleClose()
 
   // react-query
-  const { data: specialties } = useSpecialtyQuery.getAll()
+  // const { data: specialties } = useSpecialtyQuery.getAll()
   const { data: credits } = useCreditQuery.getAll()
 
   const { mutate: create } = useSubjectMutation.create(onSuccess)
@@ -99,7 +99,7 @@ export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
           />
 
           <Stack spacing={3} direction="row">
-            <Controller
+            {/* <Controller
               name="specialty_id"
               control={control}
               render={({ field, fieldState }) => (
@@ -119,7 +119,7 @@ export default function ModalCreate({ open, handleClose }: ModalCreateProps) {
                   ))}
                 </TextField>
               )}
-            />
+            /> */}
 
             <Controller
               name="credit_id"

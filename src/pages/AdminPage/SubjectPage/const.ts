@@ -11,10 +11,10 @@ export const COLUMNS: readonly ColumnType[] = [
     Header: 'Tên môn',
     accessor: 'subject_name',
   },
-  {
-    Header: 'Chuyên khoa',
-    accessor: 'specialty.specialty_name',
-  },
+  // {
+  //   Header: 'Chuyên khoa',
+  //   accessor: 'specialty.specialty_name',
+  // },
   {
     Header: 'Số tín chỉ',
     accessor: 'credit.number_of_credits',

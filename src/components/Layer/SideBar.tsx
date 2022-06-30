@@ -122,11 +122,11 @@ const MANAGEMENT_ITEMS = [
     // icon: <AdminPanelSettingsOutlinedIcon />,
     path: '/user-management/subjects',
   },
-  {
-    text: 'Chuyên khoa',
-    // icon: <AdminPanelSettingsOutlinedIcon />,
-    path: '/user-management/specialties',
-  },
+  // {
+  //   text: 'Chuyên khoa',
+  //   // icon: <AdminPanelSettingsOutlinedIcon />,
+  //   path: '/user-management/specialties',
+  // },
 ]
 
 const StyledNavLink = styled(NavLink)(() => ({
