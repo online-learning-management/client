@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import RegisterModal from './RegisterModal'
-import useStudentQuery from '../../hooks/reactQueryHooks/useStudentQuery'
 import { AuthContext } from '../../contexts/authContext/AuthContext'
+import useStudentQuery from '../../hooks/reactQueryHooks/useStudentQuery'
+import studentClassApi from '../../apis/studentClassApi'
+
 import moment from 'moment'
 
 import Subject from './Subject'
@@ -9,6 +11,13 @@ import Subject from './Subject'
 // type Props = {}
 
 export default function ScheduleRegister(Props) {
+  const { user } = React.useContext(AuthContext)
+
+  //react query
+  const { data: student } = useStudentQuery.getById(user?.user_id)
+  let arrStudentClass = student?.data?.student?.student_class
+  console.log('check: ', arrStudentClass)
+
   let Select = (props) => {
     return (
       <div
@@ -24,6 +33,18 @@ export default function ScheduleRegister(Props) {
     setDay(day)
     setSession(session)
     handleOpen()
+  }
+
+  let handleOnclickCancelCourse = async (item) => {
+    console.log('item: ', item)
+    try {
+      let res = await studentClassApi.delete(item)
+      if (res) {
+        console.log('ok')
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   let [day, setDay] = useState('')
@@ -71,9 +92,6 @@ export default function ScheduleRegister(Props) {
             <td>
               <Select name={'[Chọn]'} day={2} session={'morning'} />
               <Subject day={2} session={'morning'} />
-
-              {/* <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} /> */}
-              {/* <Subject name={'Lập trình JAVA'} time={'7:00 - 8:00'} /> */}
             </td>
             <td>
               <Select name={'[Chọn]'} day={3} session={'morning'} />
@@ -96,7 +114,6 @@ export default function ScheduleRegister(Props) {
             <td>Chiều</td>
             <td>
               <Select name={'[Chọn]'} day={0} session={'afternoon'} />
-              {/* <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} /> */}
               <Subject day={0} session={'afternoon'} />
             </td>
             <td>
@@ -109,7 +126,6 @@ export default function ScheduleRegister(Props) {
             </td>
             <td>
               <Select name={'[Chọn]'} day={3} session={'afternoon'} />
-              {/* <Subject name={'Đồ họa máy tính'} time={'6:00 - 7:00'} /> */}
               <Subject day={3} session={'afternoon'} />
             </td>
             <td>
@@ -158,6 +174,43 @@ export default function ScheduleRegister(Props) {
             </td>
           </tr>
         </tbody>
+      </table>
+
+      <br />
+      <br />
+
+      <h3 className="flex justify-center">Danh sách học phần đã đăng ký</h3>
+      <table
+        style={{ borderSpacing: 0 }}
+        className="border-black w-full text-center table-fixed text-xl font-Inter rounded-lg shadow-fakeBorderTable"
+      >
+        <thead>
+          <tr className="child:border child:border-solid h-12 child:font-medium">
+            <th className="w-[40%] rounded-tl-lg">Tên học phần</th>
+            <th>Mã lớp</th>
+            <th className="rounded-tr-lg">Chức năng</th>
+          </tr>
+          {arrStudentClass &&
+            arrStudentClass.length > 0 &&
+            arrStudentClass.map((item, index) => {
+              return (
+                <>
+                  <tr className="child:border child:border-solid  text-base">
+                    <td>{item?.class?.subject?.subject_name}</td>
+                    <td>{item?.class?.class_id}</td>
+                    <td>
+                      <button
+                        className="cursor-pointer px-3 py-1 text-red-600 border-none rounded"
+                        onClick={() => handleOnclickCancelCourse(item?.class?.class_id)}
+                      >
+                        Hủy học phần
+                      </button>
+                    </td>
+                  </tr>
+                </>
+              )
+            })}
+        </thead>
       </table>
     </div>
   )

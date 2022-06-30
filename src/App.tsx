@@ -106,6 +106,18 @@ function App() {
           )
         }
       />
+      <Route
+        path="register-course"
+        element={
+          user && user?.role_id === 'r3' ? (
+            <Layer>
+              <RegisterCourse />
+            </Layer>
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
 
       <Route
         path="profile"
