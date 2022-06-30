@@ -36,8 +36,6 @@ import { SPECIALTY_DATA } from 'src/fakeData/specialty'
 import { SubjectType } from 'src/types'
 
 // REACT-QUERY-HOOKS
-import useSpecialtyQuery from 'src/hooks/reactQueryHooks/useSpecialtyQuery'
-
 import useStudentMutation from 'src/hooks/reactQueryHooks/useStudentMutation'
 
 // CONSTANTS
@@ -94,8 +92,6 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
   const onSuccess = () => handleClose()
 
   // react-query
-  const { data: specialties } = useSpecialtyQuery.getAll()
-
   const { mutate: update } = useStudentMutation.update(onSuccess)
 
   // =================== EFFECT ===================

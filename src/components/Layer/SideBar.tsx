@@ -86,12 +86,13 @@ const SIDEBAR_TOP = [
     text: 'Thời khóa biểu',
     icon: <CalendarTodayIcon fontSize="small" />,
     path: '/schedule',
+    except: 'r1',
   },
   {
     text: 'Đăng ký học phần',
     icon: <SchoolOutlinedIcon />,
     path: '/register-course',
-    student: true,
+    except: ['r1', 'r2'],
   },
   // {
   //   text: 'Tài khoản',
@@ -100,7 +101,7 @@ const SIDEBAR_TOP = [
   // },
 ]
 
-const SIDEBAR_TOP_ITEMS = [
+const MANAGEMENT_ITEMS = [
   {
     text: 'Giảng viên',
     // icon: <HomeOutlinedIcon />,
@@ -209,8 +210,8 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
             <ListItemText primary={'BeeLearning'} secondary="Studying together" sx={{ opacity: open ? 1 : 0 }} />
           </ListItemButton>
 
-          {SIDEBAR_TOP.map(({ text, icon, path, student }) =>
-            student && user?.role_id !== 'r3' ? null : (
+          {SIDEBAR_TOP.map(({ text, icon, path, except }) =>
+            user?.role_id === except || except?.includes(user?.role_id) ? null : (
               <StyledNavLink key={text} to={path}>
                 <ListItemButton
                   // onClick={() => navigate(path)}
@@ -286,7 +287,7 @@ export default function SideBar({ drawerWidth, open }: SideBarProps) {
                     },
                   }}
                 >
-                  {SIDEBAR_TOP_ITEMS.map(({ text, path }) => (
+                  {MANAGEMENT_ITEMS.map(({ text, path }) => (
                     <StyledCollapseNavLink key={text} to={path}>
                       <ListItemButton disableRipple={true}>
                         {/* <ListItemIcon

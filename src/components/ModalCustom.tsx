@@ -3,7 +3,7 @@ import { Box, Modal } from '@mui/material'
 export type ModalCustomProps = {
   children: React.ReactNode
   open: boolean
-  width: number
+  width?: number
 
   onClose?: () => void
 }

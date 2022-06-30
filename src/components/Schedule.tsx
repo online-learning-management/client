@@ -5,9 +5,12 @@ import useTeacherQuery from 'src/hooks/reactQueryHooks/useTeacherQuery'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 
-type Props = {}
+type Props = {
+  teacher_id?: string
+  student_id?: string
+}
 
-export default function Schedule({}: Props) {
+export default function Schedule({ teacher_id, student_id }: Props) {
   const { user } = useContext(AuthContext)
   const [schedules, setSchedules] = useState([
     [[], [], [], [], [], [], []],
@@ -16,8 +19,8 @@ export default function Schedule({}: Props) {
   ])
 
   // react-query
-  const { data: teacher } = useTeacherQuery.getById(user?.role_id === 'r2' && user?.user_id)
-  const { data: student } = useStudentQuery.getById(user?.role_id === 'r3' && user?.user_id)
+  const { data: teacher } = useTeacherQuery.getById(teacher_id || (user?.role_id === 'r2' && user?.user_id))
+  const { data: student } = useStudentQuery.getById(student_id || (user?.role_id === 'r3' && user?.user_id))
 
   const Subject = ({ name, time, classId }: { name: string; time: string; classId: string }) => {
     return (
@@ -33,7 +36,7 @@ export default function Schedule({}: Props) {
   // ================ EFFECT ================
   // handle when is teacher
   useEffect(() => {
-    if (teacher?.data && user?.role_id === 'r2') {
+    if (teacher?.data) {
       teacher.data?.teacher?.classes?.length > 0 &&
         teacher.data?.teacher?.classes?.forEach((clazz) => {
           if (clazz?.schedules) {
@@ -78,7 +81,7 @@ export default function Schedule({}: Props) {
 
   // handle when is student
   useEffect(() => {
-    if (student?.data && user?.role_id === 'r3') {
+    if (student?.data) {
       student.data?.student?.student_class?.length > 0 &&
         student.data?.student?.student_class?.forEach((clazz) => {
           if (clazz.class?.schedules) {
@@ -117,7 +120,6 @@ export default function Schedule({}: Props) {
         [[], [], [], [], [], [], []],
       ])
   }, [student?.data])
-  console.log('data: ', schedules)
 
   return (
     <div>

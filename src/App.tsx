@@ -65,6 +65,7 @@ function App() {
           )
         }
       />
+
       <Route
         path="schedule/detail-class-:id"
         element={
@@ -78,12 +79,27 @@ function App() {
         }
       />
 
+      {user?.role_id !== 'r1' && (
+        <Route
+          path="schedule"
+          element={
+            user ? (
+              <Layer>
+                <Schedule />
+              </Layer>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+      )}
+
       <Route
-        path="schedule"
+        path="register-course"
         element={
-          user ? (
+          user && user?.role_id === 'r3' ? (
             <Layer>
-              <Schedule />
+              <RegisterCourse />
             </Layer>
           ) : (
             <Navigate to="/login" replace />

@@ -1,3 +1,5 @@
+import { useContext } from 'react'
+
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined'
 import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined'
 import NotificationsIcon from '@mui/icons-material/Notifications'
@@ -7,6 +9,8 @@ import IconButton from '@mui/material/IconButton'
 import { styled } from '@mui/material/styles'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
+
+import { AuthContext } from 'src/contexts/authContext/AuthContext'
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean
@@ -42,6 +46,8 @@ type NavbarProps = {
 }
 
 export default function Navbar({ open, drawerWidth, handleDrawerToggle }: NavbarProps) {
+  const { user } = useContext(AuthContext)
+
   return (
     <AppBar position="fixed" open={open} drawerWidth={drawerWidth}>
       <Toolbar>
@@ -66,15 +72,15 @@ export default function Navbar({ open, drawerWidth, handleDrawerToggle }: Navbar
         </IconButton>
 
         <Typography sx={{ color: 'black' }} variant="h6" noWrap component="h1">
-          BeeLearning
+          Welcome, {user.full_name}
         </Typography>
 
         <Box sx={{ marginLeft: 'auto' }}>
-          <IconButton size="large" aria-label="show 17 new notifications" sx={{ marginRight: '8px' }}>
+          {/* <IconButton size="large" aria-label="show 17 new notifications" sx={{ marginRight: '8px' }}>
             <Badge badgeContent={17} color="error">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
 
           <Tooltip title="View profile">
             <IconButton sx={{ p: 0 }}>

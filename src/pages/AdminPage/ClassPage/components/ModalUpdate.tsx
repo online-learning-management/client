@@ -30,7 +30,6 @@ import { ClassType } from 'src/types'
 // REACT-QUERY-HOOKS
 import useTeacherQuery from 'src/hooks/reactQueryHooks/useTeacherQuery'
 import useSubjectQuery from 'src/hooks/reactQueryHooks/useSubjectQuery'
-import useSpecialtyQuery from 'src/hooks/reactQueryHooks/useSpecialtyQuery'
 
 import useClassMutation from 'src/hooks/reactQueryHooks/useClassMutation'
 
@@ -48,7 +47,6 @@ type FormInputs = {
 
   user_id: number
   subject_id: number
-  specialty_id: number
 }
 
 const schema: SchemaOf<FormInputs> = object().shape({
@@ -61,7 +59,6 @@ const schema: SchemaOf<FormInputs> = object().shape({
 
   user_id: number().required('Chọn giảng viên!').default(0),
   subject_id: number().required('Chọn môn học!').default(0),
-  specialty_id: number().required('Chọn chuyên khoa!').default(0),
 })
 
 type ModalUpdateProps = {
@@ -79,7 +76,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
   const [color, setColor] = useState({})
   const [showColorPicker, setShowColorPicker] = useState(false)
 
-  const [specialtySelected, setSpecialtySelected] = useState<number>()
+  const [subjectSelected, setSubjectSelected] = useState<number>()
   const [teacherSelected, setTeacherSelected] = useState<number>()
 
   // =================== DATA ===================
@@ -102,9 +99,8 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
 
   // react-query
   const { data: teacher } = useTeacherQuery.getById(teacherSelected)
-  const { data: teachers } = useTeacherQuery.getAll({ specialty_id: specialtySelected }, !!specialtySelected)
-  const { data: subjects } = useSubjectQuery.getAll({ specialty_id: specialtySelected }, !!specialtySelected)
-  const { data: specialties } = useSpecialtyQuery.getAll()
+  const { data: teachers } = useTeacherQuery.getAll({ subject_id: subjectSelected }, !!subjectSelected)
+  const { data: subjects } = useSubjectQuery.getAll()
 
   const { mutate: update } = useClassMutation.update(onSuccess)
 
@@ -118,8 +114,8 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
   }, [initData])
 
   useEffect(() => {
-    setSpecialtySelected(watch('specialty_id'))
-  }, [watch('specialty_id')])
+    setSubjectSelected(watch('subject_id'))
+  }, [watch('subject_id')])
 
   useEffect(() => {
     setTeacherSelected(watch('user_id'))
@@ -191,33 +187,10 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
           />
 
           <Controller
-            name="specialty_id"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                label="Chuyên khoa"
-                size="small"
-                fullWidth
-                select
-                error={!!fieldState.error}
-                helperText={fieldState.error?.message}
-                {...field}
-              >
-                {(specialties?.data || []).map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.specialty_name}
-                  </MenuItem>
-                ))}
-              </TextField>
-            )}
-          />
-
-          <Controller
             name="subject_id"
             control={control}
             render={({ field, fieldState }) => (
               <TextField
-                disabled={!watch('specialty_id')}
                 label="Môn học"
                 size="small"
                 fullWidth
@@ -240,7 +213,7 @@ export default function ModalUpdate({ open, initData, handleClose }: ModalUpdate
             control={control}
             render={({ field, fieldState }) => (
               <TextField
-                disabled={!watch('specialty_id')}
+                disabled={!watch('subject_id')}
                 label="Giảng viên"
                 size="small"
                 fullWidth
