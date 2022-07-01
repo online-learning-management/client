@@ -1,4 +1,14 @@
 import React, { useState } from 'react'
+
+import { styled } from '@mui/material/styles'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell, { tableCellClasses } from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import Paper from '@mui/material/Paper'
+
 import RegisterModal from './RegisterModal'
 import { AuthContext } from '../../contexts/authContext/AuthContext'
 import useStudentQuery from '../../hooks/reactQueryHooks/useStudentQuery'
@@ -8,15 +18,33 @@ import moment from 'moment'
 
 import Subject from './Subject'
 
-// type Props = {}
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}))
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}))
 
 export default function ScheduleRegister(Props) {
   const { user } = React.useContext(AuthContext)
+  let [refresh, setRefresh] = useState(false)
 
   //react query
   const { data: student } = useStudentQuery.getById(user?.user_id)
   let arrStudentClass = student?.data?.student?.student_class
-  console.log('check: ', arrStudentClass)
 
   let Select = (props) => {
     return (
@@ -55,7 +83,6 @@ export default function ScheduleRegister(Props) {
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
-
   return (
     <div>
       <RegisterModal open={open} handleOpen={handleOpen} handleClose={handleClose} day={day} session={session} />
@@ -182,38 +209,43 @@ export default function ScheduleRegister(Props) {
       <br />
 
       <h3 className="flex justify-center">Danh sách học phần đã đăng ký</h3>
-      <table
-        style={{ borderSpacing: 0 }}
-        className="border-black w-full text-center table-fixed text-xl font-Inter rounded-lg shadow-fakeBorderTable"
-      >
-        <thead>
-          <tr className="child:border child:border-solid h-12 child:font-medium">
-            <th className="w-[40%] rounded-tl-lg">Tên học phần</th>
-            <th>Mã lớp</th>
-            <th className="rounded-tr-lg">Chức năng</th>
-          </tr>
-          {arrStudentClass &&
-            arrStudentClass.length > 0 &&
-            arrStudentClass.map((item, index) => {
-              return (
-                <>
-                  <tr className="child:border child:border-solid  text-base">
-                    <td>{item?.class?.subject?.subject_name}</td>
-                    <td>{item?.class?.class_id}</td>
-                    <td>
-                      <button
-                        className="cursor-pointer px-3 py-1 text-red-600 border-none rounded"
-                        onClick={() => handleOnclickCancelCourse(item?.class?.class_id)}
-                      >
-                        Hủy học phần
-                      </button>
-                    </td>
-                  </tr>
-                </>
-              )
-            })}
-        </thead>
-      </table>
+      <div className="refresh" style={{ display: 'none' }}>
+        {refresh}
+      </div>
+      <br />
+      <br />
+
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Tên học phần</StyledTableCell>
+              <StyledTableCell align="right">Mã học phần</StyledTableCell>
+              <StyledTableCell align="right">Chức năng</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {arrStudentClass &&
+              arrStudentClass.length > 0 &&
+              arrStudentClass.map((item, index) => (
+                <StyledTableRow key={index}>
+                  <StyledTableCell component="th" scope="row">
+                    {item?.class?.subject?.subject_name}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">{item?.class?.class_id}</StyledTableCell>
+                  <StyledTableCell align="right">
+                    <button
+                      className="cursor-pointer px-3 py-1 text-red-600 border-none rounded"
+                      onClick={() => handleOnclickCancelCourse(item?.class?.class_id)}
+                    >
+                      Hủy học phần
+                    </button>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   )
 }
