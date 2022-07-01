@@ -22,7 +22,7 @@ import {
 import { LoadingButton } from '@mui/lab'
 
 // MUI ICONS
-import { Loop, EditOutlined, HighlightOffOutlined } from '@mui/icons-material'
+import { Loop, EditOutlined, HighlightOffOutlined, ChildCareOutlined } from '@mui/icons-material'
 
 // REACT-TABLE
 import { useTable, useSortBy } from 'react-table'
@@ -44,6 +44,8 @@ import ModalUpdate from './components/ModalUpdate'
 import useClassQuery from 'src/hooks/reactQueryHooks/useClassQuery'
 
 import useClassMutation from 'src/hooks/reactQueryHooks/useClassMutation'
+import ModalCustom from 'src/components/ModalCustom'
+import ModalStudents from './components/ModalStudents'
 
 export default function ClassPage() {
   // ==================STATES==================
@@ -54,6 +56,9 @@ export default function ClassPage() {
   // modals
   const [openModalCreate, setOpenModalCreate] = useState(false)
   const [openModalUpdate, setOpenModalUpdate] = useState(false)
+  const [openModalStudents, setOpenModalStudents] = useState(false)
+
+  const [classId, setClassId] = useState('')
 
   const [showDialog, setShowDialog] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
@@ -163,6 +168,16 @@ export default function ClassPage() {
                         <EditOutlined />
                       </IconButton>
 
+                      <IconButton
+                        color="primary"
+                        onClick={() => {
+                          setOpenModalStudents(true)
+                          setClassId(row.original.class_id)
+                        }}
+                      >
+                        <ChildCareOutlined />
+                      </IconButton>
+
                       {/* <IconButton color="info">
                       <InfoOutlinedIcon />
                     </IconButton> */}
@@ -195,6 +210,10 @@ export default function ClassPage() {
         initData={queryData?.data || null}
         handleClose={() => setOpenModalUpdate(false)}
       />
+
+      <ModalCustom width={1200} open={openModalStudents} onClose={() => setOpenModalStudents(false)}>
+        <ModalStudents classId={classId} />
+      </ModalCustom>
 
       <Dialog open={showDialog} onClose={() => setShowDialog(false)}>
         <DialogTitle>Bạn có chắc muốn xóa?</DialogTitle>

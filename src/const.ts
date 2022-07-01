@@ -25,4 +25,6 @@ export const RQ = {
 
   CLASSES: 'classes',
   CLASS: 'class',
+
+  STUDENT_CLASSES: 'student_classes',
 }

@@ -35,6 +35,27 @@ export const COLUMNS: readonly ColumnType[] = [
   },
 ]
 
+export const COLUMNS_STUDENT_CLASS: readonly ColumnType[] = [
+  {
+    Header: 'Tên đăng nhập',
+    accessor: 'student.user.username',
+  },
+  {
+    Header: 'Ngày sinh',
+    accessor: 'student.user.date_of_birth',
+    Cell: (props) => moment(props.value).format('DD/MM/YYYY'),
+  },
+  {
+    Header: 'Giới tính',
+    accessor: 'student.user.gender',
+    Cell: (props) => (props.value === 'male' ? 'nam' : `nữ`),
+  },
+  {
+    Header: 'Địa chỉ',
+    accessor: 'student.user.address',
+  },
+]
+
 // value = 0 is disabled | 1 is checked | 2 is disabled and checked
 export const TWO_D_ARRAY = new Array(16).fill(0).map(() => new Array(7).fill(0))
 
