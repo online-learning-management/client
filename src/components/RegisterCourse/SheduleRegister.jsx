@@ -43,7 +43,7 @@ export default function ScheduleRegister(Props) {
   let [refresh, setRefresh] = useState(false)
 
   //react query
-  const { data: student } = useStudentQuery.getById(user?.user_id)
+  const { data: student, refetch } = useStudentQuery.getById(user?.user_id)
   let arrStudentClass = student?.data?.student?.student_class
 
   let Select = (props) => {
@@ -72,6 +72,9 @@ export default function ScheduleRegister(Props) {
       let res = await studentClassApi.delete(data)
       if (res) {
       }
+
+      //
+      refetch()
     } catch (error) {
       console.log(error)
     }
